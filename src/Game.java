@@ -4,7 +4,7 @@
 import java.util.ArrayList;
 public class Game {
 
-
+//need copy constructor
 
     private int id;  // game ID from XML database
     private int minPlayers;  //game minimum suggested number of players

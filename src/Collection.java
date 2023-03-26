@@ -45,6 +45,21 @@ public class Collection {
      */
     public void moveGame(int from, int to)
     {
+        Game temp;
+        temp = games.get(from);
+        if(from < to)
+        {
+
+            games.remove(games.get(from));
+            games.add(to-1, temp);
+        }
+        else if (to<from)
+        {
+
+            games.remove(games.get(from));
+            games.add(to, temp);
+        }
+
         //games.set(to, games.get(from));
         /*
         Game temp;
@@ -52,6 +67,7 @@ public class Collection {
         games.
         games.set(from, games.get(to));
         games.set(to, temp);
+
         */
     } //????
 
@@ -59,9 +75,21 @@ public class Collection {
      *
      * @param some_game
      */
-    public void search(String some_game)//?????
+    public ArrayList<Game> search(String some_game)  //?????
     {
-        games.contains(some_game);
+        ArrayList <Game> temp = new ArrayList<Game>();
+        games.contains(some_game);  //case sensitivity?
+
+        for (Game g: games)
+        {
+            if(g.getTitle().contains(some_game))
+            {
+                temp.add(g);
+            }
+
+        }
+        return temp;
+
         //for (Game g : )
     }
 
