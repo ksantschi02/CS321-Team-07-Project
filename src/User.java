@@ -4,7 +4,7 @@ public class User {
     private String username;
     private String password;
     private boolean loggedIn;
-    // private ArrayList<Collection> collections;
+    private ArrayList<Collection> collections;
 
 
     /*
@@ -14,7 +14,7 @@ public class User {
         this.username = null;
         this.password = null;
         this.loggedIn = false;
-        // collections = new ArrayList<>();
+        collections = new ArrayList<>();
     }
 
     /*
@@ -24,7 +24,7 @@ public class User {
         this.username = username;
         this.password = password;
         this.loggedIn = false;
-        // collections = new ArrayList<>();
+        collections = new ArrayList<>();
     }
 
     /*
@@ -106,25 +106,25 @@ public class User {
     /*
      * Add a collection to user and database
      */
-    // public void addCollection(Collection collection) {
-    //    this.collections.add(collection);
-    //    // write collection to database, possibly done inside collection class or collection page class instead
-    // }
+    public void addCollection(Collection collection) {
+        this.collections.add(collection);
+        // write collection to database, possibly done inside collection class or collection page class instead
+    }
 
     /*
      * Delete collection
      */
-    // public boolean deleteCollection(String id) {
-    //    // boolean found = false;
-    //    // int index = 0;
-    //
-    //    // loop through collections to find the relevant one, set found and index
-    //
-    //    // if (found) {
-    //          // this.collections.remove(index)
-    //          // deletion in xml will be handled by a different class
-    //    // }
-    //
-    //    // return found;
-    // }
+    public boolean deleteCollection(String id) {
+        boolean found = false;
+        int index = 0;
+
+        // loop through collections to find the relevant one, set found and index
+
+        if (found) {
+            this.collections.remove(index);
+            // deletion in xml will be handled by a different class
+        }
+
+        return found;
+    }
 }
