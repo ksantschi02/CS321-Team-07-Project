@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 public class Filter {
     private int sortType;
     private int filterType;
@@ -13,16 +14,16 @@ public class Filter {
     /*
      * sort a collection by initialized type
      */
-//    public void sortCollection(ArrayList<Game> collection) {
-//        // if chain to determine type, loop through collection and sort games by specifications
-//    }
+    public void sortCollection(ArrayList<Game> collection) {
+        // if chain to determine method, loop through collection and sort games by specifications
+    }
 
     /*
      * filter a collection by initialized type
      */
-//    public void filterCollection(ArrayList<Game> collection) {
-//        // if chain to determine type, loop through collection and filter out games by specification
-//    }
+     public void filterCollection(ArrayList<Game> collection) {
+        // if chain to determine method, loop through collection and filter out games by specification
+     }
 
     /*
      * set the sort type
