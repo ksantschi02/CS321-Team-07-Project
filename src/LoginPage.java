@@ -1,3 +1,4 @@
+
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -5,9 +6,11 @@ import java.awt.event.*;
 
 public class LoginPage extends JFrame{
 
-    JLabel usernameLabel, passwordLabel;
-    JTextField usernameTextField, passwordTextField;
+    JLabel usernameLabel, passwordLabel, newAccountLabel, newAccountClickLabel;
+    JPasswordField passwordTextField;
+    JTextField usernameTextField;
     JButton loginButton;
+    JFrame loginFrame = new JFrame();
 
     int buttonClicked;
 
@@ -17,7 +20,7 @@ public class LoginPage extends JFrame{
     private static final int FRAME_HEIGHT = 300;
 
     public LoginPage() {
-        JFrame loginFrame = new JFrame();
+
         //loginFrame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
         loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         loginFrame.setLocationRelativeTo(null);
@@ -41,7 +44,7 @@ public class LoginPage extends JFrame{
 
         addComp(thePanel, passwordLabel, 0, 1, 1,1,GridBagConstraints.WEST,GridBagConstraints.NONE);
 
-        passwordTextField = new JTextField(30);
+        passwordTextField = new JPasswordField(30);
 
         addComp(thePanel, passwordTextField, 1, 1, 2,1,GridBagConstraints.EAST,GridBagConstraints.NONE);
 
@@ -52,6 +55,18 @@ public class LoginPage extends JFrame{
         loginButton.addActionListener(lForButton);
 
         addComp(thePanel, loginButton, 0, 2, 2, 1, GridBagConstraints.PAGE_END, GridBagConstraints.NONE);
+
+        newAccountLabel = new JLabel("*new account?");
+
+        addComp(thePanel, newAccountLabel, 0, 3, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
+
+        newAccountClickLabel = new JLabel("CLICK HERE");
+
+        addComp(thePanel, newAccountClickLabel, 1, 3, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
+
+        ListenForMouse lForMouse = new ListenForMouse();
+
+        newAccountClickLabel.addMouseListener(lForMouse);
 
         loginFrame.add(thePanel);
 
@@ -91,6 +106,8 @@ public class LoginPage extends JFrame{
                 if(Username.equals("Michael") && Password.equals("123"))
                 {
                     JOptionPane.showMessageDialog(null, "Login Successful");
+                    new HomePage();
+                    loginFrame.dispose();
                 }
                 else
                 {
@@ -98,6 +115,63 @@ public class LoginPage extends JFrame{
                 }
 
             }
+        }
+
+    }
+
+    private class ListenForMouse implements MouseListener
+    {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            JLabel newUsernameLabel, newPasswordLabel;
+            JTextField newUsernameTextField, newPasswordTextField;
+
+            JFrame newAccountFrame = new JFrame();
+
+
+            newAccountFrame.setLocationRelativeTo(null);
+            newAccountFrame.setTitle("NewAccountPage");
+
+            JPanel newAccountPanel = new JPanel();
+            newAccountPanel.setLayout(new GridBagLayout());
+
+            newUsernameLabel = new JLabel("Username:");
+            addComp(newAccountPanel, newUsernameLabel, 0, 0, 1,1,GridBagConstraints.WEST,GridBagConstraints.NONE);
+            newUsernameTextField = new JTextField(30);
+            addComp(newAccountPanel, newUsernameTextField, 1, 0, 2,1,GridBagConstraints.EAST,GridBagConstraints.NONE);
+
+            newPasswordLabel =  new JLabel("Password:");
+            addComp(newAccountPanel, newPasswordLabel, 0, 1, 1,1,GridBagConstraints.WEST,GridBagConstraints.NONE);
+            newPasswordTextField = new JTextField(30);
+            addComp(newAccountPanel, newPasswordTextField, 1, 1, 1,1,GridBagConstraints.EAST,GridBagConstraints.NONE);
+
+
+            newAccountFrame.add(newAccountPanel);
+            newAccountFrame.pack();
+            newAccountFrame.setVisible(true);
+
+
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+
         }
 
     }
