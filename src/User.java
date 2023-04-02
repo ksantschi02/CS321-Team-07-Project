@@ -112,6 +112,23 @@ public class User {
     }
 
     /*
+     * get a collection from this user
+     */
+
+    public Collection getCollection(String id) {
+        Collection collection = new Collection(0, null);
+
+        for (Collection c : this.collections) {
+            if (c.getTitle().equals(id)) {
+                collection = c;
+                break;
+            }
+        }
+
+        return collection;
+    }
+
+    /*
      * Delete collection
      */
     public boolean deleteCollection(String id) {

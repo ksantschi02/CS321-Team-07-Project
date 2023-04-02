@@ -1,4 +1,4 @@
-public class Admin extends User{
+public class Admin extends User {
     private boolean admin;
 
     /*
