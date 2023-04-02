@@ -17,7 +17,7 @@ public class Game {
     private String genre;   //game genre from XML database
     private String description;  //game description from XML database
     private String image;   //game image from XML database, really the path to the image
-    ArrayList<Review> reviews = new ArrayList<Review>();  //review list for the game
+    private ArrayList<Review> reviews = new ArrayList<Review>();  //review list for the game
 
     /**
      * Game constructor that constructs a game with the given attributes

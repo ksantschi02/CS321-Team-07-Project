@@ -82,30 +82,37 @@ public class Collection {
 
         for (Game g: games)
         {
-            if(g.getTitle().contains(some_game))
+            if(g.getTitle().equals(some_game))
             {
                 temp.add(g);
             }
 
+
+
         }
         return temp;
-
-        //for (Game g : )
     }
+
 
     /**
      *
      */
-    public void save()  //????????????
-    {
-        /*
-        Write Collection information to file
 
+//    public void save()  //????????????
+//    {
+//
+//        /*
+//        Write Collection information to file
+//
+//
+//
+//
+//         */
+//
+//
+//
+//    }
 
-
-
-         */
-    }
 
     /**
      * getTitle returns the title of the user's collection
