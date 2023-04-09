@@ -19,12 +19,27 @@ public class HomePage extends JFrame
     private static final int FRAME_WIDTH = 500;
     private static final int FRAME_HEIGHT = 300;
 
+    JButton filterButton, saveButton, logoutButton, searchButton;
+
+    JTextField searchTextField;
+
+    JFrame homeFrame = new JFrame();
+
+    Game cool = new Game(12, 5, 10, 10, 30, 7, 7.5, "Cool Game", "Action", "Is cool", "https://cf.geekdo-images.com/DCLgJlrvB-EqL6A3WgQLMQ__original/img/vGpYcxjDBCOVcI0BcWOevspTQMQ=/0x0/filters:format(jpeg)/pic5715770.jpg");
+    Game cool1 = new Game(12, 5, 10, 10, 30, 7, 7.5, "Cool Game", "Action", "Is cool", "https://cf.geekdo-images.com/DCLgJlrvB-EqL6A3WgQLMQ__original/img/vGpYcxjDBCOVcI0BcWOevspTQMQ=/0x0/filters:format(jpeg)/pic5715770.jpg");
+    Game cool2 = new Game(12, 5, 10, 10, 30, 7, 7.5, "Cool Game", "Action", "Is cool", "https://cf.geekdo-images.com/DCLgJlrvB-EqL6A3WgQLMQ__original/img/vGpYcxjDBCOVcI0BcWOevspTQMQ=/0x0/filters:format(jpeg)/pic5715770.jpg");
+    Game[] coolGames = {cool, cool1, cool2};
 
 
+    Collection col1 = new Collection(1,"Rad");
+    Collection col2 = new Collection(2, "Bad");
+    Collection[] colCol = {col1, col2};
+
+    String collectionNames[] = new String[colCol.length];
 
     public HomePage()
     {
-        JFrame homeFrame = new JFrame();
+
         //loginFrame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
         homeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         homeFrame.setLocationRelativeTo(null);
@@ -39,10 +54,6 @@ public class HomePage extends JFrame
         homePanel.setLayout(new GridBagLayout());
 
         //setting up panel for search bar and filter
-
-        JButton filterButton, saveButton, logoutButton, searchButton;
-
-        JTextField searchTextField;
 
         JPanel searchPanel = new JPanel();
 
@@ -59,24 +70,22 @@ public class HomePage extends JFrame
 
         logoutButton = new JButton("Logout");
         searchPanel.add(logoutButton);
+        HomePage.ListenForButton lForButton = new HomePage.ListenForButton();
+        logoutButton.addActionListener(lForButton);
 
         saveButton = new JButton("Save");
         searchPanel.add(saveButton);
 
         //importing games
 
-        Game cool = new Game(12, 5, 10, 10, 30, 7, 7.5, "Cool Game", "Action", "Is cool", "https://cf.geekdo-images.com/DCLgJlrvB-EqL6A3WgQLMQ__original/img/vGpYcxjDBCOVcI0BcWOevspTQMQ=/0x0/filters:format(jpeg)/pic5715770.jpg");
-        Game cool1 = new Game(12, 5, 10, 10, 30, 7, 7.5, "Cool Game", "Action", "Is cool", "https://cf.geekdo-images.com/DCLgJlrvB-EqL6A3WgQLMQ__original/img/vGpYcxjDBCOVcI0BcWOevspTQMQ=/0x0/filters:format(jpeg)/pic5715770.jpg");
-        Game cool2 = new Game(12, 5, 10, 10, 30, 7, 7.5, "Cool Game", "Action", "Is cool", "https://cf.geekdo-images.com/DCLgJlrvB-EqL6A3WgQLMQ__original/img/vGpYcxjDBCOVcI0BcWOevspTQMQ=/0x0/filters:format(jpeg)/pic5715770.jpg");
-        Game[] coolGames = {cool, cool1, cool2};
-        JScrollPane gameScroll = createGameScrollPane(coolGames);
+
+
 
         //importing collections
 
-        Collection col1 = new Collection(1,"Rad");
-        Collection col2 = new Collection(2, "Bad");
-        Collection[] colCol = {col1, col2};
+
         JScrollPane collectionScroll = createCollectionScrollPane(colCol);
+        JScrollPane gameScroll = createGameScrollPane(coolGames);
 
 
         //putting all of them together
@@ -169,6 +178,8 @@ public class HomePage extends JFrame
     private JPanel createGame(String title, String imageUrl, int minPlayerCount, int maxPlayerCount, int minPlaytime, int maxPlaytime, int minAge, double avgRating, String genre, String description, ArrayList<Review> reviews)
     {
         JLabel genreLabel, playerCountLabel, nameLabel, imageLabel, playtimeLabel, ageLabel, ratingLabel;
+        JButton addButton;
+        JComboBox collectionsComboBox;
         BufferedImage gameImage = null;
 
         JPanel gamePanel = new JPanel();
@@ -179,9 +190,41 @@ public class HomePage extends JFrame
         nameLabel = new JLabel("Name: " + title);
         genreLabel = new JLabel("Genre: " + genre);
         playerCountLabel = new JLabel("PlayerCount: " + minPlayerCount + " - " + maxPlayerCount);
-        playtimeLabel = new JLabel("Playtime: " + minPlaytime + "mins - " + maxPlaytime + "mins");
+        playtimeLabel = new JLabel("Playtime: " + minPlaytime + " - " + maxPlaytime + " (mins)");
         ageLabel = new JLabel("Age: " + minAge + "+");
         ratingLabel = new JLabel("Avg Rating: " + avgRating + "/10");
+        addButton = new JButton("Add to Collection");
+
+        for(int i = 0; i < colCol.length; i++)
+        {
+            collectionNames[i] = colCol[i].getTitle();
+        }
+
+        collectionsComboBox = new JComboBox(collectionNames);
+
+
+        class ListenForGameButton implements ActionListener
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                if (e.getSource() == addButton)
+                {
+                    collectionsComboBox.removeAllItems();
+                    for(int i = 0; i < colCol.length; i++)
+                    {
+                        collectionsComboBox.addItem(collectionNames[i]);
+                    }
+                    gamePanel.revalidate();
+                }
+                if (e.getSource() == collectionsComboBox)
+                {
+
+                }
+            }
+        }
+
+        ListenForGameButton lForButton = new ListenForGameButton();
+        addButton.addActionListener(lForButton);
 
         infoBox.add(nameLabel);
         infoBox.add(Box.createVerticalStrut(1));
@@ -195,7 +238,10 @@ public class HomePage extends JFrame
         infoBox.add(Box.createVerticalStrut(1));
         infoBox.add(ratingLabel);
 
-        addComp(gamePanel, infoBox, 2, 0, 1, 1, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE);
+
+        addComp(gamePanel, infoBox, 1, 0, 1, 1, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE);
+        addComp(gamePanel, addButton, 1, 1, 1, 1, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE);
+        addComp(gamePanel, collectionsComboBox, 2, 1, 1, 1, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE);
 
         try{
             URL url = new URL(imageUrl);
@@ -208,7 +254,7 @@ public class HomePage extends JFrame
         Image newGameImg = gameImage.getScaledInstance(140,140, Image.SCALE_SMOOTH);
         ImageIcon gameIcon = new ImageIcon(newGameImg);
         imageLabel = new JLabel(gameIcon);
-        addComp(gamePanel, imageLabel, 0, 0, 2, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+        addComp(gamePanel, imageLabel, 0, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
 
         Border gameBorder = BorderFactory.createLineBorder(Color.black);
         gamePanel.setBorder(gameBorder);
@@ -245,14 +291,28 @@ public class HomePage extends JFrame
         class ListenForMouse extends MouseAdapter {
 
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseClicked(MouseEvent e)
+            {
                 String collectionName = JOptionPane.showInputDialog("New Name Here");
-                collectionTitle.setText(collectionName);
+                System.out.println("Collection: " + collectionName);
+                //DO NOT NAME AS " ", WILL BREAK PROGRAM
+                if(collectionName != " " && collectionName != null)
+                {
+                    collectionTitle.setText(collectionName);
+                }
+                else
+                {
+                    collectionTitle.setText("empty");
+                }
+
+
+
+
 
             }
         }
 
-        addComp(collectionPanel, collectionTitle, 1, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
+        addComp(collectionPanel, collectionTitle, 1, 0, 1, 1, GridBagConstraints.NORTH, GridBagConstraints.NONE);
         ListenForMouse lForMouse = new ListenForMouse();
         collectionTitle.addMouseListener(lForMouse);
 
@@ -275,6 +335,35 @@ public class HomePage extends JFrame
         collectionScroll.setPreferredSize(new Dimension(200, 220));
         
         return collectionScroll;
+    }
+
+    private class ListenForButton implements ActionListener
+    {
+
+        public void actionPerformed(ActionEvent e)
+        {
+            if (e.getSource() == logoutButton)
+            {
+               int answer = JOptionPane.showConfirmDialog(null, "Are you sure?");
+               if(answer == JOptionPane.YES_OPTION)
+               {
+                   homeFrame.dispose();
+               }
+            }
+            if (e.getSource() == filterButton)
+            {
+
+            }
+            if (e.getSource() == searchButton)
+            {
+
+            }
+            if (e.getSource() == saveButton)
+            {
+
+            }
+        }
+
     }
     
 
