@@ -120,7 +120,7 @@ public class Collection {
      */
     public String getTitle()
     {
-        return this.title;
+        return title;
     }
 
     /**

@@ -8,7 +8,7 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.nio.Buffer;
-import java.util.Collection;
+
 import javax.swing.border.*;
 import java.util.ArrayList;
 
@@ -71,16 +71,13 @@ public class HomePage extends JFrame
         Game[] coolGames = {cool, cool1, cool2};
         JScrollPane gameScroll = createGameScrollPane(coolGames);
 
-        //setting up panel for each individual collection
+        //importing collections
 
-        JPanel collectionPanel = createCollection();
+        Collection col1 = new Collection(1,"Rad");
+        Collection col2 = new Collection(2, "Bad");
+        Collection[] colCol = {col1, col2};
+        JScrollPane collectionScroll = createCollectionScrollPane(colCol);
 
-        //setting up panel for each collection and scroll bar
-
-        Box collectionBox = Box.createVerticalBox();
-        collectionBox.add(collectionPanel);
-        JScrollPane collectionScroll = new JScrollPane(collectionBox, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        collectionScroll.setPreferredSize(new Dimension(200, 200));
 
         //putting all of them together
 
@@ -117,7 +114,7 @@ public class HomePage extends JFrame
 
     }
 
-    //base constructor
+    //base constructor (used to test things)
     private JPanel createGame()
     {
         JLabel genreLabel, playerCountLabel, nameLabel, imageLabel, playtimeLabel, ageLabel, avgRating;
@@ -237,14 +234,14 @@ public class HomePage extends JFrame
     }
 
     //constructor for collection
-    private JPanel createCollection()
+    private JPanel createCollection(String title)
     {
 
         JPanel collectionPanel = new JPanel();
         collectionPanel.setLayout(new GridBagLayout());
         JLabel collectionTitle;
 
-        collectionTitle = new JLabel("Collection");
+        collectionTitle = new JLabel(title);
         class ListenForMouse extends MouseAdapter {
 
             @Override
@@ -264,6 +261,22 @@ public class HomePage extends JFrame
 
         return collectionPanel;
     }
+
+    private JScrollPane createCollectionScrollPane(Collection[] collections)
+    {
+        Box collectionBox = Box.createVerticalBox();
+        
+        for(int i = 0; i < collections.length; i++) 
+        {
+            collectionBox.add(createCollection(collections[i].getTitle()));
+        }
+        
+        JScrollPane collectionScroll = new JScrollPane(collectionBox, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        collectionScroll.setPreferredSize(new Dimension(200, 220));
+        
+        return collectionScroll;
+    }
+    
 
 
 
