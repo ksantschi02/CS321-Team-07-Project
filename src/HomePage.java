@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.Buffer;
 import java.util.Collection;
 import javax.swing.border.*;
+import java.util.ArrayList;
 
 
 public class HomePage extends JFrame
@@ -62,19 +63,13 @@ public class HomePage extends JFrame
         saveButton = new JButton("Save");
         searchPanel.add(saveButton);
 
-        //setting up panel for each individual game
+        //importing games
 
-        JPanel gamePanel = createGame();
-        JPanel gamePanel2 = createGame();
-
-        //setting up panel for all the games with a scroll bar
-
-        Box gameBox = Box.createVerticalBox();
-        gameBox.add(gamePanel);
-        gameBox.add(Box.createVerticalStrut(2));
-        gameBox.add(gamePanel2);
-        JScrollPane gameScroll = new JScrollPane(gameBox, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        gameScroll.setPreferredSize(new Dimension(300, 200));
+        Game cool = new Game(12, 5, 10, 10, 30, 7, 7.5, "Cool Game", "Action", "Is cool", "https://cf.geekdo-images.com/DCLgJlrvB-EqL6A3WgQLMQ__original/img/vGpYcxjDBCOVcI0BcWOevspTQMQ=/0x0/filters:format(jpeg)/pic5715770.jpg");
+        Game cool1 = new Game(12, 5, 10, 10, 30, 7, 7.5, "Cool Game", "Action", "Is cool", "https://cf.geekdo-images.com/DCLgJlrvB-EqL6A3WgQLMQ__original/img/vGpYcxjDBCOVcI0BcWOevspTQMQ=/0x0/filters:format(jpeg)/pic5715770.jpg");
+        Game cool2 = new Game(12, 5, 10, 10, 30, 7, 7.5, "Cool Game", "Action", "Is cool", "https://cf.geekdo-images.com/DCLgJlrvB-EqL6A3WgQLMQ__original/img/vGpYcxjDBCOVcI0BcWOevspTQMQ=/0x0/filters:format(jpeg)/pic5715770.jpg");
+        Game[] coolGames = {cool, cool1, cool2};
+        JScrollPane gameScroll = createGameScrollPane(coolGames);
 
         //setting up panel for each individual collection
 
@@ -85,7 +80,7 @@ public class HomePage extends JFrame
         Box collectionBox = Box.createVerticalBox();
         collectionBox.add(collectionPanel);
         JScrollPane collectionScroll = new JScrollPane(collectionBox, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        collectionScroll.setPreferredSize(new Dimension(250, 200));
+        collectionScroll.setPreferredSize(new Dimension(200, 200));
 
         //putting all of them together
 
@@ -125,20 +120,34 @@ public class HomePage extends JFrame
     //base constructor
     private JPanel createGame()
     {
-        JLabel genreLabel, playerCountLabel, nameLabel, imageLabel;
+        JLabel genreLabel, playerCountLabel, nameLabel, imageLabel, playtimeLabel, ageLabel, avgRating;
         BufferedImage gameImage = null;
 
         JPanel gamePanel = new JPanel();
         gamePanel.setLayout(new GridBagLayout());
 
-        genreLabel = new JLabel("Genre:");
-        addComp(gamePanel, genreLabel, 3, 0, 1, 1, GridBagConstraints.SOUTHWEST, GridBagConstraints.NONE);
+        Box infoBox = Box.createVerticalBox();
 
-        playerCountLabel = new JLabel("Count:");
-        addComp(gamePanel, playerCountLabel, 2, 0, 1, 1, GridBagConstraints.SOUTHWEST, GridBagConstraints.NONE);
+        nameLabel = new JLabel("Name: Creatures of the Deep");
+        genreLabel = new JLabel("Genre: Action");
+        playerCountLabel = new JLabel("PlayerCount: 5 - 10");
+        playtimeLabel = new JLabel("Playtime: 10mins - 1hr");
+        ageLabel = new JLabel("Age: 10 - 30+");
+        avgRating = new JLabel("Avg Rating: 7.4/10");
 
-        nameLabel = new JLabel("Name:");
-        addComp(gamePanel, nameLabel, 2, 0, 1, 1, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE);
+        infoBox.add(nameLabel);
+        infoBox.add(Box.createVerticalStrut(1));
+        infoBox.add(genreLabel);
+        infoBox.add(Box.createVerticalStrut(1));
+        infoBox.add(playerCountLabel);
+        infoBox.add(Box.createVerticalStrut(1));
+        infoBox.add(playtimeLabel);
+        infoBox.add(Box.createVerticalStrut(1));
+        infoBox.add(ageLabel);
+        infoBox.add(Box.createVerticalStrut(1));
+        infoBox.add(avgRating);
+
+        addComp(gamePanel, infoBox, 2, 0, 1, 1, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE);
 
         try{
             URL url = new URL("https://cf.geekdo-images.com/DCLgJlrvB-EqL6A3WgQLMQ__original/img/vGpYcxjDBCOVcI0BcWOevspTQMQ=/0x0/filters:format(jpeg)/pic5715770.jpg");
@@ -148,7 +157,7 @@ public class HomePage extends JFrame
         {
             e.printStackTrace();
         }
-        Image newGameImg = gameImage.getScaledInstance(120,120, Image.SCALE_SMOOTH);
+        Image newGameImg = gameImage.getScaledInstance(140,140, Image.SCALE_SMOOTH);
         ImageIcon gameIcon = new ImageIcon(newGameImg);
         imageLabel = new JLabel(gameIcon);
         addComp(gamePanel, imageLabel, 0, 0, 2, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
@@ -160,22 +169,36 @@ public class HomePage extends JFrame
     }
 
     //constructor with parameters
-    private JPanel createGame(String Name, String imageUrl, Integer minPlayerCount, Integer minAge, Double avgRating, String genre, String description)
+    private JPanel createGame(String title, String imageUrl, int minPlayerCount, int maxPlayerCount, int minPlaytime, int maxPlaytime, int minAge, double avgRating, String genre, String description, ArrayList<Review> reviews)
     {
-        JLabel genreLabel, playerCountLabel, nameLabel, imageLabel;
+        JLabel genreLabel, playerCountLabel, nameLabel, imageLabel, playtimeLabel, ageLabel, ratingLabel;
         BufferedImage gameImage = null;
 
         JPanel gamePanel = new JPanel();
         gamePanel.setLayout(new GridBagLayout());
 
+        Box infoBox = Box.createVerticalBox();
+
+        nameLabel = new JLabel("Name: " + title);
         genreLabel = new JLabel("Genre: " + genre);
-        addComp(gamePanel, genreLabel, 3, 0, 1, 1, GridBagConstraints.SOUTHWEST, GridBagConstraints.NONE);
+        playerCountLabel = new JLabel("PlayerCount: " + minPlayerCount + " - " + maxPlayerCount);
+        playtimeLabel = new JLabel("Playtime: " + minPlaytime + "mins - " + maxPlaytime + "mins");
+        ageLabel = new JLabel("Age: " + minAge + "+");
+        ratingLabel = new JLabel("Avg Rating: " + avgRating + "/10");
 
-        playerCountLabel = new JLabel("Count:");
-        addComp(gamePanel, playerCountLabel, 2, 0, 1, 1, GridBagConstraints.SOUTHWEST, GridBagConstraints.NONE);
+        infoBox.add(nameLabel);
+        infoBox.add(Box.createVerticalStrut(1));
+        infoBox.add(genreLabel);
+        infoBox.add(Box.createVerticalStrut(1));
+        infoBox.add(playerCountLabel);
+        infoBox.add(Box.createVerticalStrut(1));
+        infoBox.add(playtimeLabel);
+        infoBox.add(Box.createVerticalStrut(1));
+        infoBox.add(ageLabel);
+        infoBox.add(Box.createVerticalStrut(1));
+        infoBox.add(ratingLabel);
 
-        nameLabel = new JLabel("Name: " + Name);
-        addComp(gamePanel, nameLabel, 2, 0, 1, 1, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE);
+        addComp(gamePanel, infoBox, 2, 0, 1, 1, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE);
 
         try{
             URL url = new URL(imageUrl);
@@ -185,13 +208,32 @@ public class HomePage extends JFrame
         {
             e.printStackTrace();
         }
-        Image newGameImg = gameImage.getScaledInstance(120,120, Image.SCALE_SMOOTH);
+        Image newGameImg = gameImage.getScaledInstance(140,140, Image.SCALE_SMOOTH);
         ImageIcon gameIcon = new ImageIcon(newGameImg);
         imageLabel = new JLabel(gameIcon);
         addComp(gamePanel, imageLabel, 0, 0, 2, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
 
+        Border gameBorder = BorderFactory.createLineBorder(Color.black);
+        gamePanel.setBorder(gameBorder);
+
         return gamePanel;
 
+    }
+
+    //dynamically createsGameScrollPane from array
+    private JScrollPane createGameScrollPane(Game[] games)
+    {
+        Box gameBox = Box.createVerticalBox();
+        for(int i = 0; i < games.length; i++)
+        {
+            gameBox.add(createGame(games[i].getTitle(), games[i].getImage(), games[i].getMinPlayers(), games[i].getMaxPlayers(), games[i].getMinPlaytime(), games[i].getMaxPlaytime(), games[i].getMinAge(), games[i].getAvgRating(), games[i].getGenre(), games[i].getDescription(), games[i].getReviews()));
+            gameBox.add(Box.createVerticalStrut(2));
+        }
+
+        JScrollPane gameScrollPane = new JScrollPane(gameBox, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        gameScrollPane.setPreferredSize(new Dimension(400, 220));
+
+        return gameScrollPane;
     }
 
     //constructor for collection

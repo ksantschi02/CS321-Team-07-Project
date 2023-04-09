@@ -144,5 +144,11 @@ public class Game {
         return image;
     }
 
+    public int getMinPlaytime() {return minPlaytime;}
+
+    public int getMaxPlaytime() {return maxPlaytime;}
+
+    public ArrayList<Review> getReviews() {return reviews;}
+
 }
 
