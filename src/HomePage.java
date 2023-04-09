@@ -289,7 +289,7 @@ public class HomePage extends JFrame
         JButton collectionButton;
 
         collectionTitle = new JLabel(title);
-        collectionTitle.setFont(new Font("Serif", Font.PLAIN, 20));
+        collectionTitle.setFont(new Font("Ariel", Font.PLAIN, 20));
 
         collectionButton = new JButton("Go To Collection");
 
@@ -299,7 +299,7 @@ public class HomePage extends JFrame
             {
                 if (e.getSource() == collectionButton)
                 {
-                   new CollectionPage(coolGames);
+                   new CollectionPage(coolGames, collectionTitle.getText());
                 }
             }
         }

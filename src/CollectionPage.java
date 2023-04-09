@@ -13,17 +13,16 @@ public class CollectionPage extends JPanel
 {
 
 
-    JButton filterButton, saveButton, logoutButton, searchButton;
-
+    JButton filterButton, saveButton, backButton, searchButton;
     JTextField searchTextField;
     JFrame collectionFrame;
-    public CollectionPage(Game[] games)
+    public CollectionPage(Game[] games, String title)
     {
         collectionFrame = new JFrame();
 
-        collectionFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        collectionFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         collectionFrame.setLocationRelativeTo(null);
-        collectionFrame.setTitle("CollectionPage");
+        collectionFrame.setTitle(title);
 
         JPanel collectionPanel = new JPanel();
 
@@ -44,10 +43,10 @@ public class CollectionPage extends JPanel
         searchButton = new JButton("Search");
         searchPanel.add(searchButton);
 
-        logoutButton = new JButton("Logout");
-        searchPanel.add(logoutButton);
+        backButton = new JButton("Back to Main Menu");
+        searchPanel.add(backButton);
         CollectionPage.ListenForButton lForButton = new CollectionPage.ListenForButton();
-        logoutButton.addActionListener(lForButton);
+        backButton.addActionListener(lForButton);
 
         saveButton = new JButton("Save");
         searchPanel.add(saveButton);
@@ -64,7 +63,7 @@ public class CollectionPage extends JPanel
 
         addComp(collectionPanel, searchPanel, 0, 0, 8, 2, GridBagConstraints.NORTH, GridBagConstraints.NONE);
 
-        addComp(collectionPanel, gameScroll, 0, 2, 4, 2, GridBagConstraints.SOUTHWEST, GridBagConstraints.NONE);
+        addComp(collectionPanel, gameScroll, 0, 2, 4, 2, GridBagConstraints.SOUTH, GridBagConstraints.NONE);
 
 
 
@@ -110,7 +109,6 @@ public class CollectionPage extends JPanel
         playtimeLabel = new JLabel("Playtime: " + minPlaytime + " - " + maxPlaytime + " (mins)");
         ageLabel = new JLabel("Age: " + minAge + "+");
         ratingLabel = new JLabel("Avg Rating: " + avgRating + "/10");
-        addButton = new JButton("Add to Collection");
 
 
 
@@ -118,15 +116,12 @@ public class CollectionPage extends JPanel
         {
             public void actionPerformed(ActionEvent e)
             {
-                if (e.getSource() == addButton)
-                {
 
-                }
             }
         }
 
         ListenForGameButton lForButton = new ListenForGameButton();
-        addButton.addActionListener(lForButton);
+
 
         infoBox.add(nameLabel);
         infoBox.add(Box.createVerticalStrut(1));
@@ -142,7 +137,7 @@ public class CollectionPage extends JPanel
 
 
         addComp(gamePanel, infoBox, 1, 0, 1, 1, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE);
-        addComp(gamePanel, addButton, 1, 1, 1, 1, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE);
+
 
         try{
             URL url = new URL(imageUrl);
@@ -185,13 +180,11 @@ public class CollectionPage extends JPanel
 
         public void actionPerformed(ActionEvent e)
         {
-            if (e.getSource() == logoutButton)
+            if (e.getSource() == backButton)
             {
-                int answer = JOptionPane.showConfirmDialog(null, "Are you sure?");
-                if(answer == JOptionPane.YES_OPTION)
-                {
-                    collectionFrame.dispose();
-                }
+
+                collectionFrame.dispose();
+
             }
             if (e.getSource() == filterButton)
             {
