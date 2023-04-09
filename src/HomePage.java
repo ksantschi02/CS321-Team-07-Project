@@ -105,7 +105,7 @@ public class HomePage extends JFrame
         homeFrame.setVisible(true);
     }
 
-    private void addComp(JPanel thePanel, JComponent comp, int xPos, int yPos, int compWidth, int compHeight, int place, int stretch)
+    public void addComp(JPanel thePanel, JComponent comp, int xPos, int yPos, int compWidth, int compHeight, int place, int stretch)
     {
         GridBagConstraints gridConstraints = new GridBagConstraints();
 
@@ -175,7 +175,7 @@ public class HomePage extends JFrame
     }
 
     //constructor with parameters
-    private JPanel createGame(String title, String imageUrl, int minPlayerCount, int maxPlayerCount, int minPlaytime, int maxPlaytime, int minAge, double avgRating, String genre, String description, ArrayList<Review> reviews)
+    public JPanel createGame(String title, String imageUrl, int minPlayerCount, int maxPlayerCount, int minPlaytime, int maxPlaytime, int minAge, double avgRating, String genre, String description, ArrayList<Review> reviews)
     {
         JLabel genreLabel, playerCountLabel, nameLabel, imageLabel, playtimeLabel, ageLabel, ratingLabel;
         JButton addButton;
@@ -264,7 +264,7 @@ public class HomePage extends JFrame
     }
 
     //dynamically createsGameScrollPane from array
-    private JScrollPane createGameScrollPane(Game[] games)
+    public JScrollPane createGameScrollPane(Game[] games)
     {
         Box gameBox = Box.createVerticalBox();
         for(int i = 0; i < games.length; i++)
@@ -286,8 +286,27 @@ public class HomePage extends JFrame
         JPanel collectionPanel = new JPanel();
         collectionPanel.setLayout(new GridBagLayout());
         JLabel collectionTitle;
+        JButton collectionButton;
 
         collectionTitle = new JLabel(title);
+        collectionTitle.setFont(new Font("Serif", Font.PLAIN, 20));
+
+        collectionButton = new JButton("Go To Collection");
+
+        class ListenForCollectionButton implements ActionListener
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                if (e.getSource() == collectionButton)
+                {
+                   new CollectionPage(coolGames);
+                }
+            }
+        }
+
+        ListenForCollectionButton lForButton = new ListenForCollectionButton();
+        collectionButton.addActionListener(lForButton);
+
         class ListenForMouse extends MouseAdapter {
 
             @Override
@@ -304,15 +323,11 @@ public class HomePage extends JFrame
                 {
                     collectionTitle.setText("empty");
                 }
-
-
-
-
-
             }
         }
 
         addComp(collectionPanel, collectionTitle, 1, 0, 1, 1, GridBagConstraints.NORTH, GridBagConstraints.NONE);
+        addComp(collectionPanel, collectionButton, 1, 0, 5, 4, GridBagConstraints.CENTER, GridBagConstraints.NONE);
         ListenForMouse lForMouse = new ListenForMouse();
         collectionTitle.addMouseListener(lForMouse);
 
@@ -322,7 +337,7 @@ public class HomePage extends JFrame
         return collectionPanel;
     }
 
-    private JScrollPane createCollectionScrollPane(Collection[] collections)
+    public JScrollPane createCollectionScrollPane(Collection[] collections)
     {
         Box collectionBox = Box.createVerticalBox();
         
@@ -337,7 +352,7 @@ public class HomePage extends JFrame
         return collectionScroll;
     }
 
-    private class ListenForButton implements ActionListener
+    public class ListenForButton implements ActionListener
     {
 
         public void actionPerformed(ActionEvent e)
