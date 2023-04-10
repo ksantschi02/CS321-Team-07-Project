@@ -11,6 +11,7 @@ import java.nio.Buffer;
 
 import javax.swing.border.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class HomePage extends JFrame
@@ -25,17 +26,35 @@ public class HomePage extends JFrame
 
     JFrame homeFrame = new JFrame();
 
-    Game cool = new Game(12, 5, 10, 10, 30, 7, 7.5, "Cool Game", "Action", "Is cool", "https://cf.geekdo-images.com/DCLgJlrvB-EqL6A3WgQLMQ__original/img/vGpYcxjDBCOVcI0BcWOevspTQMQ=/0x0/filters:format(jpeg)/pic5715770.jpg");
-    Game cool1 = new Game(12, 5, 10, 10, 30, 7, 7.5, "Cool Game", "Action", "Is cool", "https://cf.geekdo-images.com/DCLgJlrvB-EqL6A3WgQLMQ__original/img/vGpYcxjDBCOVcI0BcWOevspTQMQ=/0x0/filters:format(jpeg)/pic5715770.jpg");
-    Game cool2 = new Game(12, 5, 10, 10, 30, 7, 7.5, "Cool Game", "Action", "Is cool", "https://cf.geekdo-images.com/DCLgJlrvB-EqL6A3WgQLMQ__original/img/vGpYcxjDBCOVcI0BcWOevspTQMQ=/0x0/filters:format(jpeg)/pic5715770.jpg");
+    User Jim = new User("CoolGuy47", "1234");
+
+    Review rev1 = new Review(7.5,"Hey guys its me JimtheDiscordUser and I LOVE this board game man. It's crazy, it's like the coolest board ever made. They have some much killing which is probably the only reason why board games should be made.", Jim);
+    Review rev2 = new Review(2,"This game kinda sucks now.", Jim);
+    ArrayList<Review> userReviews = new ArrayList<>(Arrays.asList(rev1, rev2));
+
+
+
+    Game cool = new Game(12, 5, 10, 10, 30, 7, 7.5, "Cool Game", "Action", "Is cool", "https://cf.geekdo-images.com/DCLgJlrvB-EqL6A3WgQLMQ__original/img/vGpYcxjDBCOVcI0BcWOevspTQMQ=/0x0/filters:format(jpeg)/pic5715770.jpg", userReviews);
+    Game cool1 = new Game(12, 5, 10, 10, 30, 7, 7.5, "Cool Game", "Action", "Is cool", "https://cf.geekdo-images.com/DCLgJlrvB-EqL6A3WgQLMQ__original/img/vGpYcxjDBCOVcI0BcWOevspTQMQ=/0x0/filters:format(jpeg)/pic5715770.jpg", userReviews);
+    Game cool2 = new Game(12, 5, 10, 10, 30, 7, 7.5, "Cool Game", "Action", "Is cool", "https://cf.geekdo-images.com/DCLgJlrvB-EqL6A3WgQLMQ__original/img/vGpYcxjDBCOVcI0BcWOevspTQMQ=/0x0/filters:format(jpeg)/pic5715770.jpg", userReviews);
     Game[] coolGames = {cool, cool1, cool2};
 
 
     Collection col1 = new Collection(1,"Rad");
     Collection col2 = new Collection(2, "Bad");
-    Collection[] colCol = {col1, col2};
+    Collection col3 = new Collection(2, "Mad");
+    Collection col4 = new Collection(2, "Lad");
+    Collection col5 = new Collection(2, "Iad");
+    Collection col6 = new Collection(1,"Rad");
+    Collection col7 = new Collection(2, "Bad");
+    Collection col8 = new Collection(2, "Mad");
+    Collection[] collections = {col1, col2, col3, col4, col5, col6, col7};
 
-    String collectionNames[] = new String[colCol.length];
+
+
+    String collectionNames[] = new String[collections.length];
+
+
 
     public HomePage()
     {
@@ -46,6 +65,10 @@ public class HomePage extends JFrame
         homeFrame.setTitle("HomePage");
 
         homeFrame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
+
+
+
+
 
         //setting up the panel for the ENTIRE screen
 
@@ -76,15 +99,9 @@ public class HomePage extends JFrame
         saveButton = new JButton("Save");
         searchPanel.add(saveButton);
 
-        //importing games
+        //importing both
 
-
-
-
-        //importing collections
-
-
-        JScrollPane collectionScroll = createCollectionScrollPane(colCol);
+        JScrollPane collectionScroll = createCollectionScrollPane(collections);
         JScrollPane gameScroll = createGameScrollPane(coolGames);
 
 
@@ -178,7 +195,7 @@ public class HomePage extends JFrame
     public JPanel createGame(String title, String imageUrl, int minPlayerCount, int maxPlayerCount, int minPlaytime, int maxPlaytime, int minAge, double avgRating, String genre, String description, ArrayList<Review> reviews)
     {
         JLabel genreLabel, playerCountLabel, nameLabel, imageLabel, playtimeLabel, ageLabel, ratingLabel;
-        JButton addButton;
+        JButton addButton, seeMoreButton;
         JComboBox collectionsComboBox;
         BufferedImage gameImage = null;
 
@@ -186,6 +203,7 @@ public class HomePage extends JFrame
         gamePanel.setLayout(new GridBagLayout());
 
         Box infoBox = Box.createVerticalBox();
+        Box buttonBox = Box.createHorizontalBox();
 
         nameLabel = new JLabel("Name: " + title);
         genreLabel = new JLabel("Genre: " + genre);
@@ -193,11 +211,12 @@ public class HomePage extends JFrame
         playtimeLabel = new JLabel("Playtime: " + minPlaytime + " - " + maxPlaytime + " (mins)");
         ageLabel = new JLabel("Age: " + minAge + "+");
         ratingLabel = new JLabel("Avg Rating: " + avgRating + "/10");
-        addButton = new JButton("Add to Collection");
+        addButton = new JButton("Add To Collection");
+        seeMoreButton = new JButton("Info/Rate");
 
-        for(int i = 0; i < colCol.length; i++)
+        for(int i = 0; i < collections.length; i++)
         {
-            collectionNames[i] = colCol[i].getTitle();
+            collectionNames[i] = collections[i].getTitle();
         }
 
         collectionsComboBox = new JComboBox(collectionNames);
@@ -210,7 +229,7 @@ public class HomePage extends JFrame
                 if (e.getSource() == addButton)
                 {
                     collectionsComboBox.removeAllItems();
-                    for(int i = 0; i < colCol.length; i++)
+                    for(int i = 0; i < collections.length; i++)
                     {
                         collectionsComboBox.addItem(collectionNames[i]);
                     }
@@ -220,11 +239,16 @@ public class HomePage extends JFrame
                 {
 
                 }
+                if (e.getSource() == seeMoreButton)
+                {
+                    new ReviewPage(description, reviews);
+                }
             }
         }
 
         ListenForGameButton lForButton = new ListenForGameButton();
         addButton.addActionListener(lForButton);
+        seeMoreButton.addActionListener(lForButton);
 
         infoBox.add(nameLabel);
         infoBox.add(Box.createVerticalStrut(1));
@@ -238,10 +262,16 @@ public class HomePage extends JFrame
         infoBox.add(Box.createVerticalStrut(1));
         infoBox.add(ratingLabel);
 
+        buttonBox.add(addButton);
+        buttonBox.add(Box.createHorizontalStrut(5));
+        buttonBox.add(collectionsComboBox);
+        buttonBox.add(Box.createHorizontalStrut(5));
+        buttonBox.add(seeMoreButton);
 
         addComp(gamePanel, infoBox, 1, 0, 1, 1, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE);
-        addComp(gamePanel, addButton, 1, 1, 1, 1, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE);
-        addComp(gamePanel, collectionsComboBox, 2, 1, 1, 1, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE);
+        //addComp(gamePanel, seeMoreButton, 2, 0, 1, 1, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE);
+        addComp(gamePanel, buttonBox, 1, 1, 1, 1, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE);
+
 
         try{
             URL url = new URL(imageUrl);
@@ -254,7 +284,7 @@ public class HomePage extends JFrame
         Image newGameImg = gameImage.getScaledInstance(140,140, Image.SCALE_SMOOTH);
         ImageIcon gameIcon = new ImageIcon(newGameImg);
         imageLabel = new JLabel(gameIcon);
-        addComp(gamePanel, imageLabel, 0, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+        addComp(gamePanel, imageLabel, 0, 0, 1, 2, GridBagConstraints.WEST, GridBagConstraints.NONE);
 
         Border gameBorder = BorderFactory.createLineBorder(Color.black);
         gamePanel.setBorder(gameBorder);
@@ -274,7 +304,7 @@ public class HomePage extends JFrame
         }
 
         JScrollPane gameScrollPane = new JScrollPane(gameBox, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        gameScrollPane.setPreferredSize(new Dimension(400, 220));
+        gameScrollPane.setPreferredSize(new Dimension(460, 220));
 
         return gameScrollPane;
     }
@@ -289,7 +319,7 @@ public class HomePage extends JFrame
         JButton collectionButton;
 
         collectionTitle = new JLabel(title);
-        collectionTitle.setFont(new Font("Ariel", Font.PLAIN, 20));
+        collectionTitle.setFont(new Font("Ariel", Font.BOLD, 20));
 
         collectionButton = new JButton("Go To Collection");
 
@@ -312,7 +342,8 @@ public class HomePage extends JFrame
             @Override
             public void mouseClicked(MouseEvent e)
             {
-                String collectionName = JOptionPane.showInputDialog("New Name Here");
+                String collectionName = JOptionPane.showInputDialog("New Name Here", "new name");
+                String previousCollectionName = collectionTitle.getText();
                 System.out.println("Collection: " + collectionName);
                 //DO NOT NAME AS " ", WILL BREAK PROGRAM
                 if(collectionName != " " && collectionName != null)
@@ -321,15 +352,18 @@ public class HomePage extends JFrame
                 }
                 else
                 {
-                    collectionTitle.setText("empty");
+                    collectionTitle.setText(previousCollectionName);
                 }
             }
         }
 
         addComp(collectionPanel, collectionTitle, 1, 0, 1, 1, GridBagConstraints.NORTH, GridBagConstraints.NONE);
-        addComp(collectionPanel, collectionButton, 1, 0, 5, 4, GridBagConstraints.CENTER, GridBagConstraints.NONE);
+        addComp(collectionPanel, collectionButton, 1, 1, 5, 4, GridBagConstraints.CENTER, GridBagConstraints.NONE);
         ListenForMouse lForMouse = new ListenForMouse();
         collectionTitle.addMouseListener(lForMouse);
+
+        Border collectionBorder = BorderFactory.createLineBorder(Color.black);
+        collectionPanel.setBorder(collectionBorder);
 
 
 
@@ -344,10 +378,11 @@ public class HomePage extends JFrame
         for(int i = 0; i < collections.length; i++) 
         {
             collectionBox.add(createCollection(collections[i].getTitle()));
+            collectionBox.add(Box.createVerticalStrut(2));
         }
         
         JScrollPane collectionScroll = new JScrollPane(collectionBox, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        collectionScroll.setPreferredSize(new Dimension(200, 220));
+        collectionScroll.setPreferredSize(new Dimension(170, 220));
         
         return collectionScroll;
     }

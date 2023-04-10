@@ -68,7 +68,6 @@ public class CollectionPage extends JPanel
 
 
         collectionFrame.pack();
-
         collectionFrame.setVisible(true);
     }
 
@@ -150,7 +149,7 @@ public class CollectionPage extends JPanel
         Image newGameImg = gameImage.getScaledInstance(140,140, Image.SCALE_SMOOTH);
         ImageIcon gameIcon = new ImageIcon(newGameImg);
         imageLabel = new JLabel(gameIcon);
-        addComp(gamePanel, imageLabel, 0, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+        addComp(gamePanel, imageLabel, 0, 0, 1, 2, GridBagConstraints.WEST, GridBagConstraints.NONE);
 
         Border gameBorder = BorderFactory.createLineBorder(Color.black);
         gamePanel.setBorder(gameBorder);

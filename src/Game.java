@@ -34,7 +34,7 @@ public class Game {
      */
     public Game(int some_id, int some_minPlayers, int some_maxPlayers, int some_minPlaytime,
                 int some_maxPlaytime, int some_minAge, double some_avgRating, String some_title, String some_genre,
-                String some_description, String some_image)   //????? genre
+                String some_description, String some_image, ArrayList<Review> some_reviews)   //????? genre
     {
         //the following initializes the game object to that of the game that was read from the database
         this.id = some_id;
@@ -48,6 +48,7 @@ public class Game {
         this.genre = some_genre;
         this.description =some_description;
         this.image = some_image;
+        this.reviews = some_reviews;
 
 
     }
