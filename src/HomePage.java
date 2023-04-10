@@ -28,9 +28,11 @@ public class HomePage extends JFrame
 
     User Jim = new User("CoolGuy47", "1234");
 
-    Review rev1 = new Review(7.5,"Hey guys its me JimtheDiscordUser and I LOVE this board game man. It's crazy, it's like the coolest board ever made. They have some much killing which is probably the only reason why board games should be made.", Jim);
+    Review rev1 = new Review(7.5,"Hey guys its me CoolGuy and I LOVE this board game man. It's crazy, it's like the coolest board ever made. They have some much killing which is probably the only reason why board games should be made.", Jim);
     Review rev2 = new Review(2,"This game kinda sucks now.", Jim);
-    ArrayList<Review> userReviews = new ArrayList<>(Arrays.asList(rev1, rev2));
+    Review rev3 = new Review(7.5,"Hey guys its me CoolGuy and I LOVE this board game man. It's crazy, it's like the coolest board ever made. They have some much killing which is probably the only reason why board games should be made.", Jim);
+    Review rev4 = new Review(2,"This game kinda sucks now.", Jim);
+    ArrayList<Review> userReviews = new ArrayList<>(Arrays.asList(rev1, rev2, rev3, rev4));
 
 
 

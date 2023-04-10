@@ -32,6 +32,8 @@ public class ReviewPage extends JFrame
 
         JScrollPane reviewScrollPane = createReviewScrollPane(reviews);
         backButton = new JButton("Back to Main Menu");
+        ReviewPage.ListenForButton lForButton = new ReviewPage.ListenForButton();
+        backButton.addActionListener(lForButton);
 
         reviewFrame.add(reviewPanel);
 
@@ -76,16 +78,7 @@ public class ReviewPage extends JFrame
         contentArea.setLineWrap(true);
         contentArea.setSize(340, 300);
         contentArea.setWrapStyleWord(true);
-
-        class ListenForGameButton implements ActionListener
-        {
-            public void actionPerformed(ActionEvent e)
-            {
-
-            }
-        }
-
-        ListenForGameButton lForButton = new ListenForGameButton();
+        contentArea.setEditable(false);
 
         infoBox.add(authorLabel);
         infoBox.add(Box.createHorizontalStrut(20));
@@ -114,5 +107,15 @@ public class ReviewPage extends JFrame
         reviewScrollPane.setPreferredSize(new Dimension(400, 220));
 
         return reviewScrollPane;
+    }
+
+    public class ListenForButton implements ActionListener
+    {
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource() == backButton) {
+                    reviewFrame.dispose();
+            }
+
+        }
     }
 }
