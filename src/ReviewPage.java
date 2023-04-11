@@ -94,7 +94,7 @@ public class ReviewPage extends JFrame
         reviewPanel.setLayout(new GridBagLayout());
         Box infoBox = Box.createHorizontalBox();
 
-        authorLabel = new JLabel("Name: " + review.getAuthor().getUser());
+        authorLabel = new JLabel("Name: " + review.getAuthor());
         ratingLabel = new JLabel("Rating: " + review.getRating() + "/10");
         contentArea = new JTextArea(review.getContent());
         contentArea.setLineWrap(true);
