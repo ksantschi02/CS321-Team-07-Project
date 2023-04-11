@@ -1,11 +1,10 @@
 /**
- *
+ * Game class where each instance of the game represents one game from XML database of boardgames
+ * Game class methods include attribute accessors as well as the ability for users to add reviews
+ * author/programmer: Hugh Vessels
  */
 import java.util.ArrayList;
 public class Game {
-
-//need copy constructor
-
     private int id;  // game ID from XML database
     private int minPlayers;  //game minimum suggested number of players
     private int maxPlayers;  //game maximum suggested number of players
@@ -34,7 +33,7 @@ public class Game {
      */
     public Game(int some_id, int some_minPlayers, int some_maxPlayers, int some_minPlaytime,
                 int some_maxPlaytime, int some_minAge, double some_avgRating, String some_title, String some_genre,
-                String some_description, String some_image)   //????? genre
+                String some_description, String some_image)
     {
         //the following initializes the game object to that of the game that was read from the database
         this.id = some_id;
@@ -104,24 +103,24 @@ public class Game {
     }  //observer method for the minimum age of a player
 
     /**
-     *
-     * @return
+     * getAvgRating method provides information on the board game average rating for the current game object
+     * @return the average rating
      */
     public double getAvgRating() {
         return avgRating;
     }
 
     /**
-     *
-     * @return
+     * getTitle method provides the title of the current board game object
+     * @return the title, which has a datatype string
      */
     public String getTitle() {
         return title;
     }
 
     /**
-     *
-     * @return
+     * getGenre method provides the genre of the current board game object
+     * @return the genre, which has a datatype string
      */
     public String getGenre()
     {
@@ -129,20 +128,19 @@ public class Game {
     }
 
     /**
-     *
-     * @return
+     * getDescription method provides the game description of board game
+     * @return the description, which has a datatype string
      */
     public String getDescription() {
         return description;
     }
 
     /**
-     *
-     * @return
+     * getImage method provides the image of the current board game
+     * @return the string path to the image of the current board game
      */
     public String getImage() {
         return image;
     }
 
 }
-

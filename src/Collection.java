@@ -1,10 +1,9 @@
-import java.util.ArrayList;
-
 /**
- *
+ *  Collection class
+ *  author/programmer: Hugh Vessels
  */
+import java.util.ArrayList;
 public class Collection {
-
     private int sortType;   //sortType attribute will specify how a collection should be sorted, ????
     private String title;  //title attribute relates to the title of the object
     private ArrayList<Game> games = new ArrayList<Game>();  //games arraylist is a collection/list of the games specified by the user.
@@ -22,7 +21,7 @@ public class Collection {
 
     /**
      * addGame method adds the specified game to the collection or arraylist of games
-     * @param some_game specfied game from user
+     * @param some_game specified game from user
      */
     public void addGame(Game some_game)
     {
@@ -59,36 +58,27 @@ public class Collection {
             games.remove(games.get(from));
             games.add(to, temp);
         }
-
-        //games.set(to, games.get(from));
-        /*
-        Game temp;
-        temp = games.get(from);
-        games.
-        games.set(from, games.get(to));
-        games.set(to, temp);
-
-        */
-    } //????
+    }
 
     /**
      *
      * @param some_game
      */
-    public ArrayList<Game> search(String some_game)  //?????
+    public ArrayList<Game> search(String some_game)
     {
         ArrayList <Game> temp = new ArrayList<Game>();
-        games.contains(some_game);  //case sensitivity?
-
+        //games.contains(some_game);  //case sensitivity?
+        String start_char = "!";
+        String search_temp;
+        some_game = start_char.concat(some_game.toLowerCase());
         for (Game g: games)
         {
-            if(g.getTitle().equals(some_game))
+            search_temp = start_char.concat(g.getTitle().toLowerCase());
+
+            if(search_temp.contains(some_game))
             {
                 temp.add(g);
             }
-
-
-
         }
         return temp;
     }
@@ -98,20 +88,7 @@ public class Collection {
      *
      */
 
-//    public void save()  //????????????
-//    {
-//
-//        /*
-//        Write Collection information to file
-//
-//
-//
-//
-//         */
-//
-//
-//
-//    }
+
 
 
     /**
