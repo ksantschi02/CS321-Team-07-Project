@@ -79,6 +79,9 @@ public class Database {
         return null;
     }
 
+    public ArrayList<Game> getGameList() {return gameList;}
+    public ArrayList<User> getUserList() {return userList;}
+
     public void readUserList()
     {
         ArrayList<User> returnList = new ArrayList<>();
@@ -245,6 +248,8 @@ public class Database {
                                 }
                                 // RENEW/ADD COLLECTIONS HERE
                                 for (Collection c : u.getCollections()) {
+                                    Element collection = doc.createElement("collection");
+
 
                                 }
                             }
