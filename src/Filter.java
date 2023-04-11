@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 public class Filter {
-    private int sortType;
-    private int filterType;
+    protected int sortType;
+    protected int filterType;
 
     /*
      * Constructor called for individual collection
@@ -53,5 +53,19 @@ public class Filter {
         }
 
         return valid;
+    }
+
+    /*
+     * Get the sort type
+     */
+    public int getSortType () {
+        return this.sortType;
+    }
+
+    /*
+     * Get the filter type
+     */
+    public int getFilterType () {
+        return this.filterType;
     }
 }
