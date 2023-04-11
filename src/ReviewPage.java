@@ -12,14 +12,15 @@ import java.util.ArrayList;
 public class ReviewPage extends JFrame
 {
 
-    JLabel reviewLabel, descriptionLabel;
-    JTextArea reviewArea;
+    JLabel reviewLabel;
+    JTextArea descriptionArea;
     JFrame reviewFrame;
     JPanel reviewPanel;
     JButton backButton, setReviewButton;
+    BufferedImage reviewImage = null;
 
 
-    public ReviewPage(String description, ArrayList<Review> reviews)
+    public ReviewPage(String image, String description, ArrayList<Review> reviews)
     {
         reviewFrame = new JFrame();
         reviewFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -29,16 +30,37 @@ public class ReviewPage extends JFrame
         reviewPanel = new JPanel();
         reviewPanel.setLayout(new GridBagLayout());
 
+        descriptionArea = new JTextArea(description);
+        descriptionArea.setLineWrap(true);
+        descriptionArea.setWrapStyleWord(true);
+        descriptionArea.setSize(180, 300);
+        descriptionArea.setEditable(false);
 
         JScrollPane reviewScrollPane = createReviewScrollPane(reviews);
+
         backButton = new JButton("Back to Main Menu");
         ReviewPage.ListenForButton lForButton = new ReviewPage.ListenForButton();
         backButton.addActionListener(lForButton);
 
+        try{
+            URL url = new URL(image);
+            reviewImage = ImageIO.read(url);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        Image newGameImg = reviewImage.getScaledInstance(200,180, Image.SCALE_SMOOTH);
+        ImageIcon reviewIcon = new ImageIcon(newGameImg);
+        reviewLabel = new JLabel(reviewIcon);
+
+
         reviewFrame.add(reviewPanel);
 
-        addComp(reviewPanel, reviewScrollPane, 0, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE);
-        addComp(reviewPanel, backButton, 0, 2, 1, 1, GridBagConstraints.SOUTHWEST, GridBagConstraints.NONE);
+        addComp(reviewPanel, reviewLabel, 0, 0, 1, 2, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE);
+        addComp(reviewPanel, descriptionArea, 1, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE);
+        addComp(reviewPanel, reviewScrollPane, 0, 2, 2, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE);
+        addComp(reviewPanel, backButton, 0, 3, 1, 1, GridBagConstraints.SOUTHWEST, GridBagConstraints.NONE);
 
 
 

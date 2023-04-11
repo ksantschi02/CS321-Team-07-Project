@@ -14,10 +14,11 @@ public class Collection {
      * @param some_sortType
      * @param some_title
      */
-    public Collection(int some_sortType, String some_title)
+    public Collection(int some_sortType, String some_title, ArrayList<Game> some_games)
     {
         this.sortType = some_sortType;
         this.title = some_title;
+        this.games = some_games;
     }
 
     /**
@@ -147,5 +148,10 @@ public class Collection {
      */
     public void editTitle(String title) {
         this.title = title;
+    }
+
+    public ArrayList<Game> getGames()
+    {
+        return this.games;
     }
 }

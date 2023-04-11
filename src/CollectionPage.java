@@ -13,10 +13,15 @@ public class CollectionPage extends JPanel
 {
 
 
+
     JButton filterButton, saveButton, backButton, searchButton;
     JTextField searchTextField;
     JFrame collectionFrame;
-    public CollectionPage(Game[] games, String title)
+
+    User Jim = new User("CoolGuy47", "1234");
+
+
+    public CollectionPage(ArrayList<Game> games, String title)
     {
         collectionFrame = new JFrame();
 
@@ -53,8 +58,9 @@ public class CollectionPage extends JPanel
 
         //importing games and collections
 
+        Jim.addCollection(new Collection(1, "Collection1", new ArrayList<Game>()));
 
-        JScrollPane gameScroll = createGameScrollPane(games);
+        JScrollPane gameScroll = createGameScrollPane(Jim.getCollection(title).getGames());
 
 
         //putting all of them together
@@ -159,12 +165,12 @@ public class CollectionPage extends JPanel
     }
 
     //dynamically createsGameScrollPane from array
-    public JScrollPane createGameScrollPane(Game[] games)
+    public JScrollPane createGameScrollPane(ArrayList<Game> games)
     {
         Box gameBox = Box.createVerticalBox();
-        for(int i = 0; i < games.length; i++)
+        for(int i = 0; i < games.size(); i++)
         {
-            gameBox.add(createGame(games[i].getTitle(), games[i].getImage(), games[i].getMinPlayers(), games[i].getMaxPlayers(), games[i].getMinPlaytime(), games[i].getMaxPlaytime(), games[i].getMinAge(), games[i].getAvgRating(), games[i].getGenre(), games[i].getDescription(), games[i].getReviews()));
+            gameBox.add(createGame(games.get(i).getTitle(), games.get(i).getImage(), games.get(i).getMinPlayers(), games.get(i).getMaxPlayers(), games.get(i).getMinPlaytime(), games.get(i).getMaxPlaytime(), games.get(i).getMinAge(), games.get(i).getAvgRating(), games.get(i).getGenre(), games.get(i).getDescription(), games.get(i).getReviews()));
             gameBox.add(Box.createVerticalStrut(2));
         }
 

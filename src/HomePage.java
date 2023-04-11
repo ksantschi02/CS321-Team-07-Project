@@ -10,8 +10,10 @@ import java.io.IOException;
 import java.nio.Buffer;
 
 import javax.swing.border.*;
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+
 
 
 public class HomePage extends JFrame
@@ -39,24 +41,16 @@ public class HomePage extends JFrame
     Game cool = new Game(12, 5, 10, 10, 30, 7, 7.5, "Cool Game", "Action", "Is cool", "https://cf.geekdo-images.com/DCLgJlrvB-EqL6A3WgQLMQ__original/img/vGpYcxjDBCOVcI0BcWOevspTQMQ=/0x0/filters:format(jpeg)/pic5715770.jpg", userReviews);
     Game cool1 = new Game(12, 5, 10, 10, 30, 7, 7.5, "Cool Game", "Action", "Is cool", "https://cf.geekdo-images.com/DCLgJlrvB-EqL6A3WgQLMQ__original/img/vGpYcxjDBCOVcI0BcWOevspTQMQ=/0x0/filters:format(jpeg)/pic5715770.jpg", userReviews);
     Game cool2 = new Game(12, 5, 10, 10, 30, 7, 7.5, "Cool Game", "Action", "Is cool", "https://cf.geekdo-images.com/DCLgJlrvB-EqL6A3WgQLMQ__original/img/vGpYcxjDBCOVcI0BcWOevspTQMQ=/0x0/filters:format(jpeg)/pic5715770.jpg", userReviews);
-    Game[] coolGames = {cool, cool1, cool2};
+    ArrayList<Game> coolGames = new ArrayList<>(Arrays.asList(cool, cool1, cool2));
 
-
-    Collection col1 = new Collection(1,"Rad");
-    Collection col2 = new Collection(2, "Bad");
-    Collection col3 = new Collection(2, "Mad");
-    Collection col4 = new Collection(2, "Lad");
-    Collection col5 = new Collection(2, "Iad");
-    Collection col6 = new Collection(1,"Rad");
-    Collection col7 = new Collection(2, "Bad");
-    Collection col8 = new Collection(2, "Mad");
-    Collection[] collections = {col1, col2, col3, col4, col5, col6, col7};
-
-
-
-    String collectionNames[] = new String[collections.length];
-
-
+    Collection col1 = new Collection(1,"Rad", new ArrayList());
+    Collection col2 = new Collection(2, "Bad", new ArrayList<>());
+    Collection col3 = new Collection(2, "Mad", new ArrayList<>());
+    Collection col4 = new Collection(2, "Lad", new ArrayList<>());
+    Collection col5 = new Collection(2, "Iad", new ArrayList<>());
+    Collection col6 = new Collection(1,"Rad", new ArrayList<>());
+    Collection col7 = new Collection(2, "Bad", new ArrayList<>());
+    ArrayList<Collection> collections = new ArrayList<>(Arrays.asList(col1, col2, col3, col4, col5, col6, col7));
 
     public HomePage()
     {
@@ -216,12 +210,14 @@ public class HomePage extends JFrame
         addButton = new JButton("Add To Collection");
         seeMoreButton = new JButton("Info/Rate");
 
-        for(int i = 0; i < collections.length; i++)
+        collectionsComboBox = new JComboBox();
+
+        for(int i = 0; i < collections.size(); i++)
         {
-            collectionNames[i] = collections[i].getTitle();
+            collectionsComboBox.addItem(collections.get(i).getTitle());
         }
 
-        collectionsComboBox = new JComboBox(collectionNames);
+
 
 
         class ListenForGameButton implements ActionListener
@@ -231,9 +227,9 @@ public class HomePage extends JFrame
                 if (e.getSource() == addButton)
                 {
                     collectionsComboBox.removeAllItems();
-                    for(int i = 0; i < collections.length; i++)
+                    for(int i = 0; i < collections.size(); i++)
                     {
-                        collectionsComboBox.addItem(collectionNames[i]);
+                        collectionsComboBox.addItem(collections.get(i).getTitle());
                     }
                     gamePanel.revalidate();
                 }
@@ -243,7 +239,7 @@ public class HomePage extends JFrame
                 }
                 if (e.getSource() == seeMoreButton)
                 {
-                    new ReviewPage(description, reviews);
+                    new ReviewPage(imageUrl, description, reviews);
                 }
             }
         }
@@ -271,7 +267,6 @@ public class HomePage extends JFrame
         buttonBox.add(seeMoreButton);
 
         addComp(gamePanel, infoBox, 1, 0, 1, 1, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE);
-        //addComp(gamePanel, seeMoreButton, 2, 0, 1, 1, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE);
         addComp(gamePanel, buttonBox, 1, 1, 1, 1, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE);
 
 
@@ -296,12 +291,12 @@ public class HomePage extends JFrame
     }
 
     //dynamically createsGameScrollPane from array
-    public JScrollPane createGameScrollPane(Game[] games)
+    public JScrollPane createGameScrollPane(ArrayList<Game> games)
     {
         Box gameBox = Box.createVerticalBox();
-        for(int i = 0; i < games.length; i++)
+        for(int i = 0; i < games.size(); i++)
         {
-            gameBox.add(createGame(games[i].getTitle(), games[i].getImage(), games[i].getMinPlayers(), games[i].getMaxPlayers(), games[i].getMinPlaytime(), games[i].getMaxPlaytime(), games[i].getMinAge(), games[i].getAvgRating(), games[i].getGenre(), games[i].getDescription(), games[i].getReviews()));
+            gameBox.add(createGame(games.get(i).getTitle(), games.get(i).getImage(), games.get(i).getMinPlayers(), games.get(i).getMaxPlayers(), games.get(i).getMinPlaytime(), games.get(i).getMaxPlaytime(), games.get(i).getMinAge(), games.get(i).getAvgRating(), games.get(i).getGenre(), games.get(i).getDescription(), games.get(i).getReviews()));
             gameBox.add(Box.createVerticalStrut(2));
         }
 
@@ -373,13 +368,13 @@ public class HomePage extends JFrame
         return collectionPanel;
     }
 
-    public JScrollPane createCollectionScrollPane(Collection[] collections)
+    public JScrollPane createCollectionScrollPane(ArrayList<Collection> collections)
     {
         Box collectionBox = Box.createVerticalBox();
         
-        for(int i = 0; i < collections.length; i++) 
+        for(int i = 0; i < collections.size(); i++)
         {
-            collectionBox.add(createCollection(collections[i].getTitle()));
+            collectionBox.add(createCollection(collections.get(i).getTitle()));
             collectionBox.add(Box.createVerticalStrut(2));
         }
         
