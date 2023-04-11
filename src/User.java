@@ -138,6 +138,14 @@ public class User {
     }
 
     /*
+     * get all collections from this user
+     */
+
+    public ArrayList<Collection> getCollections() {
+        return this.collections;
+    }
+
+    /*
      * Delete collection
      */
     public boolean deleteCollection(String id) {
