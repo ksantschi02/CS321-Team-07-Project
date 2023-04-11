@@ -6,7 +6,7 @@ public class Review {
 
 private double rating;  // numerical rating of game, 10
 private String content;  // content of review that the user will be specifying
-private User author;   //username that is providing the review
+private String author;   //username that is providing the review
 
     /**
      *
@@ -14,7 +14,7 @@ private User author;   //username that is providing the review
      * @param some_content
      * @param some_author
      */
-    public Review(double some_rating, String some_content, User some_author)
+    public Review(double some_rating, String some_content, String some_author)
 {
     this.rating = some_rating;
     this.content = some_content;
@@ -33,7 +33,7 @@ private User author;   //username that is providing the review
      * getAuthor method allows for others to see which user left certain reviews
      * @return returns the name of the author for the specified game
      */
-    public User getAuthor() {
+    public String getAuthor() {
         return author;  //observor method
     }
 
