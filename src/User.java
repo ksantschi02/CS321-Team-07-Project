@@ -103,6 +103,8 @@ public class User {
         return valid;
     }
 
+
+
     /*
      * Add a collection to user and database
      */
@@ -116,13 +118,20 @@ public class User {
      */
 
     public Collection getCollection(String id) {
-        Collection collection = new Collection(0, null);
 
-        for (Collection c : this.collections) {
-            if (c.getTitle().equals(id)) {
-                collection = c;
-                break;
+        Collection collection = new Collection(0, null, new ArrayList<Game>());
+
+        if(this.collections != null) {
+            for (Collection c : this.collections) {
+                if (c.getTitle().equals(id)) {
+                    collection = c;
+                    break;
+                }
             }
+        }
+        else if(this.collections == null)
+        {
+            collection = new Collection(0, null, new ArrayList<Game>());
         }
 
         return collection;

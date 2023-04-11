@@ -1,7 +1,8 @@
+import java.util.ArrayList;
+
 public class Main {
-    public static void main(String[] args) {
-
-        new LoginPage();
-
+    public static void main(String[] args)
+    {
+        new HomePage();
     }
 }

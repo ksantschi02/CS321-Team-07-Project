@@ -41,9 +41,15 @@ private User author;   //username that is providing the review
      * editaRating method allows the user to edit their score they gave to a specific game
      * @param rating contains the rating for the game that was given by the user
      */
+
     public void editRating(double rating)
     {
         this.rating = rating;   //accessor method
+    }
+
+    public String getContent()
+    {
+        return content;
     }
 
     /**
