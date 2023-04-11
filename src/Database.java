@@ -44,13 +44,21 @@ public class Database {
                         }
                     }
                     Element eElement = (Element) nNode;
+                    double rating;
+                    if (((Element) eElement.getElementsByTagName("avgrating").item(0)) == null)
+                    {
+                        rating = 0;
+                    }
+                    else {
+                        rating = Double.parseDouble(((Element) eElement.getElementsByTagName("avgrating").item(0)).getAttribute("value"));
+                    }
                     Game e = new Game(Integer.parseInt(eElement.getAttribute("id")),
                             Integer.parseInt(((Element) eElement.getElementsByTagName("minplayers").item(0)).getAttribute("value")),
                             Integer.parseInt(((Element) eElement.getElementsByTagName("maxplayers").item(0)).getAttribute("value")),
                             Integer.parseInt(((Element) eElement.getElementsByTagName("minplaytime").item(0)).getAttribute("value")),
                             Integer.parseInt(((Element) eElement.getElementsByTagName("maxplaytime").item(0)).getAttribute("value")),
                             Integer.parseInt(((Element) eElement.getElementsByTagName("minage").item(0)).getAttribute("value")),
-                            Double.parseDouble(((Element) eElement.getElementsByTagName("avgrating").item(0)).getAttribute("value")),
+                            rating,
                             ((Element) eElement.getElementsByTagName("name").item(0)).getAttribute("value"),
                             " ",
                             eElement.getElementsByTagName("description").item(0).getTextContent(),
@@ -78,9 +86,6 @@ public class Database {
         }
         return null;
     }
-
-    public ArrayList<Game> getGameList() {return gameList;}
-    public ArrayList<User> getUserList() {return userList;}
 
     public void readUserList()
     {
@@ -158,6 +163,9 @@ public class Database {
     {
         userList.add(user);
     }
+
+    public ArrayList<Game> getGameList() {return gameList;}
+    public ArrayList<User> getUserList() {return userList;}
 
     public void saveDatabase()
     {
@@ -249,8 +257,7 @@ public class Database {
                                 // RENEW/ADD COLLECTIONS HERE
                                 for (Collection c : u.getCollections()) {
                                     Element collection = doc.createElement("collection");
-
-
+                                    //collection.setAttribute("sortType", c.get);
                                 }
                             }
                         }
@@ -261,6 +268,21 @@ public class Database {
             e.printStackTrace();
         }
     }
+//    for (int k = 0; k < cGames.getLength(); k++)
+//    {
+//        Node gNode = cGames.item(k);
+//        if (gNode.getNodeType() == Node.ELEMENT_NODE)
+//        {
+//            Element gElement = (Element) gNode;
+//            games.add(retrieveByName(gElement.getAttribute("name")));
+//        }
+//    }
+//    Element cElement = (Element) cNode;
+//    Collection c = new Collection(
+//            Integer.parseInt(cElement.getAttribute("sortType")),
+//            cElement.getAttribute("name"),
+//            games);
+//                            u.addCollection(c);
 }
 
 
