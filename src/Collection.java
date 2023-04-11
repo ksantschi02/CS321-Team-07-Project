@@ -4,7 +4,7 @@
  */
 import java.util.ArrayList;
 public class Collection {
-    private int sortType;   //sortType attribute will specify how a collection should be sorted, ????
+    private Filter f1;
     private String title;  //title attribute relates to the title of the object
     private ArrayList<Game> games = new ArrayList<Game>();  //games arraylist is a collection/list of the games specified by the user.
 
@@ -13,9 +13,10 @@ public class Collection {
      * @param some_sortType
      * @param some_title
      */
-    public Collection(int some_sortType, String some_title, ArrayList<Game> some_games)
+    public Collection(int some_sortType, int some_filter_type, String some_title, ArrayList<Game> some_games)
     {
-        this.sortType = some_sortType;
+        //this.sortType = some_sortType;
+        f1 = new Filter(some_sortType,some_filter_type);
         this.title = some_title;
         this.games = some_games;
     }
@@ -84,14 +85,6 @@ public class Collection {
         return temp;
     }
 
-
-    /**
-     *
-     */
-
-
-
-
     /**
      * getTitle returns the title of the user's collection
      * @return
@@ -116,7 +109,7 @@ public class Collection {
      */
     public void editSortType(int sortType)
     {
-        this.sortType = sortType;
+        this.f1.sortType = sortType;
     }
 
     /**
@@ -130,5 +123,17 @@ public class Collection {
     public ArrayList<Game> getGames()
     {
         return this.games;
+    }
+
+
+    public int getCollectionSortType()
+    {
+        return f1.sortType;
+    }
+
+
+    public int getCollectionFilterType()
+    {
+        return f1.filterType;
     }
 }

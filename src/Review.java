@@ -3,7 +3,6 @@
  */
 public class Review {
 
-
 private double rating;  // numerical rating of game, 10
 private String content;  // content of review that the user will be specifying
 private String author;   //username that is providing the review
