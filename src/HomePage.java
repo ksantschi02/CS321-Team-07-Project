@@ -48,8 +48,8 @@ public class HomePage extends JFrame
     Collection col3 = new Collection(2, "Mad", new ArrayList<>());
     Collection col4 = new Collection(2, "Lad", new ArrayList<>());
     Collection col5 = new Collection(2, "Iad", new ArrayList<>());
-    Collection col6 = new Collection(1,"Rad", new ArrayList<>());
-    Collection col7 = new Collection(2, "Bad", new ArrayList<>());
+    Collection col6 = new Collection(1,"Pad", new ArrayList<>());
+    Collection col7 = new Collection(2, "Sad", new ArrayList<>());
     ArrayList<Collection> collections = new ArrayList<>(Arrays.asList(col1, col2, col3, col4, col5, col6, col7));
 
     public HomePage()
@@ -188,7 +188,7 @@ public class HomePage extends JFrame
     }
 
     //constructor with parameters
-    public JPanel createGame(String title, String imageUrl, int minPlayerCount, int maxPlayerCount, int minPlaytime, int maxPlaytime, int minAge, double avgRating, String genre, String description, ArrayList<Review> reviews)
+    public JPanel createGame(String title, String imageUrl, int minPlayerCount, int maxPlayerCount, int minPlaytime, int maxPlaytime, int minAge, double avgRating, String genre, String description, ArrayList<Review> reviews, Game game)
     {
         JLabel genreLabel, playerCountLabel, nameLabel, imageLabel, playtimeLabel, ageLabel, ratingLabel;
         JButton addButton, seeMoreButton;
@@ -226,16 +226,23 @@ public class HomePage extends JFrame
             {
                 if (e.getSource() == addButton)
                 {
+                    for(int i = 0; i < collections.size(); i++)
+                    {
+                        if(collections.get(i).getTitle() == collectionsComboBox.getSelectedItem())
+                        {
+                            collections.get(i).addGame(game);
+                            JOptionPane.showMessageDialog(null, "Collection added to: " + collections.get(i).getTitle());
+                        }
+                    }
+                }
+                if (e.getSource() == collectionsComboBox)
+                {
                     collectionsComboBox.removeAllItems();
                     for(int i = 0; i < collections.size(); i++)
                     {
                         collectionsComboBox.addItem(collections.get(i).getTitle());
                     }
                     gamePanel.revalidate();
-                }
-                if (e.getSource() == collectionsComboBox)
-                {
-
                 }
                 if (e.getSource() == seeMoreButton)
                 {
@@ -296,7 +303,7 @@ public class HomePage extends JFrame
         Box gameBox = Box.createVerticalBox();
         for(int i = 0; i < games.size(); i++)
         {
-            gameBox.add(createGame(games.get(i).getTitle(), games.get(i).getImage(), games.get(i).getMinPlayers(), games.get(i).getMaxPlayers(), games.get(i).getMinPlaytime(), games.get(i).getMaxPlaytime(), games.get(i).getMinAge(), games.get(i).getAvgRating(), games.get(i).getGenre(), games.get(i).getDescription(), games.get(i).getReviews()));
+            gameBox.add(createGame(games.get(i).getTitle(), games.get(i).getImage(), games.get(i).getMinPlayers(), games.get(i).getMaxPlayers(), games.get(i).getMinPlaytime(), games.get(i).getMaxPlaytime(), games.get(i).getMinAge(), games.get(i).getAvgRating(), games.get(i).getGenre(), games.get(i).getDescription(), games.get(i).getReviews(), games.get(i)));
             gameBox.add(Box.createVerticalStrut(2));
         }
 
@@ -307,7 +314,7 @@ public class HomePage extends JFrame
     }
 
     //constructor for collection
-    private JPanel createCollection(String title)
+    private JPanel createCollection(String title, Collection collection)
     {
 
         JPanel collectionPanel = new JPanel();
@@ -326,7 +333,13 @@ public class HomePage extends JFrame
             {
                 if (e.getSource() == collectionButton)
                 {
-                   new CollectionPage(coolGames, collectionTitle.getText());
+                   for(int i = 0; i < collections.size(); i++)
+                   {
+                       if (collections.get(i).getTitle() == collection.getTitle())
+                       {
+                           new CollectionPage(collections.get(i), collections.get(i).getTitle());
+                       }
+                   }
                 }
             }
         }
@@ -374,7 +387,7 @@ public class HomePage extends JFrame
         
         for(int i = 0; i < collections.size(); i++)
         {
-            collectionBox.add(createCollection(collections.get(i).getTitle()));
+            collectionBox.add(createCollection(collections.get(i).getTitle(), collections.get(i)));
             collectionBox.add(Box.createVerticalStrut(2));
         }
         

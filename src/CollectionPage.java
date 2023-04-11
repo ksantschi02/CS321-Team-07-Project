@@ -21,7 +21,7 @@ public class CollectionPage extends JPanel
     User Jim = new User("CoolGuy47", "1234");
 
 
-    public CollectionPage(ArrayList<Game> games, String title)
+    public CollectionPage(Collection collection,String title)
     {
         collectionFrame = new JFrame();
 
@@ -58,7 +58,7 @@ public class CollectionPage extends JPanel
 
         //importing games and collections
 
-        Jim.addCollection(new Collection(1, "Collection1", new ArrayList<Game>()));
+        Jim.addCollection(collection);
 
         JScrollPane gameScroll = createGameScrollPane(Jim.getCollection(title).getGames());
 
