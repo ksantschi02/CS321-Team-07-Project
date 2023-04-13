@@ -21,6 +21,20 @@ public class Collection {
         this.games = some_games;
     }
 
+    public Collection(Collection some_collec)
+    {
+        this.title = some_collec.title;
+        this.f1 = some_collec.f1;
+
+        this.games = new ArrayList<>(some_collec.games.size());
+
+        for (Game g : some_collec.games)
+        {
+            games.add((Game)g.clone());
+        }
+
+    }
+
     /**
      * addGame method adds the specified game to the collection or arraylist of games
      * @param some_game specified game from user

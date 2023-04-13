@@ -2,7 +2,7 @@
  *
  */
 import java.util.ArrayList;
-public class Game {
+public class Game implements Cloneable{
 
 //need copy constructor
 
@@ -50,6 +50,32 @@ public class Game {
         this.image = some_image;
         this.reviews = some_reviews;
 
+
+    }
+
+    /**
+     * MyDateList explicitly defined clone function, second way to perform deep copies
+     * @return the deep copy of MyDateList object, overwriting built-in clone function
+     */
+    public Game clone()
+    {
+        //use try-catch statement to see if the Cloneable interface is able to be implemented
+        try{
+            Game temp =  (Game) super.clone(); //created a temp variable of MyDateList type
+            temp.reviews = new ArrayList<Review>();  //create an arraylist for temp.events
+
+            //loop through all events in the current object and add them to the array list for the temp variable
+            //for loop performs deep copies of the elements in the events arraylist
+            for (Review r: this.reviews)
+            {
+                temp.reviews.add(new Review(r));  //deep copy the current event from the curren object
+            }
+            //temp.description = this.description;  //strings are immutable, copy paramaters description
+            return temp;        //return temp as the deep copy of the current MyDateList object that clone was called on
+
+        } catch (CloneNotSupportedException e) { //catch if clone is not supported
+            return null;        //returns null when clone does not work
+        }
 
     }
 
