@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
 public class User {
     private String username;
@@ -14,7 +15,22 @@ public class User {
         this.username = null;
         this.password = null;
         this.loggedIn = false;
-        collections = new ArrayList<>();
+        this.collections = new ArrayList<>();
+    }
+
+    /**
+     * Copy constructor for User
+     */
+    public User(User source) {
+        this.username = source.getUser();
+        this.password = source.getPassword();
+
+        this.loggedIn = false;
+
+        this.collections = new ArrayList<>();
+        for (Collection C : source.getCollections()) {
+            this.collections.add(new Collection(C));
+        }
     }
 
     /*
@@ -118,8 +134,7 @@ public class User {
      */
 
     public Collection getCollection(String id) {
-
-        Collection collection = new Collection(0, null, new ArrayList<Game>());
+        Collection collection = new Collection(0, 0, null, new ArrayList<Game>());
 
         if(this.collections != null) {
             for (Collection c : this.collections) {
@@ -131,7 +146,7 @@ public class User {
         }
         else if(this.collections == null)
         {
-            collection = new Collection(0, null, new ArrayList<Game>());
+            collection = new Collection(0, 0, null, new ArrayList<Game>());
         }
 
         return collection;
