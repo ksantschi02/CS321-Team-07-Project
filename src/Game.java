@@ -151,7 +151,7 @@ public class Game implements Cloneable{
      *
      * @return
      */
-    public String getGenre()
+    public ArrayList<String> getGenre()
     {
         return genre;
     }
