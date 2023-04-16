@@ -96,6 +96,8 @@ public class Collection {
                 temp.add(g);
             }
         }
+        f1.filterCollection(temp);
+        f1.sortCollection(temp);
         return temp;
     }
 
