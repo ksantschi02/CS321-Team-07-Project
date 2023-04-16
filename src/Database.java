@@ -44,6 +44,19 @@ public class Database {
                     } else {
                         rating = Double.parseDouble(((Element) eElement.getElementsByTagName("avgrating").item(0)).getAttribute("value"));
                     }
+                    NodeList categoryList = ((Element) nNode).getElementsByTagName("link");
+                    ArrayList<String> genreList = new ArrayList<>();
+                    for (int k = 0; k < categoryList.getLength(); k++)
+                    {
+                        Node item2 = categoryList.item(k);
+                        if (item2.getNodeType() == Node.ELEMENT_NODE)
+                        {
+                            if (((Element) item2).getAttribute("type").equals("boardgamecategory"))
+                            {
+                                genreList.add(((Element) item2).getAttribute("value"));
+                            }
+                        }
+                    }
                     Game e = new Game(Integer.parseInt(eElement.getAttribute("id")),
                             Integer.parseInt(((Element) eElement.getElementsByTagName("minplayers").item(0)).getAttribute("value")),
                             Integer.parseInt(((Element) eElement.getElementsByTagName("maxplayers").item(0)).getAttribute("value")),
@@ -52,7 +65,7 @@ public class Database {
                             Integer.parseInt(((Element) eElement.getElementsByTagName("minage").item(0)).getAttribute("value")),
                             rating,
                             ((Element) eElement.getElementsByTagName("name").item(0)).getAttribute("value"),
-                            " ",
+                            genreList,
                             eElement.getElementsByTagName("description").item(0).getTextContent(),
                             eElement.getElementsByTagName("image").item(0).getTextContent(),
                             reviews
