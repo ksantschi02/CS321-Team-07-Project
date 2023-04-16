@@ -1,3 +1,5 @@
+package UI_screens;
+
 
 import java.awt.*;
 import javax.swing.*;
@@ -7,14 +9,11 @@ import java.awt.image.BufferedImage;
 import java.net.URL;
 import javax.imageio.ImageIO;
 import java.io.IOException;
-import java.nio.Buffer;
-
 import javax.swing.border.*;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-
-
+import game_info.*;
+import program_users.*;
 
 public class HomePage extends JFrame
 {

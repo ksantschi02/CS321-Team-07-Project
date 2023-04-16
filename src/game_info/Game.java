@@ -1,8 +1,8 @@
 /**
  *
  */
+package game_info;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 public class Game implements Cloneable{
 

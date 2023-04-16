@@ -1,6 +1,8 @@
 /**
  *
  */
+package game_info;
+
 public class Review{
 
 private double rating;  // numerical rating of game, 10

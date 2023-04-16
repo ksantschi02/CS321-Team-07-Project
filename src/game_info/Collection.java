@@ -2,7 +2,11 @@
  *  Collection class
  *  author/programmer: Hugh Vessels
  */
+package game_info;
+
 import java.util.ArrayList;
+import data_retrieval.Filter;
+
 public class Collection {
     private Filter f1;
     private String title;  //title attribute relates to the title of the object
@@ -145,12 +149,12 @@ public class Collection {
 
     public int getCollectionSortType()
     {
-        return f1.sortType;
+        return f1.getSortType();
     }
 
 
     public int getCollectionFilterType()
     {
-        return f1.filterType;
+        return f1.getFilterType();
     }
 }

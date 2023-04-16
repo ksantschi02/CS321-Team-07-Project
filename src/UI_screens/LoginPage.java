@@ -1,9 +1,13 @@
+package UI_screens;
 
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.event.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import game_info.*;
+import program_users.*;
+import data_retrieval.*;
+
 
 public class LoginPage extends JFrame{
 
