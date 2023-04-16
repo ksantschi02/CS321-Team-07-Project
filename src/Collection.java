@@ -136,6 +136,7 @@ public class Collection {
         this.title = title;
     }
 
+
     public ArrayList<Game> getGames()
     {
         return this.games;
