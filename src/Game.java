@@ -34,7 +34,7 @@ public class Game implements Cloneable{
      * @param some_image suggested number of minimum players that was read in from the XML database
      */
     public Game(int some_id, int some_minPlayers, int some_maxPlayers, int some_minPlaytime,
-                int some_maxPlaytime, int some_minAge, double some_avgRating, String some_title, String some_genre,
+                int some_maxPlaytime, int some_minAge, double some_avgRating, String some_title, ArrayList<String> some_genre,
                 String some_description, String some_image, ArrayList<Review> some_reviews)   //????? genre
     {
         //the following initializes the game object to that of the game that was read from the database
