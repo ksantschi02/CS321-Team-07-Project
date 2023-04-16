@@ -47,7 +47,7 @@ public class Game implements Cloneable{
         this.avgRating = some_avgRating;
         this.title = some_title;
         this.genre = some_genre;
-        this.description =some_description;
+        this.description = some_description;
         this.image = some_image;
         this.reviews = some_reviews;
 

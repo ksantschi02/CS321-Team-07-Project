@@ -51,7 +51,7 @@ public class HomePage extends JFrame
     //Collection col6 = new Collection(1, 4,"Pad", new ArrayList<>());
     //Collection col7 = new Collection(2, 5, "Sad", new ArrayList<>());
     ArrayList<Collection> collections;
-
+    User currentUser;
     boolean refresh = false;
 
     public HomePage(ArrayList<Game> coolGames, User user)
@@ -65,7 +65,7 @@ public class HomePage extends JFrame
         homeFrame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
         collections = user.getCollections();
 
-
+        currentUser = user;
 
         //setting up the panel for the ENTIRE screen
 
@@ -216,8 +216,9 @@ public class HomePage extends JFrame
     {
         JLabel genreLabel, playerCountLabel, nameLabel, imageLabel, playtimeLabel, ageLabel, ratingLabel;
         JButton addButton, seeMoreButton;
-        JComboBox collectionsComboBoxGame;
+        JComboBox collectionsComboBox;
         BufferedImage gameImage = null;
+        System.out.println(description);
 
         JPanel gamePanel = new JPanel();
         gamePanel.setLayout(new GridBagLayout());
@@ -255,7 +256,7 @@ public class HomePage extends JFrame
         addButton = new JButton("Add To Collection");
         seeMoreButton = new JButton("Info/Rate");
 
-        JComboBox collectionsComboBox;
+
         collectionsComboBox = new JComboBox();
 
         for(int i = 0; i < collections.size(); i++)
@@ -301,7 +302,7 @@ public class HomePage extends JFrame
                 }
                 if (e.getSource() == seeMoreButton)
                 {
-                    new ReviewPage(imageUrl, description, reviews);
+                    new ReviewPage(imageUrl, description, reviews, currentUser);
                 }
             }
         }
