@@ -21,8 +21,11 @@ public class LoginPage extends JFrame{
     private static final int FRAME_HEIGHT = 300;
 
     ArrayList<Game> loginGames;
+    ArrayList<User> loginUsers;
 
-    public LoginPage(ArrayList<Game> games) {
+    boolean isUser = false;
+
+    public LoginPage(ArrayList<Game> games, ArrayList<User> users) {
 
         //loginFrame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
         loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -30,6 +33,7 @@ public class LoginPage extends JFrame{
         loginFrame.setTitle("LoginPage");
 
         loginGames = games;
+        loginUsers = users;
 
         // create panel and login text
 
@@ -108,11 +112,20 @@ public class LoginPage extends JFrame{
             {
                 String Username = usernameTextField.getText();
                 String Password = passwordTextField.getText();
-                if(Username.equals("Michael") && Password.equals("123"))
+
+                for(int i = 0; i < loginUsers.size(); i++)
+                {
+                    if(Username.equals(loginUsers.get(i).getUser()) && Password.equals(loginUsers.get(i).getPassword()))
+                    {
+                       isUser = true;
+                    }
+                }
+                if(isUser == true)
                 {
                     JOptionPane.showMessageDialog(null, "Login Successful");
-                    new HomePage(loginGames);
+                    new HomePage(loginGames, loginUsers);
                     loginFrame.dispose();
+                    isUser = false;
                 }
                 else
                 {

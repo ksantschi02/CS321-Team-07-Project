@@ -5,7 +5,8 @@ public class Main {
     {
         Database data = new Database();
         data.readGameList();
-        new HomePage(data.getGameList());
+        data.readUserList();
+        new LoginPage(data.getGameList(), data.getUserList());
 
     }
 }

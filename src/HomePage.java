@@ -56,7 +56,7 @@ public class HomePage extends JFrame
 
     boolean refresh = false;
 
-    public HomePage(ArrayList<Game> coolGames)
+    public HomePage(ArrayList<Game> coolGames, ArrayList<User> users)
     {
 
         //loginFrame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
