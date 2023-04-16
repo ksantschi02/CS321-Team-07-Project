@@ -1,8 +1,7 @@
 /**
  *
  */
-public class Review {
-
+public class Review{
 
 private double rating;  // numerical rating of game, 10
 private String content;  // content of review that the user will be specifying
@@ -19,6 +18,13 @@ private String author;   //username that is providing the review
     this.rating = some_rating;
     this.content = some_content;
     this.author = some_author;
+}
+
+public Review (Review r1)
+{
+    this.rating = r1.rating;
+    this.content = r1.content;
+    this.author = r1.author;
 }
 
     /**
