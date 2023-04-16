@@ -43,13 +43,13 @@ public class HomePage extends JFrame
     //Game cool2 = new Game(12, 5, 10, 10, 30, 7, 7.5, "Cool Game", "Action", "Is cool", "https://cf.geekdo-images.com/DCLgJlrvB-EqL6A3WgQLMQ__original/img/vGpYcxjDBCOVcI0BcWOevspTQMQ=/0x0/filters:format(jpeg)/pic5715770.jpg", userReviews);
     //ArrayList<Game> coolGames = new ArrayList<>(Arrays.asList(cool, cool1, cool2));
 
-    Collection col1 = new Collection(1,"Rad", new ArrayList());
-    Collection col2 = new Collection(2, "Bad", new ArrayList<>());
-    Collection col3 = new Collection(2, "Mad", new ArrayList<>());
-    Collection col4 = new Collection(2, "Lad", new ArrayList<>());
-    Collection col5 = new Collection(2, "Iad", new ArrayList<>());
-    Collection col6 = new Collection(1,"Pad", new ArrayList<>());
-    Collection col7 = new Collection(2, "Sad", new ArrayList<>());
+    Collection col1 = new Collection(1, 2,"Rad", new ArrayList());
+    Collection col2 = new Collection(2, 2, "Bad", new ArrayList<>());
+    Collection col3 = new Collection(2, 2, "Mad", new ArrayList<>());
+    Collection col4 = new Collection(2, 1, "Lad", new ArrayList<>());
+    Collection col5 = new Collection(2, 3, "Iad", new ArrayList<>());
+    Collection col6 = new Collection(1, 4,"Pad", new ArrayList<>());
+    Collection col7 = new Collection(2, 5, "Sad", new ArrayList<>());
     ArrayList<Collection> collections = new ArrayList<>(Arrays.asList(col1, col2, col3, col4, col5, col6, col7));
 
     JComboBox collectionsComboBox;
