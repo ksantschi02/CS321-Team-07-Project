@@ -22,7 +22,7 @@ public class HomePage extends JFrame
     private static final int FRAME_WIDTH = 500;
     private static final int FRAME_HEIGHT = 300;
 
-    JButton filterButton, saveButton, logoutButton, searchButton, createCollectionButton, deleteCollectionButton;
+    JButton filterButton, saveButton, logoutButton, searchButton, createCollectionButton, deleteCollectionButton, refreshButton;
 
     JTextField searchTextField;
 
@@ -43,20 +43,18 @@ public class HomePage extends JFrame
     //Game cool2 = new Game(12, 5, 10, 10, 30, 7, 7.5, "Cool Game", "Action", "Is cool", "https://cf.geekdo-images.com/DCLgJlrvB-EqL6A3WgQLMQ__original/img/vGpYcxjDBCOVcI0BcWOevspTQMQ=/0x0/filters:format(jpeg)/pic5715770.jpg", userReviews);
     //ArrayList<Game> coolGames = new ArrayList<>(Arrays.asList(cool, cool1, cool2));
 
-    Collection col1 = new Collection(1, 2,"Rad", new ArrayList());
-    Collection col2 = new Collection(2, 2, "Bad", new ArrayList<>());
-    Collection col3 = new Collection(2, 2, "Mad", new ArrayList<>());
-    Collection col4 = new Collection(2, 1, "Lad", new ArrayList<>());
-    Collection col5 = new Collection(2, 3, "Iad", new ArrayList<>());
-    Collection col6 = new Collection(1, 4,"Pad", new ArrayList<>());
-    Collection col7 = new Collection(2, 5, "Sad", new ArrayList<>());
-    ArrayList<Collection> collections = new ArrayList<>(Arrays.asList(col1, col2, col3, col4, col5, col6, col7));
-
-    JComboBox collectionsComboBox;
+    //Collection col1 = new Collection(1, 2,"Rad", new ArrayList());
+    //Collection col2 = new Collection(2, 2, "Bad", new ArrayList<>());
+    //Collection col3 = new Collection(2, 2, "Mad", new ArrayList<>());
+    //Collection col4 = new Collection(2, 1, "Lad", new ArrayList<>());
+    //Collection col5 = new Collection(2, 3, "Iad", new ArrayList<>());
+    //Collection col6 = new Collection(1, 4,"Pad", new ArrayList<>());
+    //Collection col7 = new Collection(2, 5, "Sad", new ArrayList<>());
+    ArrayList<Collection> collections;
 
     boolean refresh = false;
 
-    public HomePage(ArrayList<Game> coolGames, ArrayList<User> users)
+    public HomePage(ArrayList<Game> coolGames, User user)
     {
 
         //loginFrame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
@@ -65,14 +63,9 @@ public class HomePage extends JFrame
         homeFrame.setTitle("HomePage");
 
         homeFrame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
+        collections = user.getCollections();
 
 
-        collectionsComboBox = new JComboBox();
-
-        for(int i = 0; i < collections.size(); i++)
-        {
-            collectionsComboBox.addItem(collections.get(i).getTitle());
-        }
 
         //setting up the panel for the ENTIRE screen
 
@@ -107,6 +100,10 @@ public class HomePage extends JFrame
 
         JScrollPane collectionScroll = createCollectionScrollPane(collections);
         JScrollPane gameScroll = createGameScrollPane(coolGames);
+
+        //refresh button
+        refreshButton = new JButton("Refresh Collection Names");
+        refreshButton.addActionListener(lForButton);
 
         //create and delete collection buttons
 
@@ -215,7 +212,7 @@ public class HomePage extends JFrame
     }
 
     //constructor with parameters
-    public JPanel createGame(String title, String imageUrl, int minPlayerCount, int maxPlayerCount, int minPlaytime, int maxPlaytime, int minAge, double avgRating, String genre, String description, ArrayList<Review> reviews, Game game)
+    public JPanel createGame(String title, String imageUrl, int minPlayerCount, int maxPlayerCount, int minPlaytime, int maxPlaytime, int minAge, double avgRating, ArrayList<String> genre, String description, ArrayList<Review> reviews, Game game)
     {
         JLabel genreLabel, playerCountLabel, nameLabel, imageLabel, playtimeLabel, ageLabel, ratingLabel;
         JButton addButton, seeMoreButton;
@@ -229,7 +226,14 @@ public class HomePage extends JFrame
         Box buttonBox = Box.createHorizontalBox();
 
         nameLabel = new JLabel("Name: " + title);
-        genreLabel = new JLabel("Genre: " + genre);
+        genreLabel = new JLabel("Genre: " + genre.get(0));
+        for(int i = 1; i < 2; i++)
+        {
+            if(i < genre.size())
+            {
+                genreLabel.setText(genreLabel.getText() + ", " + genre.get(i));
+            }
+        }
         if(minPlayerCount != maxPlayerCount)
         {
             playerCountLabel = new JLabel("Player Count: " + minPlayerCount + " - " + maxPlayerCount);
@@ -250,6 +254,14 @@ public class HomePage extends JFrame
         ratingLabel = new JLabel("Avg Rating: " + avgRating + "/10");
         addButton = new JButton("Add To Collection");
         seeMoreButton = new JButton("Info/Rate");
+
+        JComboBox collectionsComboBox;
+        collectionsComboBox = new JComboBox();
+
+        for(int i = 0; i < collections.size(); i++)
+        {
+            collectionsComboBox.addItem(collections.get(i).getTitle());
+        }
 
 
 
@@ -342,8 +354,9 @@ public class HomePage extends JFrame
         buttonBox.add(Box.createHorizontalStrut(5));
         buttonBox.add(seeMoreButton);
 
-        addComp(gamePanel, infoBox, 1, 0, 1, 1, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE);
-        addComp(gamePanel, buttonBox, 1, 1, 1, 1, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE);
+
+        addComp(gamePanel, infoBox, 1, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+        addComp(gamePanel, buttonBox, 1, 1, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
 
 
         try{

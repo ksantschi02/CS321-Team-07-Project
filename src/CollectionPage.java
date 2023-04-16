@@ -105,7 +105,7 @@ public class CollectionPage extends JPanel
 
 
     //constructor with parameters
-    public JPanel createGame(String title, String imageUrl, int minPlayerCount, int maxPlayerCount, int minPlaytime, int maxPlaytime, int minAge, double avgRating, String genre, String description, ArrayList<Review> reviews)
+    public JPanel createGame(String title, String imageUrl, int minPlayerCount, int maxPlayerCount, int minPlaytime, int maxPlaytime, int minAge, double avgRating, ArrayList<String> genre, String description, ArrayList<Review> reviews)
     {
         JLabel genreLabel, playerCountLabel, nameLabel, imageLabel, playtimeLabel, ageLabel, ratingLabel;
         JButton addButton;
@@ -117,9 +117,27 @@ public class CollectionPage extends JPanel
         Box infoBox = Box.createVerticalBox();
 
         nameLabel = new JLabel("Name: " + title);
-        genreLabel = new JLabel("Genre: " + genre);
-        playerCountLabel = new JLabel("PlayerCount: " + minPlayerCount + " - " + maxPlayerCount);
-        playtimeLabel = new JLabel("Playtime: " + minPlaytime + " - " + maxPlaytime + " (mins)");
+        genreLabel = new JLabel("Genre: " + genre.get(0));
+        for(int i = 1; i < genre.size(); i++)
+        {
+            genreLabel.setText(genreLabel.getText() + ", " + genre.get(i));
+        }
+        if(minPlayerCount != maxPlayerCount)
+        {
+            playerCountLabel = new JLabel("Player Count: " + minPlayerCount + " - " + maxPlayerCount);
+        }
+        else
+        {
+            playerCountLabel = new JLabel("Player Count: " + maxPlayerCount);
+        }
+        if(minPlaytime != maxPlaytime)
+        {
+            playtimeLabel = new JLabel("Playtime: " + minPlaytime + " - " + maxPlaytime + " (mins)");
+        }
+        else
+        {
+            playtimeLabel = new JLabel("Playtime: " + maxPlaytime + " (mins)");
+        }
         ageLabel = new JLabel("Age: " + minAge + "+");
         ratingLabel = new JLabel("Avg Rating: " + avgRating + "/10");
 
