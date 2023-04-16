@@ -12,20 +12,29 @@ import java.util.ArrayList;
 public class ReviewPage extends JFrame
 {
 
-    JLabel reviewLabel;
-    JTextArea descriptionArea;
-    JFrame reviewFrame;
-    JPanel reviewPanel;
-    JButton backButton, setReviewButton;
-    BufferedImage reviewImage = null;
+
+    boolean addAvailable = true;
+    User currentUser;
 
 
-    public ReviewPage(String image, String description, ArrayList<Review> reviews)
+    public ReviewPage(String image, String description, ArrayList<Review> reviews, User user)
     {
+
+        JFrame reviewFrame;
         reviewFrame = new JFrame();
         reviewFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         reviewFrame.setLocationRelativeTo(null);
         reviewFrame.setTitle("ReviewPage");
+
+        JLabel reviewLabel;
+        JTextArea descriptionArea;
+        JPanel reviewPanel;
+        JButton backButton, addReviewButton;
+        BufferedImage reviewImage = null;
+
+        currentUser = user;
+
+        System.out.println(description);
 
         reviewPanel = new JPanel();
         reviewPanel.setLayout(new GridBagLayout());
@@ -33,14 +42,62 @@ public class ReviewPage extends JFrame
         descriptionArea = new JTextArea(description);
         descriptionArea.setLineWrap(true);
         descriptionArea.setWrapStyleWord(true);
-        descriptionArea.setSize(180, 300);
+        descriptionArea.setSize(500, 300);
         descriptionArea.setEditable(false);
+
+        backButton = new JButton("Back to Main Menu");
+        addReviewButton = new JButton("Add Review");
+
+        //listener class
+        class ListenForButton implements ActionListener
+        {
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == backButton)
+                {
+                    reviewFrame.dispose();
+                }
+                if (e.getSource() == addReviewButton)
+                {
+                    if(addAvailable == true) {
+                        JLabel authorLabel, ratingLabel;
+                        JTextArea contentArea, ratingArea;
+                        JPanel addReviewPanel = new JPanel();
+                        reviewPanel.setLayout(new GridBagLayout());
+                        Box infoBox = Box.createHorizontalBox();
+
+                        ratingArea = new JTextArea();
+                        authorLabel = new JLabel("Name: " + currentUser);
+                        ratingLabel = new JLabel("Rating: " + "/10");
+                        contentArea = new JTextArea();
+                        contentArea.setLineWrap(true);
+                        contentArea.setSize(440, 300);
+                        contentArea.setWrapStyleWord(true);
+                        contentArea.setEditable(true);
+
+                        infoBox.add(authorLabel);
+                        infoBox.add(Box.createHorizontalStrut(20));
+                        infoBox.add(ratingLabel);
+
+                        addComp(addReviewPanel, infoBox, 0, 0, 1, 1, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE);
+                        addComp(addReviewPanel, contentArea, 0, 1, 3, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE);
+
+                        Border reviewBorder = BorderFactory.createLineBorder(Color.black);
+                        addReviewPanel.setBorder(reviewBorder);
+                        addComp(reviewPanel, addReviewPanel, 0, 3, 2, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE);
+                        reviewFrame.pack();
+                        reviewPanel.revalidate();
+                    }
+                }
+            }
+        }
+
 
         JScrollPane reviewScrollPane = createReviewScrollPane(reviews);
 
-        backButton = new JButton("Back to Main Menu");
-        ReviewPage.ListenForButton lForButton = new ReviewPage.ListenForButton();
+        ListenForButton lForButton = new ListenForButton();
         backButton.addActionListener(lForButton);
+
+        addReviewButton.addActionListener(lForButton);
 
         try{
             URL url = new URL(image);
@@ -60,7 +117,8 @@ public class ReviewPage extends JFrame
         addComp(reviewPanel, reviewLabel, 0, 0, 1, 2, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE);
         addComp(reviewPanel, descriptionArea, 1, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE);
         addComp(reviewPanel, reviewScrollPane, 0, 2, 2, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE);
-        addComp(reviewPanel, backButton, 0, 3, 1, 1, GridBagConstraints.SOUTHWEST, GridBagConstraints.NONE);
+        addComp(reviewPanel, backButton, 0, 4, 1, 1, GridBagConstraints.SOUTHWEST, GridBagConstraints.NONE);
+        addComp(reviewPanel, addReviewButton, 1, 4, 1, 1, GridBagConstraints.SOUTHEAST, GridBagConstraints.NONE);
 
 
 
@@ -131,13 +189,5 @@ public class ReviewPage extends JFrame
         return reviewScrollPane;
     }
 
-    public class ListenForButton implements ActionListener
-    {
-        public void actionPerformed(ActionEvent e) {
-            if (e.getSource() == backButton) {
-                    reviewFrame.dispose();
-            }
 
-        }
-    }
 }
