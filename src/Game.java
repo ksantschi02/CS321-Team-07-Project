@@ -1,6 +1,7 @@
 /**
  *
  */
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 public class Game implements Cloneable{
 
@@ -14,7 +15,7 @@ public class Game implements Cloneable{
     private int minAge;   //game minimum age of the players
     private double avgRating;  //game average rating provided from the XML database
     private String title;  //game title from XML database
-    private String genre;   //game genre from XML database
+    private ArrayList<String> genre;   //game genre from XML database
     private String description;  //game description from XML database
     private String image;   //game image from XML database, really the path to the image
     private ArrayList<Review> reviews = new ArrayList<Review>();  //review list for the game
@@ -33,7 +34,7 @@ public class Game implements Cloneable{
      * @param some_image suggested number of minimum players that was read in from the XML database
      */
     public Game(int some_id, int some_minPlayers, int some_maxPlayers, int some_minPlaytime,
-                int some_maxPlaytime, int some_minAge, double some_avgRating, String some_title, String some_genre,
+                int some_maxPlaytime, int some_minAge, double some_avgRating, String some_title, ArrayList<String> some_genre,
                 String some_description, String some_image, ArrayList<Review> some_reviews)   //????? genre
     {
         //the following initializes the game object to that of the game that was read from the database
@@ -150,7 +151,7 @@ public class Game implements Cloneable{
      *
      * @return
      */
-    public String getGenre()
+    public ArrayList<String> getGenre()
     {
         return genre;
     }
