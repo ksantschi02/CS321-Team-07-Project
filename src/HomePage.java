@@ -22,7 +22,7 @@ public class HomePage extends JFrame
     private static final int FRAME_WIDTH = 500;
     private static final int FRAME_HEIGHT = 300;
 
-    JButton filterButton, saveButton, logoutButton, searchButton;
+    JButton filterButton, saveButton, logoutButton, searchButton, createCollectionButton, deleteCollectionButton;
 
     JTextField searchTextField;
 
@@ -38,10 +38,10 @@ public class HomePage extends JFrame
 
 
 
-    Game cool = new Game(12, 5, 10, 10, 30, 7, 7.5, "Cool Game", "Action", "Is cool", "https://cf.geekdo-images.com/DCLgJlrvB-EqL6A3WgQLMQ__original/img/vGpYcxjDBCOVcI0BcWOevspTQMQ=/0x0/filters:format(jpeg)/pic5715770.jpg", userReviews);
-    Game cool1 = new Game(12, 5, 10, 10, 30, 7, 7.5, "Cool Game", "Action", "Is cool", "https://cf.geekdo-images.com/DCLgJlrvB-EqL6A3WgQLMQ__original/img/vGpYcxjDBCOVcI0BcWOevspTQMQ=/0x0/filters:format(jpeg)/pic5715770.jpg", userReviews);
-    Game cool2 = new Game(12, 5, 10, 10, 30, 7, 7.5, "Cool Game", "Action", "Is cool", "https://cf.geekdo-images.com/DCLgJlrvB-EqL6A3WgQLMQ__original/img/vGpYcxjDBCOVcI0BcWOevspTQMQ=/0x0/filters:format(jpeg)/pic5715770.jpg", userReviews);
-    ArrayList<Game> coolGames = new ArrayList<>(Arrays.asList(cool, cool1, cool2));
+    //Game cool = new Game(12, 5, 10, 10, 30, 7, 7.5, "Cool Game", "Action", "Is cool", "https://cf.geekdo-images.com/DCLgJlrvB-EqL6A3WgQLMQ__original/img/vGpYcxjDBCOVcI0BcWOevspTQMQ=/0x0/filters:format(jpeg)/pic5715770.jpg", userReviews);
+    //Game cool1 = new Game(12, 5, 10, 10, 30, 7, 7.5, "Cool Game", "Action", "Is cool", "https://cf.geekdo-images.com/DCLgJlrvB-EqL6A3WgQLMQ__original/img/vGpYcxjDBCOVcI0BcWOevspTQMQ=/0x0/filters:format(jpeg)/pic5715770.jpg", userReviews);
+    //Game cool2 = new Game(12, 5, 10, 10, 30, 7, 7.5, "Cool Game", "Action", "Is cool", "https://cf.geekdo-images.com/DCLgJlrvB-EqL6A3WgQLMQ__original/img/vGpYcxjDBCOVcI0BcWOevspTQMQ=/0x0/filters:format(jpeg)/pic5715770.jpg", userReviews);
+    //ArrayList<Game> coolGames = new ArrayList<>(Arrays.asList(cool, cool1, cool2));
 
     Collection col1 = new Collection(1,"Rad", new ArrayList());
     Collection col2 = new Collection(2, "Bad", new ArrayList<>());
@@ -52,7 +52,11 @@ public class HomePage extends JFrame
     Collection col7 = new Collection(2, "Sad", new ArrayList<>());
     ArrayList<Collection> collections = new ArrayList<>(Arrays.asList(col1, col2, col3, col4, col5, col6, col7));
 
-    public HomePage()
+    JComboBox collectionsComboBox;
+
+    boolean refresh = false;
+
+    public HomePage(ArrayList<Game> coolGames)
     {
 
         //loginFrame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
@@ -63,8 +67,12 @@ public class HomePage extends JFrame
         homeFrame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
 
 
+        collectionsComboBox = new JComboBox();
 
-
+        for(int i = 0; i < collections.size(); i++)
+        {
+            collectionsComboBox.addItem(collections.get(i).getTitle());
+        }
 
         //setting up the panel for the ENTIRE screen
 
@@ -100,6 +108,16 @@ public class HomePage extends JFrame
         JScrollPane collectionScroll = createCollectionScrollPane(collections);
         JScrollPane gameScroll = createGameScrollPane(coolGames);
 
+        //create and delete collection buttons
+
+        Box collectionButtonBox = Box.createHorizontalBox();
+
+        createCollectionButton = new JButton("Create Collection");
+        deleteCollectionButton = new JButton("Delete Collection");
+
+        collectionButtonBox.add(createCollectionButton);
+        collectionButtonBox.add(Box.createHorizontalStrut(10));
+        collectionButtonBox.add(deleteCollectionButton);
 
         //putting all of them together
 
@@ -110,6 +128,15 @@ public class HomePage extends JFrame
         addComp(homePanel, gameScroll, 0, 2, 4, 2, GridBagConstraints.SOUTHWEST, GridBagConstraints.NONE);
 
         addComp(homePanel, collectionScroll, 0, 2, 4, 2, GridBagConstraints.SOUTHEAST, GridBagConstraints.NONE);
+
+        addComp(homePanel, collectionButtonBox, 3, 4, 1, 1, GridBagConstraints.SOUTHEAST, GridBagConstraints.NONE);
+
+
+        if(refresh == true)
+        {
+            gameScroll.revalidate();
+            refresh = false;
+        }
 
 
 
@@ -192,7 +219,7 @@ public class HomePage extends JFrame
     {
         JLabel genreLabel, playerCountLabel, nameLabel, imageLabel, playtimeLabel, ageLabel, ratingLabel;
         JButton addButton, seeMoreButton;
-        JComboBox collectionsComboBox;
+        JComboBox collectionsComboBoxGame;
         BufferedImage gameImage = null;
 
         JPanel gamePanel = new JPanel();
@@ -203,19 +230,27 @@ public class HomePage extends JFrame
 
         nameLabel = new JLabel("Name: " + title);
         genreLabel = new JLabel("Genre: " + genre);
-        playerCountLabel = new JLabel("PlayerCount: " + minPlayerCount + " - " + maxPlayerCount);
-        playtimeLabel = new JLabel("Playtime: " + minPlaytime + " - " + maxPlaytime + " (mins)");
+        if(minPlayerCount != maxPlayerCount)
+        {
+            playerCountLabel = new JLabel("Player Count: " + minPlayerCount + " - " + maxPlayerCount);
+        }
+        else
+        {
+            playerCountLabel = new JLabel("Player Count: " + maxPlayerCount);
+        }
+        if(minPlaytime != maxPlaytime)
+        {
+            playtimeLabel = new JLabel("Playtime: " + minPlaytime + " - " + maxPlaytime + " (mins)");
+        }
+        else
+        {
+            playtimeLabel = new JLabel("Playtime: " + maxPlaytime + " (mins)");
+        }
         ageLabel = new JLabel("Age: " + minAge + "+");
         ratingLabel = new JLabel("Avg Rating: " + avgRating + "/10");
         addButton = new JButton("Add To Collection");
         seeMoreButton = new JButton("Info/Rate");
 
-        collectionsComboBox = new JComboBox();
-
-        for(int i = 0; i < collections.size(); i++)
-        {
-            collectionsComboBox.addItem(collections.get(i).getTitle());
-        }
 
 
 
@@ -226,23 +261,31 @@ public class HomePage extends JFrame
             {
                 if (e.getSource() == addButton)
                 {
+
+                    boolean canAddGame = true;
+
                     for(int i = 0; i < collections.size(); i++)
                     {
                         if(collections.get(i).getTitle() == collectionsComboBox.getSelectedItem())
                         {
-                            collections.get(i).addGame(game);
-                            JOptionPane.showMessageDialog(null, "Collection added to: " + collections.get(i).getTitle());
+                            for(int j = 0; j < collections.get(i).getSize(); j++)
+                            {
+                                if(collections.get(i).getGames().get(j).getTitle() == game.getTitle())
+                                {
+                                    canAddGame = false;
+                                }
+                            }
+                            if(canAddGame == true)
+                            {
+                                collections.get(i).addGame(game);
+                                JOptionPane.showMessageDialog(null, "Game Added to Collection: " + collections.get(i).getTitle());
+                            }
+                            else
+                            {
+                                JOptionPane.showMessageDialog(null, "Game Is Already In Collection: " + collections.get(i).getTitle());
+                            }
                         }
                     }
-                }
-                if (e.getSource() == collectionsComboBox)
-                {
-                    collectionsComboBox.removeAllItems();
-                    for(int i = 0; i < collections.size(); i++)
-                    {
-                        collectionsComboBox.addItem(collections.get(i).getTitle());
-                    }
-                    gamePanel.revalidate();
                 }
                 if (e.getSource() == seeMoreButton)
                 {
@@ -251,9 +294,35 @@ public class HomePage extends JFrame
             }
         }
 
+        class ListenForPopUp implements PopupMenuListener
+        {
+            @Override
+            public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+                collectionsComboBox.removeAllItems();
+                for(int i = 0; i < collections.size(); i++)
+                {
+                    collectionsComboBox.addItem(collections.get(i).getTitle());
+                }
+                refresh = true;
+            }
+
+            @Override
+            public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+
+            }
+
+            @Override
+            public void popupMenuCanceled(PopupMenuEvent e) {
+
+            }
+        }
+
+
         ListenForGameButton lForButton = new ListenForGameButton();
+        ListenForPopUp lForPopUp = new ListenForPopUp();
         addButton.addActionListener(lForButton);
         seeMoreButton.addActionListener(lForButton);
+        collectionsComboBox.addPopupMenuListener(lForPopUp);
 
         infoBox.add(nameLabel);
         infoBox.add(Box.createVerticalStrut(1));
@@ -307,8 +376,8 @@ public class HomePage extends JFrame
             gameBox.add(Box.createVerticalStrut(2));
         }
 
-        JScrollPane gameScrollPane = new JScrollPane(gameBox, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        gameScrollPane.setPreferredSize(new Dimension(460, 220));
+        JScrollPane gameScrollPane = new JScrollPane(gameBox, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        gameScrollPane.setPreferredSize(new Dimension(460, 420));
 
         return gameScrollPane;
     }
@@ -359,6 +428,13 @@ public class HomePage extends JFrame
                 if(collectionName != " " && collectionName != null)
                 {
                     collectionTitle.setText(collectionName);
+                    for(int i = 0; i < collections.size(); i++)
+                    {
+                        if(collections.get(i).getTitle() == previousCollectionName)
+                        {
+                            collections.get(i).editTitle(collectionName);
+                        }
+                    }
                 }
                 else
                 {
@@ -392,7 +468,7 @@ public class HomePage extends JFrame
         }
         
         JScrollPane collectionScroll = new JScrollPane(collectionBox, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        collectionScroll.setPreferredSize(new Dimension(170, 220));
+        collectionScroll.setPreferredSize(new Dimension(170, 420));
         
         return collectionScroll;
     }

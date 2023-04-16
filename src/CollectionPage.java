@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -20,8 +21,9 @@ public class CollectionPage extends JPanel
 
     User Jim = new User("CoolGuy47", "1234");
 
+    JComboBox userRank = new JComboBox();
 
-    public CollectionPage(Collection collection,String title)
+    public CollectionPage(Collection collection, String title)
     {
         collectionFrame = new JFrame();
 
@@ -38,6 +40,11 @@ public class CollectionPage extends JPanel
         JPanel searchPanel = new JPanel();
 
         searchPanel.setLayout(new FlowLayout());
+
+        for(int i = 0; i < collection.getSize(); i++)
+        {
+            userRank.addItem(i + 1);
+        }
 
         filterButton = new JButton("Filter");
         searchPanel.add(filterButton);
@@ -63,13 +70,14 @@ public class CollectionPage extends JPanel
         JScrollPane gameScroll = createGameScrollPane(Jim.getCollection(title).getGames());
 
 
+
+
         //putting all of them together
 
         collectionFrame.add(collectionPanel);
 
-        addComp(collectionPanel, searchPanel, 0, 0, 8, 2, GridBagConstraints.NORTH, GridBagConstraints.NONE);
-
-        addComp(collectionPanel, gameScroll, 0, 2, 4, 2, GridBagConstraints.SOUTH, GridBagConstraints.NONE);
+        addComp(collectionPanel, searchPanel, 0, 0, 3, 1, GridBagConstraints.NORTH, GridBagConstraints.NONE);
+        addComp(collectionPanel, gameScroll, 0, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE);
 
 
 
@@ -115,7 +123,12 @@ public class CollectionPage extends JPanel
         ageLabel = new JLabel("Age: " + minAge + "+");
         ratingLabel = new JLabel("Avg Rating: " + avgRating + "/10");
 
+        JComboBox userIndRank = new JComboBox<>();
 
+        for(int i = 0; i < userRank.getItemCount(); i++)
+        {
+            userIndRank.addItem(userRank.getItemAt(i));
+        }
 
         class ListenForGameButton implements ActionListener
         {
@@ -142,6 +155,7 @@ public class CollectionPage extends JPanel
 
 
         addComp(gamePanel, infoBox, 1, 0, 1, 1, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE);
+        addComp(gamePanel, userIndRank, 1, 1, 1,1, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE);
 
 
         try{
@@ -175,7 +189,7 @@ public class CollectionPage extends JPanel
         }
 
         JScrollPane gameScrollPane = new JScrollPane(gameBox, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        gameScrollPane.setPreferredSize(new Dimension(400, 220));
+        gameScrollPane.setPreferredSize(new Dimension(400, 420));
 
         return gameScrollPane;
     }

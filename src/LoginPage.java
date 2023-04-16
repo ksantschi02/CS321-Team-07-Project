@@ -3,6 +3,7 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class LoginPage extends JFrame{
 
@@ -19,12 +20,16 @@ public class LoginPage extends JFrame{
     private static final int FRAME_WIDTH = 500;
     private static final int FRAME_HEIGHT = 300;
 
-    public LoginPage() {
+    ArrayList<Game> loginGames;
+
+    public LoginPage(ArrayList<Game> games) {
 
         //loginFrame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
         loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         loginFrame.setLocationRelativeTo(null);
         loginFrame.setTitle("LoginPage");
+
+        loginGames = games;
 
         // create panel and login text
 
@@ -106,7 +111,7 @@ public class LoginPage extends JFrame{
                 if(Username.equals("Michael") && Password.equals("123"))
                 {
                     JOptionPane.showMessageDialog(null, "Login Successful");
-                    new HomePage();
+                    new HomePage(loginGames);
                     loginFrame.dispose();
                 }
                 else

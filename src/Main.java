@@ -3,6 +3,9 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String[] args)
     {
-        new HomePage();
+        Database data = new Database();
+        data.readGameList();
+        new HomePage(data.getGameList());
+
     }
 }
