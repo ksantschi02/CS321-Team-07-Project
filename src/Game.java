@@ -1,6 +1,7 @@
 /**
  *
  */
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 public class Game implements Cloneable{
 
@@ -14,7 +15,7 @@ public class Game implements Cloneable{
     private int minAge;   //game minimum age of the players
     private double avgRating;  //game average rating provided from the XML database
     private String title;  //game title from XML database
-    private String genre;   //game genre from XML database
+    private ArrayList<String> genre;   //game genre from XML database
     private String description;  //game description from XML database
     private String image;   //game image from XML database, really the path to the image
     private ArrayList<Review> reviews = new ArrayList<Review>();  //review list for the game
