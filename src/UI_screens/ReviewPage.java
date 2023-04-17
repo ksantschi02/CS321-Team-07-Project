@@ -138,9 +138,9 @@ public class ReviewPage extends JFrame
                     if(avoid != null)
                     {
                         int selection = Integer.parseInt(avoid);
-                        if((selection - 1) <= reviews.size())
+                        if((selection - 1) < reviews.size())
                         {
-                            Object[] options = {"Change Rating", "Change Review", "Delete Rating"};
+                            Object[] options = {"Change Rating", "Change Review", "Delete Review"};
                             int x = JOptionPane.showOptionDialog(null,"What would you like to edit?", "Edit Review", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, null);
                             if(x == 0)
                             {
