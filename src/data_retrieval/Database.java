@@ -8,6 +8,10 @@ import org.w3c.dom.*;
 import program_users.User;
 
 import javax.xml.parsers.*;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 
 public class Database {
@@ -218,6 +222,14 @@ public class Database {
                     }
                 }
             }
+            TransformerFactory tFactory = TransformerFactory.newInstance();
+            Transformer transformer = tFactory.newTransformer();
+            StringWriter writer = new StringWriter();
+            transformer.transform(new DOMSource(doc), new StreamResult(writer));
+            String output = writer.getBuffer().toString();
+            FileWriter fileWriter = new FileWriter("C:/temp/gamelist.xml");
+            fileWriter.write(output);
+            fileWriter.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -228,8 +240,8 @@ public class Database {
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(inputFile);
             doc.getDocumentElement().normalize();
-            Node users = (doc.getElementsByTagName("users")).item(0);
-            NodeList nList = users.getChildNodes();
+            Node users = doc.getFirstChild();
+            NodeList nList = doc.getElementsByTagName("user");
             ArrayList<User> userListTemp = new ArrayList<>();
             for (User u : userList) {
                 userListTemp.add(new User(u));
@@ -294,6 +306,14 @@ public class Database {
                 }
                 users.appendChild(user);
             }
+            TransformerFactory tFactory = TransformerFactory.newInstance();
+            Transformer transformer = tFactory.newTransformer();
+            StringWriter writer = new StringWriter();
+            transformer.transform(new DOMSource(doc), new StreamResult(writer));
+            String output = writer.getBuffer().toString();
+            FileWriter fileWriter = new FileWriter("C:/temp/userlist.xml");
+            fileWriter.write(output);
+            fileWriter.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
