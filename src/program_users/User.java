@@ -1,5 +1,8 @@
+package program_users;
+
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
+import game_info.*;
+
 
 public class User {
     private String username;

@@ -1,3 +1,7 @@
+package UI_screens;
+
+import game_info.Review;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -8,6 +12,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import program_users.*;
 
 public class ReviewPage extends JFrame
 {

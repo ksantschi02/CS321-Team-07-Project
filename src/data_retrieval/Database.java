@@ -1,5 +1,12 @@
+package data_retrieval;
+
 import java.util.ArrayList;
+import game_info.Collection;
+import game_info.Game;
+import game_info.Review;
 import org.w3c.dom.*;
+import program_users.User;
+
 import javax.xml.parsers.*;
 import java.io.*;
 

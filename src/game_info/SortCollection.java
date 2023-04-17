@@ -1,3 +1,5 @@
+package game_info;
+
 import java.util.Comparator;
 
 /**

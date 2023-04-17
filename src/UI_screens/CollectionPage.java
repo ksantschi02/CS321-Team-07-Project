@@ -1,3 +1,10 @@
+package UI_screens;
+
+
+import game_info.Collection;
+import game_info.Game;
+import program_users.User;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -9,6 +16,7 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.ArrayList;
+import game_info.*;
 
 public class CollectionPage extends JPanel
 {

@@ -1,3 +1,5 @@
+package program_users;
+
 public class Admin extends User {
     private boolean admin;
 

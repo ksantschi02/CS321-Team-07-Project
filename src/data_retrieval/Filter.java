@@ -1,9 +1,11 @@
+package data_retrieval;
+
 import java.util.ArrayList;
 import java.util.Collections;
-
+import game_info.*;
 public class Filter {
-    protected int sortType;
-    protected int filterType;
+    public int sortType;
+    public int filterType;
 
     /*
      * Constructor called for individual collection
