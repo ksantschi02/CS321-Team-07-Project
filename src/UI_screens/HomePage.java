@@ -32,6 +32,7 @@ public class HomePage extends JFrame
 
     JFrame homeFrame = new JFrame();
 
+    Box collectionBox = Box.createVerticalBox();
     Database homepageData;
     ArrayList<Collection> collections;
     User currentUser;
@@ -72,6 +73,7 @@ public class HomePage extends JFrame
 
         searchButton = new JButton("Search");
         searchPanel.add(searchButton);
+        searchButton.addActionListener(lForButton);
 
         logoutButton = new JButton("Logout");
         searchPanel.add(logoutButton);
@@ -79,11 +81,89 @@ public class HomePage extends JFrame
 
         saveButton = new JButton("Save");
         searchPanel.add(saveButton);
+        saveButton.addActionListener(lForButton);
+
+        createCollectionButton = new JButton("Create Collection");
+        deleteCollectionButton = new JButton("Delete Collection");
 
         //importing both
 
         JScrollPane collectionScroll = createCollectionScrollPane(collections);
         JScrollPane gameScroll = createGameScrollPane(coolGames);
+        class ListenForHomePageButton implements ActionListener
+        {
+
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                if(e.getSource() == createCollectionButton)
+                {
+                    boolean sameCol = false;
+                    String newCollection = JOptionPane.showInputDialog(null, "Please enter the name of the Collection");
+                    if(newCollection != null)
+                    {
+                        for(int i = 0; i < currentUser.getCollections().size(); i++)
+                        {
+                            if(currentUser.getCollections().get(i).getTitle() == newCollection)
+                            {
+                                sameCol = true;
+                            }
+                        }
+                        if(sameCol == true)
+                        {
+                            JOptionPane.showMessageDialog(null, "Name is already being used.");
+                            sameCol = false;
+                        }
+                        else
+                        {
+                            currentUser.addCollection(new Collection(1, 1, newCollection, new ArrayList<Game>()));
+                            collectionBox.removeAll();
+                            for(int i = 0; i < collections.size(); i++)
+                            {
+                                collectionBox.add(createCollection(collections.get(i).getTitle(), collections.get(i)));
+                                collectionBox.add(Box.createVerticalStrut(2));
+                            }
+                            collectionScroll.revalidate();
+                        }
+                    }
+                    else
+                    {
+                        JOptionPane.showMessageDialog(null, "Invalid Input. Try Again.");
+                    }
+
+
+                }
+                if(e.getSource() == deleteCollectionButton)
+                {
+                    String deleteCollection = JOptionPane.showInputDialog(null, "Please enter the name of the Collection you'd like deleted");
+                    if(deleteCollection != null)
+                    {
+                        for(int i = 0; i < currentUser.getCollections().size(); i++)
+                        {
+                            if(currentUser.getCollections().get(i).getTitle() == deleteCollection)
+                            {
+                                collections.remove(currentUser.getCollections().get(i));
+                                collectionBox.removeAll();
+                                for(int j = 0; j < collections.size(); j++)
+                                {
+                                    collectionBox.add(createCollection(collections.get(j).getTitle(), collections.get(j)));
+                                    collectionBox.add(Box.createVerticalStrut(2));
+                                }
+                                collectionScroll.revalidate();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        JOptionPane.showMessageDialog(null, "Collection doesn't exist");
+                    }
+
+                }
+            }
+        }
+
+        ListenForHomePageButton lforhomepage = new ListenForHomePageButton();
+
 
         //refresh button
         refreshButton = new JButton("Refresh Collection Names");
@@ -93,8 +173,8 @@ public class HomePage extends JFrame
 
         Box collectionButtonBox = Box.createHorizontalBox();
 
-        createCollectionButton = new JButton("Create Collection");
-        deleteCollectionButton = new JButton("Delete Collection");
+        createCollectionButton.addActionListener(lforhomepage);
+        deleteCollectionButton.addActionListener(lforhomepage);
 
         collectionButtonBox.add(createCollectionButton);
         collectionButtonBox.add(Box.createHorizontalStrut(10));
@@ -144,56 +224,6 @@ public class HomePage extends JFrame
 
     }
 
-    //base constructor (used to test things)
-    private JPanel createGame()
-    {
-        JLabel genreLabel, playerCountLabel, nameLabel, imageLabel, playtimeLabel, ageLabel, avgRating;
-        BufferedImage gameImage = null;
-
-        JPanel gamePanel = new JPanel();
-        gamePanel.setLayout(new GridBagLayout());
-
-        Box infoBox = Box.createVerticalBox();
-
-        nameLabel = new JLabel("Name: Creatures of the Deep");
-        genreLabel = new JLabel("Genre: Action");
-        playerCountLabel = new JLabel("PlayerCount: 5 - 10");
-        playtimeLabel = new JLabel("Playtime: 10mins - 1hr");
-        ageLabel = new JLabel("Age: 10 - 30+");
-        avgRating = new JLabel("Avg Rating: 7.4/10");
-
-        infoBox.add(nameLabel);
-        infoBox.add(Box.createVerticalStrut(1));
-        infoBox.add(genreLabel);
-        infoBox.add(Box.createVerticalStrut(1));
-        infoBox.add(playerCountLabel);
-        infoBox.add(Box.createVerticalStrut(1));
-        infoBox.add(playtimeLabel);
-        infoBox.add(Box.createVerticalStrut(1));
-        infoBox.add(ageLabel);
-        infoBox.add(Box.createVerticalStrut(1));
-        infoBox.add(avgRating);
-
-        addComp(gamePanel, infoBox, 2, 0, 1, 1, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE);
-
-        try{
-            URL url = new URL("https://cf.geekdo-images.com/DCLgJlrvB-EqL6A3WgQLMQ__original/img/vGpYcxjDBCOVcI0BcWOevspTQMQ=/0x0/filters:format(jpeg)/pic5715770.jpg");
-            gameImage = ImageIO.read(url);
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        Image newGameImg = gameImage.getScaledInstance(140,140, Image.SCALE_SMOOTH);
-        ImageIcon gameIcon = new ImageIcon(newGameImg);
-        imageLabel = new JLabel(gameIcon);
-        addComp(gamePanel, imageLabel, 0, 0, 2, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
-
-        Border gameBorder = BorderFactory.createLineBorder(Color.black);
-        gamePanel.setBorder(gameBorder);
-
-        return gamePanel;
-    }
 
     //constructor with parameters
     public JPanel createGame(String title, String imageUrl, int minPlayerCount, int maxPlayerCount, int minPlaytime, int maxPlaytime, int minAge, double avgRating, ArrayList<String> genre, String description, ArrayList<Review> reviews, Game game)
@@ -464,7 +494,6 @@ public class HomePage extends JFrame
 
     public JScrollPane createCollectionScrollPane(ArrayList<Collection> collections)
     {
-        Box collectionBox = Box.createVerticalBox();
         
         for(int i = 0; i < collections.size(); i++)
         {
