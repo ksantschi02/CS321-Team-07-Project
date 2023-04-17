@@ -70,7 +70,7 @@ public class LoginPage extends JFrame{
                     if(isUser == true)
                     {
                         JOptionPane.showMessageDialog(null, "Login Successful");
-                        new HomePage(loginGames, CurrentUser);
+                        new HomePage(loginGames, CurrentUser, loginData);
                         loginFrame.dispose();
                         isUser = false;
                     }

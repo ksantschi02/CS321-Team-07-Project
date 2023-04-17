@@ -1,6 +1,7 @@
 package UI_screens;
 
-
+import data_retrieval.*;
+import data_retrieval.Database;
 import game_info.Collection;
 import game_info.Game;
 import program_users.User;
@@ -27,16 +28,21 @@ public class CollectionPage extends JPanel
     JTextField searchTextField;
     JFrame collectionFrame;
 
-    User Jim = new User("CoolGuy47", "1234");
+
 
     JComboBox userRank = new JComboBox();
+    Database collectionData;
+    User currentUser;
 
-    public CollectionPage(Collection collection, String title)
+    public CollectionPage(Collection collection, String title, Database data, User user)
     {
         collectionFrame = new JFrame();
 
         collectionFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         collectionFrame.setTitle(title);
+
+        collectionData = data;
+        currentUser = user;
 
         JPanel collectionPanel = new JPanel();
 
@@ -72,9 +78,9 @@ public class CollectionPage extends JPanel
 
         //importing games and collections
 
-        Jim.addCollection(collection);
+        currentUser.addCollection(collection);
 
-        JScrollPane gameScroll = createGameScrollPane(Jim.getCollection(title).getGames());
+        JScrollPane gameScroll = createGameScrollPane(currentUser.getCollection(title).getGames());
 
 
 
@@ -227,7 +233,7 @@ public class CollectionPage extends JPanel
         {
             if (e.getSource() == backButton)
             {
-
+                collectionData.saveDatabase();
                 collectionFrame.dispose();
 
             }

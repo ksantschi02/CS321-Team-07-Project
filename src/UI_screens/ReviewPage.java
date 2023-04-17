@@ -1,5 +1,6 @@
 package UI_screens;
-
+import data_retrieval.*;
+import data_retrieval.Database;
 import game_info.Review;
 
 import javax.imageio.ImageIO;
@@ -23,7 +24,7 @@ public class ReviewPage extends JFrame
     Box reviewBox = Box.createVerticalBox();
 
 
-    public ReviewPage(String image, String description, ArrayList<Review> reviews, User user)
+    public ReviewPage(String image, String description, ArrayList<Review> reviews, User user, Database data)
     {
 
         JFrame reviewFrame;
@@ -72,6 +73,7 @@ public class ReviewPage extends JFrame
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == backButton)
                 {
+                    data.saveDatabase();
                     reviewFrame.dispose();
                 }
                 if (e.getSource() == addReviewButton)

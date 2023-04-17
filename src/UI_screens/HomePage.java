@@ -1,6 +1,6 @@
 package UI_screens;
 
-
+import data_retrieval.*;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -32,12 +32,12 @@ public class HomePage extends JFrame
 
     JFrame homeFrame = new JFrame();
 
-
+    Database homepageData;
     ArrayList<Collection> collections;
     User currentUser;
     boolean refresh = false;
 
-    public HomePage(ArrayList<Game> coolGames, User user)
+    public HomePage(ArrayList<Game> coolGames, User user, Database data)
     {
 
         //loginFrame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
@@ -48,7 +48,7 @@ public class HomePage extends JFrame
         collections = user.getCollections();
 
         currentUser = user;
-
+        homepageData = data;
         //setting up the panel for the ENTIRE screen
 
         JPanel homePanel = new JPanel();
@@ -293,7 +293,7 @@ public class HomePage extends JFrame
                 }
                 if (e.getSource() == seeMoreButton)
                 {
-                    new ReviewPage(imageUrl, description, reviews, currentUser);
+                    new ReviewPage(imageUrl, description, reviews, currentUser, homepageData);
                 }
             }
         }
@@ -411,7 +411,7 @@ public class HomePage extends JFrame
                    {
                        if (collections.get(i).getTitle() == collection.getTitle())
                        {
-                           new CollectionPage(collections.get(i), collections.get(i).getTitle());
+                           new CollectionPage(collections.get(i), collections.get(i).getTitle(), homepageData, currentUser);
                        }
                    }
                 }
@@ -488,15 +488,14 @@ public class HomePage extends JFrame
                int answer = JOptionPane.showConfirmDialog(null, "Are you sure?");
                if(answer == JOptionPane.YES_OPTION)
                {
+                   homepageData.saveDatabase();
                    homeFrame.dispose();
                }
             }
+            // Where to make Filter Frame
             if (e.getSource() == filterButton)
             {
                 filterFrame = new JFrame();
-
-
-                filterFrame.setLocationRelativeTo(null);
                 filterFrame.setTitle("FilterPage");
 
                 filterPanel = new JPanel();
@@ -511,15 +510,17 @@ public class HomePage extends JFrame
 
                 filterFrame.add(filterPanel);
                 filterFrame.pack();
+                filterFrame.setLocationRelativeTo(null);
                 filterFrame.setVisible(true);
             }
+            // Where to implement Search Feature
             if (e.getSource() == searchButton)
             {
 
             }
             if (e.getSource() == saveButton)
             {
-
+                homepageData.saveDatabase();
             }
         }
 
