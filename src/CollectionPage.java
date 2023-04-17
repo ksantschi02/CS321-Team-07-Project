@@ -28,7 +28,6 @@ public class CollectionPage extends JPanel
         collectionFrame = new JFrame();
 
         collectionFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        collectionFrame.setLocationRelativeTo(null);
         collectionFrame.setTitle(title);
 
         JPanel collectionPanel = new JPanel();
@@ -82,6 +81,7 @@ public class CollectionPage extends JPanel
 
 
         collectionFrame.pack();
+        collectionFrame.setLocationRelativeTo(null);
         collectionFrame.setVisible(true);
     }
 

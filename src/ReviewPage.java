@@ -15,6 +15,7 @@ public class ReviewPage extends JFrame
 
     boolean addAvailable = true;
     User currentUser;
+    Box reviewBox = Box.createVerticalBox();
 
 
     public ReviewPage(String image, String description, ArrayList<Review> reviews, User user)
@@ -23,30 +24,42 @@ public class ReviewPage extends JFrame
         JFrame reviewFrame;
         reviewFrame = new JFrame();
         reviewFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        reviewFrame.setLocationRelativeTo(null);
         reviewFrame.setTitle("ReviewPage");
 
         JLabel reviewLabel;
         JTextArea descriptionArea;
-        JPanel reviewPanel;
-        JButton backButton, addReviewButton;
+        JPanel bigReviewPanel;
+        JButton backButton, addReviewButton, editButton;
         BufferedImage reviewImage = null;
 
         currentUser = user;
 
-        System.out.println(description);
-
-        reviewPanel = new JPanel();
-        reviewPanel.setLayout(new GridBagLayout());
+        bigReviewPanel = new JPanel();
+        bigReviewPanel.setLayout(new GridBagLayout());
 
         descriptionArea = new JTextArea(description);
         descriptionArea.setLineWrap(true);
         descriptionArea.setWrapStyleWord(true);
-        descriptionArea.setSize(500, 300);
+        descriptionArea.setSize(650, 350);
         descriptionArea.setEditable(false);
 
         backButton = new JButton("Back to Main Menu");
         addReviewButton = new JButton("Add Review");
+        editButton = new JButton("Edit Review");
+
+        //for addReviewPanel
+        JButton finishChangesButton, deleteButton;
+        finishChangesButton = new JButton("Finish Changes");
+        deleteButton = new JButton("Delete Review");
+        String[] ratings = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
+        JComboBox ratingComboBox;
+        ratingComboBox = new JComboBox(ratings);
+        JLabel ratingLabel;
+        ratingLabel = new JLabel("Rating: ");
+        JTextArea contentArea;
+        contentArea = new JTextArea();
+
+        JScrollPane reviewScrollPane = createReviewScrollPane(reviews);
 
         //listener class
         class ListenForButton implements ActionListener
@@ -58,46 +71,150 @@ public class ReviewPage extends JFrame
                 }
                 if (e.getSource() == addReviewButton)
                 {
-                    if(addAvailable == true) {
-                        JLabel authorLabel, ratingLabel;
-                        JTextArea contentArea, ratingArea;
+                    if(addAvailable == true)
+                    {
+                        ratingComboBox.setVisible(true);
+                        finishChangesButton.setVisible(true);
+                        deleteButton.setVisible(true);
+                        JLabel authorLabel, interiorReviewLabel;
                         JPanel addReviewPanel = new JPanel();
-                        reviewPanel.setLayout(new GridBagLayout());
+                        addReviewPanel.setLayout(new GridBagLayout());
                         Box infoBox = Box.createHorizontalBox();
-
-                        ratingArea = new JTextArea();
-                        authorLabel = new JLabel("Name: " + currentUser);
-                        ratingLabel = new JLabel("Rating: " + "/10");
-                        contentArea = new JTextArea();
+                        authorLabel = new JLabel("Name: " + currentUser.getUser());
+                        interiorReviewLabel = new JLabel("Review: ");
                         contentArea.setLineWrap(true);
-                        contentArea.setSize(440, 300);
+                        contentArea.setSize(250, 100);
                         contentArea.setWrapStyleWord(true);
                         contentArea.setEditable(true);
 
+
+
                         infoBox.add(authorLabel);
                         infoBox.add(Box.createHorizontalStrut(20));
-                        infoBox.add(ratingLabel);
+                        infoBox.add(interiorReviewLabel);
+                        infoBox.add(Box.createHorizontalStrut(5));
+                        infoBox.add(ratingComboBox);
 
-                        addComp(addReviewPanel, infoBox, 0, 0, 1, 1, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE);
-                        addComp(addReviewPanel, contentArea, 0, 1, 3, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE);
+                        addComp(addReviewPanel, infoBox, 0, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+                        addComp(addReviewPanel, contentArea, 0, 1, 3, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+                        addComp(addReviewPanel, deleteButton, 2, 2, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+                        addComp(addReviewPanel, finishChangesButton, 1, 2, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
 
                         Border reviewBorder = BorderFactory.createLineBorder(Color.black);
                         addReviewPanel.setBorder(reviewBorder);
-                        addComp(reviewPanel, addReviewPanel, 0, 3, 2, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE);
-                        reviewFrame.pack();
-                        reviewPanel.revalidate();
+                        reviewBox.add(addReviewPanel);
+                        reviewScrollPane.revalidate();
+                        addAvailable = false;
                     }
+                }
+                if(e.getSource() == finishChangesButton)
+                {
+                    addAvailable = true;
+                    Review newReview = new Review(Double.parseDouble(ratingComboBox.getSelectedItem().toString()), contentArea.getText(), currentUser.getUser());
+                    reviews.add(newReview);
+                    reviewBox.remove(reviewBox.getComponentCount() - 1); //remove addReviewPanel
+                    reviewBox.add(createReview(newReview)); //add new one
+                    ratingComboBox.setVisible(false);
+                    finishChangesButton.setVisible(false);
+                    deleteButton.setVisible(false);
+                    contentArea.setText("");
+                    reviewScrollPane.revalidate();
+                }
+                if(e.getSource() == deleteButton)
+                {
+                    addAvailable = true;
+                    reviewBox.remove(reviewBox.getComponentCount() - 1); //remove the review being edited
+                    reviewScrollPane.revalidate();
+                }
+                if(e.getSource() == editButton)
+                {
+                    addAvailable = false;
+                    String avoid = JOptionPane.showInputDialog(null, "Please type the number for the Review");
+                    if(avoid != null)
+                    {
+                        int selection = Integer.parseInt(avoid);
+                        if((selection - 1) <= reviews.size())
+                        {
+                            Object[] options = {"Change Rating", "Change Review", "Delete Rating"};
+                            int x = JOptionPane.showOptionDialog(null,"What would you like to edit?", "Edit Review", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, null);
+                            if(x == 0)
+                            {
+                                String avoidRating = JOptionPane.showInputDialog(null, "Enter a new rating (1-10)");
+                                if(avoidRating != null)
+                                {
+                                    double editRating = Double.parseDouble(avoidRating);
+                                    if((editRating >= 1) && (editRating <= 10) && (reviews.get(selection - 1).getAuthor() == currentUser.getUser()) )
+                                    {
+                                        reviews.get(selection - 1).editRating(editRating);
+                                        reviewBox.removeAll();
+                                        for(int i = 0; i < reviews.size(); i++)
+                                        {
+                                            reviewBox.add(createReview(reviews.get(i)));
+                                            reviewBox.add(Box.createVerticalStrut(2));
+                                        }
+                                        reviewScrollPane.revalidate();
+                                    }
+                                    else
+                                    {
+                                        JOptionPane.showMessageDialog(null, "Invalid operation. Please try again.");
+                                    }
+                                }
+                            }
+                            else if(x == 1)
+                            {
+                                String editReview = JOptionPane.showInputDialog(null, "Enter a new review", "new review");
+                                if(editReview != null)
+                                {
+                                    if((!(editReview.isEmpty())) && (reviews.get(selection - 1).getAuthor() == currentUser.getUser()))
+                                    {
+                                        reviews.get(selection - 1).editContent(editReview);
+                                        reviewBox.removeAll();
+                                        for(int i = 0; i < reviews.size(); i++)
+                                        {
+                                            reviewBox.add(createReview(reviews.get(i)));
+                                            reviewBox.add(Box.createVerticalStrut(2));
+                                        }
+                                        reviewScrollPane.revalidate();
+                                    }
+                                    else
+                                    {
+                                        JOptionPane.showMessageDialog(null, "Invalid operation. Please try again.");
+                                    }
+                                }
+                            }
+                            else if(x == 2)
+                            {
+                                if(reviews.get(selection - 1).getAuthor() == currentUser.getUser())
+                                {
+                                    reviewBox.remove(selection - 1);
+                                    reviews.remove(selection - 1);
+                                    reviewScrollPane.revalidate();
+                                }
+                                else
+                                {
+                                    JOptionPane.showMessageDialog(null, "You cannot delete other users' reviews!");
+                                }
+                            }
+                        }
+                        else
+                        {
+                            JOptionPane.showMessageDialog(null, "There are currently no reviews at that position.");
+                        }
+                    }
+
+                    addAvailable = true;
                 }
             }
         }
 
 
-        JScrollPane reviewScrollPane = createReviewScrollPane(reviews);
-
         ListenForButton lForButton = new ListenForButton();
         backButton.addActionListener(lForButton);
-
         addReviewButton.addActionListener(lForButton);
+        editButton.addActionListener(lForButton);
+
+        finishChangesButton.addActionListener(lForButton);
+        deleteButton.addActionListener(lForButton);
 
         try{
             URL url = new URL(image);
@@ -107,22 +224,24 @@ public class ReviewPage extends JFrame
         {
             e.printStackTrace();
         }
-        Image newGameImg = reviewImage.getScaledInstance(200,180, Image.SCALE_SMOOTH);
+        Image newGameImg = reviewImage.getScaledInstance(descriptionArea.getWidth() - 250, descriptionArea.getHeight(), Image.SCALE_SMOOTH);
         ImageIcon reviewIcon = new ImageIcon(newGameImg);
         reviewLabel = new JLabel(reviewIcon);
 
 
-        reviewFrame.add(reviewPanel);
+        reviewFrame.add(bigReviewPanel);
 
-        addComp(reviewPanel, reviewLabel, 0, 0, 1, 2, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE);
-        addComp(reviewPanel, descriptionArea, 1, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE);
-        addComp(reviewPanel, reviewScrollPane, 0, 2, 2, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE);
-        addComp(reviewPanel, backButton, 0, 4, 1, 1, GridBagConstraints.SOUTHWEST, GridBagConstraints.NONE);
-        addComp(reviewPanel, addReviewButton, 1, 4, 1, 1, GridBagConstraints.SOUTHEAST, GridBagConstraints.NONE);
+        addComp(bigReviewPanel, reviewLabel, 0, 0, 1, 1, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE);
+        addComp(bigReviewPanel, descriptionArea, 1, 0, 1, 1, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE);
+        addComp(bigReviewPanel, reviewScrollPane, 0, 1, 2, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE);
+        addComp(bigReviewPanel, backButton, 0, 2, 1, 1, GridBagConstraints.SOUTHWEST, GridBagConstraints.NONE);
+        addComp(bigReviewPanel, editButton, 1, 2, 1, 1, GridBagConstraints.SOUTHEAST, GridBagConstraints.NONE);
+        addComp(bigReviewPanel, addReviewButton, 2, 2, 1, 1, GridBagConstraints.SOUTHEAST, GridBagConstraints.NONE);
 
 
 
         reviewFrame.pack();
+        reviewFrame.setLocationRelativeTo(null);
         reviewFrame.setVisible(true);
     }
 
@@ -176,15 +295,14 @@ public class ReviewPage extends JFrame
     //dynamically createsReviewScrollPane from array
     public JScrollPane createReviewScrollPane(ArrayList<Review> reviews)
     {
-        Box reviewBox = Box.createVerticalBox();
         for(int i = 0; i < reviews.size(); i++)
         {
             reviewBox.add(createReview(reviews.get(i)));
             reviewBox.add(Box.createVerticalStrut(2));
         }
 
-        JScrollPane reviewScrollPane = new JScrollPane(reviewBox, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        reviewScrollPane.setPreferredSize(new Dimension(400, 220));
+        JScrollPane reviewScrollPane = new JScrollPane(reviewBox, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        reviewScrollPane.setPreferredSize(new Dimension(500, 400));
 
         return reviewScrollPane;
     }

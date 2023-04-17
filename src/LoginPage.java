@@ -37,7 +37,6 @@ public class LoginPage extends JFrame{
 
         //loginFrame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
         loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        loginFrame.setLocationRelativeTo(null);
         loginFrame.setTitle("LoginPage");
 
         loginGames = games;
@@ -108,8 +107,6 @@ public class LoginPage extends JFrame{
 
                 newAccountFrame = new JFrame();
 
-
-                newAccountFrame.setLocationRelativeTo(null);
                 newAccountFrame.setTitle("NewAccountPage");
 
                 JPanel newAccountPanel = new JPanel();
@@ -139,6 +136,8 @@ public class LoginPage extends JFrame{
 
                 newAccountFrame.add(newAccountPanel);
                 newAccountFrame.pack();
+
+                newAccountFrame.setLocationRelativeTo(null);
                 newAccountFrame.setVisible(true);
 
 
@@ -192,6 +191,8 @@ public class LoginPage extends JFrame{
 
         loginFrame.pack();
 
+        loginFrame.setLocationRelativeTo(null);
+
         loginFrame.setVisible(true);
 
     }
@@ -213,6 +214,7 @@ public class LoginPage extends JFrame{
         thePanel.add(comp, gridConstraints);
 
     }
+
 
 
 

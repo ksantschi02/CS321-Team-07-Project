@@ -7,6 +7,5 @@ public class Main {
         data.readGameList();
         data.readUserList();
         new LoginPage(data.getGameList(), data.getUserList(), data);
-
     }
 }

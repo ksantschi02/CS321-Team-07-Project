@@ -22,34 +22,18 @@ public class HomePage extends JFrame
     private static final int FRAME_WIDTH = 500;
     private static final int FRAME_HEIGHT = 300;
 
+    //filterPanel stuff
+    JFrame filterFrame;
+    JPanel filterPanel;
+
+
     JButton filterButton, saveButton, logoutButton, searchButton, createCollectionButton, deleteCollectionButton, refreshButton;
 
     JTextField searchTextField;
 
     JFrame homeFrame = new JFrame();
 
-    User Jim = new User("CoolGuy47", "1234");
 
-    Review rev1 = new Review(7.5,"Hey guys its me CoolGuy and I LOVE this board game man. It's crazy, it's like the coolest board ever made. They have some much killing which is probably the only reason why board games should be made.", Jim.getUser());
-    Review rev2 = new Review(2,"This game kinda sucks now.", Jim.getUser());
-    Review rev3 = new Review(7.5,"Hey guys its me CoolGuy and I LOVE this board game man. It's crazy, it's like the coolest board ever made. They have some much killing which is probably the only reason why board games should be made.", Jim.getUser());
-    Review rev4 = new Review(2,"This game kinda sucks now.", Jim.getUser());
-    ArrayList<Review> userReviews = new ArrayList<>(Arrays.asList(rev1, rev2, rev3, rev4));
-
-
-
-    //Game cool = new Game(12, 5, 10, 10, 30, 7, 7.5, "Cool Game", "Action", "Is cool", "https://cf.geekdo-images.com/DCLgJlrvB-EqL6A3WgQLMQ__original/img/vGpYcxjDBCOVcI0BcWOevspTQMQ=/0x0/filters:format(jpeg)/pic5715770.jpg", userReviews);
-    //Game cool1 = new Game(12, 5, 10, 10, 30, 7, 7.5, "Cool Game", "Action", "Is cool", "https://cf.geekdo-images.com/DCLgJlrvB-EqL6A3WgQLMQ__original/img/vGpYcxjDBCOVcI0BcWOevspTQMQ=/0x0/filters:format(jpeg)/pic5715770.jpg", userReviews);
-    //Game cool2 = new Game(12, 5, 10, 10, 30, 7, 7.5, "Cool Game", "Action", "Is cool", "https://cf.geekdo-images.com/DCLgJlrvB-EqL6A3WgQLMQ__original/img/vGpYcxjDBCOVcI0BcWOevspTQMQ=/0x0/filters:format(jpeg)/pic5715770.jpg", userReviews);
-    //ArrayList<Game> coolGames = new ArrayList<>(Arrays.asList(cool, cool1, cool2));
-
-    //Collection col1 = new Collection(1, 2,"Rad", new ArrayList());
-    //Collection col2 = new Collection(2, 2, "Bad", new ArrayList<>());
-    //Collection col3 = new Collection(2, 2, "Mad", new ArrayList<>());
-    //Collection col4 = new Collection(2, 1, "Lad", new ArrayList<>());
-    //Collection col5 = new Collection(2, 3, "Iad", new ArrayList<>());
-    //Collection col6 = new Collection(1, 4,"Pad", new ArrayList<>());
-    //Collection col7 = new Collection(2, 5, "Sad", new ArrayList<>());
     ArrayList<Collection> collections;
     User currentUser;
     boolean refresh = false;
@@ -59,7 +43,6 @@ public class HomePage extends JFrame
 
         //loginFrame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
         homeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        homeFrame.setLocationRelativeTo(null);
         homeFrame.setTitle("HomePage");
 
         homeFrame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
@@ -79,8 +62,11 @@ public class HomePage extends JFrame
 
         searchPanel.setLayout(new FlowLayout());
 
+        HomePage.ListenForButton lForButton = new HomePage.ListenForButton();
+
         filterButton = new JButton("Filter");
         searchPanel.add(filterButton);
+        filterButton.addActionListener(lForButton);
 
         searchTextField = new JTextField(30);
         searchPanel.add(searchTextField);
@@ -90,7 +76,6 @@ public class HomePage extends JFrame
 
         logoutButton = new JButton("Logout");
         searchPanel.add(logoutButton);
-        HomePage.ListenForButton lForButton = new HomePage.ListenForButton();
         logoutButton.addActionListener(lForButton);
 
         saveButton = new JButton("Save");
@@ -138,7 +123,7 @@ public class HomePage extends JFrame
 
 
         homeFrame.pack();
-
+        homeFrame.setLocationRelativeTo(null);
         homeFrame.setVisible(true);
     }
 
@@ -252,7 +237,14 @@ public class HomePage extends JFrame
             playtimeLabel = new JLabel("Playtime: " + maxPlaytime + " (mins)");
         }
         ageLabel = new JLabel("Age: " + minAge + "+");
-        ratingLabel = new JLabel("Avg Rating: " + avgRating + "/10");
+        if(avgRating == 0)
+        {
+            ratingLabel = new JLabel("No Reviews Yet");
+        }
+        else
+        {
+            ratingLabel = new JLabel("Avg Rating: " + avgRating + "/10");
+        }
         addButton = new JButton("Add To Collection");
         seeMoreButton = new JButton("Info/Rate");
 
@@ -502,7 +494,25 @@ public class HomePage extends JFrame
             }
             if (e.getSource() == filterButton)
             {
+                filterFrame = new JFrame();
 
+
+                filterFrame.setLocationRelativeTo(null);
+                filterFrame.setTitle("FilterPage");
+
+                filterPanel = new JPanel();
+                filterPanel.setLayout(new GridBagLayout());
+
+                ListenForButton lForButton = new ListenForButton();
+
+
+
+
+
+
+                filterFrame.add(filterPanel);
+                filterFrame.pack();
+                filterFrame.setVisible(true);
             }
             if (e.getSource() == searchButton)
             {
