@@ -3,6 +3,7 @@
  */
 package game_info;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 public class Game implements Cloneable{
 
@@ -143,6 +144,7 @@ public class Game implements Cloneable{
             rating =  rating + reviews.get(i).getRating() ;
         }
         rating = rating/reviews.size();
+        rating = Math.round((rating*100)/100);
         avgRating = rating;
         return avgRating;
     }

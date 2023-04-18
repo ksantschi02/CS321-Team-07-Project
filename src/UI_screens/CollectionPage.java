@@ -29,7 +29,7 @@ public class CollectionPage extends JPanel
     JFrame collectionFrame;
 
     Box interactBox;
-
+    Box gameBox = Box.createVerticalBox();
     JComboBox userRank = new JComboBox();
     Database collectionData;
     User currentUser;
@@ -83,11 +83,96 @@ public class CollectionPage extends JPanel
 
         JScrollPane gameScroll = createGameScrollPane(currentUser.getCollection(title).getGames());
 
+        removeGameButton = new JButton("Remove a Game");
+        moveGameButton = new JButton("Change Rank");
+
+        class ListenForCollectionButton implements ActionListener
+        {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(e.getSource() == removeGameButton)
+                {
+                    String reGame = JOptionPane.showInputDialog("Which game would you like to remove? (Use Rank #)", 1);
+                    if(reGame != null)
+                    {
+                        Integer reGameInt;
+                        reGameInt = Integer.parseInt(reGame);
+                        if((reGameInt > 0) && (reGameInt < collection.getSize()))
+                        {
+                            for(int i = 0; i < collection.getGames().size(); i++)
+                            {
+                                if(i == reGameInt - 1)
+                                {
+                                    user.getCollection(title).getGames().remove(i);
+                                    gameBox.removeAll();
+                                    for(int j = 0; j < collection.getGames().size(); j++)
+                                    {
+                                        gameBox.add(createGame(user.getCollection(title).getGames().get(j).getTitle(), user.getCollection(title).getGames().get(j).getImage(), user.getCollection(title).getGames().get(j).getMinPlayers(), user.getCollection(title).getGames().get(j).getMaxPlayers(), user.getCollection(title).getGames().get(j).getMinPlaytime(), user.getCollection(title).getGames().get(j).getMaxPlaytime(), user.getCollection(title).getGames().get(j).getMinAge(), user.getCollection(title).getGames().get(j).getAvgRating(), user.getCollection(title).getGames().get(j).getGenre(), user.getCollection(title).getGames().get(j).getDescription(), user.getCollection(title).getGames().get(j).getReviews(), user.getCollection(title).getGames()));
+                                        gameBox.add(Box.createVerticalStrut(2));
+                                    }
+                                    gameScroll.revalidate();
+                                    data.saveDatabase();
+                                }
+                            }
+                        }
+                        else
+                        {
+                            JOptionPane.showMessageDialog(null,"There are no games there.");
+                        }
+                    }
+                    else
+                    {
+                        JOptionPane.showMessageDialog(null,"Invalid Operation.");
+                    }
+
+                }
+                if(e.getSource() == moveGameButton)
+                {
+                    String moGame = JOptionPane.showInputDialog("Which game would you like to move? (Use Name)", "Game Name");
+                    if( moGame != null)
+                    {
+                        for(int i = 0; i < collection.getGames().size(); i++)
+                        {
+                            if(collection.getGames().get(i).getTitle().equals(moGame))
+                            {
+                                String moGame2 = JOptionPane.showInputDialog("What rank would you like to move it?", 1);
+                                if (moGame2 != null)
+                                {
+                                    int moGameInt = 0;
+                                    moGameInt = Integer.parseInt(moGame2);
+                                    if((moGameInt > 0) && (moGameInt < collection.getGames().size()))
+                                    {
+                                        user.getCollection(title).moveGame(i, moGameInt);
+                                        gameBox.removeAll();
+                                        for(int j = 0; j < collection.getGames().size(); j++)
+                                        {
+                                            gameBox.add(createGame(user.getCollection(title).getGames().get(j).getTitle(), user.getCollection(title).getGames().get(j).getImage(), user.getCollection(title).getGames().get(j).getMinPlayers(), user.getCollection(title).getGames().get(j).getMaxPlayers(), user.getCollection(title).getGames().get(j).getMinPlaytime(), user.getCollection(title).getGames().get(j).getMaxPlaytime(), user.getCollection(title).getGames().get(j).getMinAge(), user.getCollection(title).getGames().get(j).getAvgRating(), user.getCollection(title).getGames().get(j).getGenre(), user.getCollection(title).getGames().get(j).getDescription(), user.getCollection(title).getGames().get(j).getReviews(), user.getCollection(title).getGames()));
+                                            gameBox.add(Box.createVerticalStrut(2));
+                                        }
+                                        gameScroll.revalidate();
+                                        data.saveDatabase();
+                                    }
+                                }
+                                else
+                                {
+                                    JOptionPane.showMessageDialog(null, "Invalid Input. Try Again.");
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        ListenForCollectionButton lForColButton = new ListenForCollectionButton();
+
+        removeGameButton.addActionListener(lForColButton);
+        moveGameButton.addActionListener(lForColButton);
+
         //interactBox
 
         interactBox = Box.createHorizontalBox();
-        removeGameButton = new JButton("Remove a Game");
-        moveGameButton = new JButton("Change Rank");
         interactBox.add(removeGameButton);
         interactBox.add(Box.createHorizontalStrut(10));
         interactBox.add(moveGameButton);
@@ -229,7 +314,7 @@ public class CollectionPage extends JPanel
     //dynamically createsGameScrollPane from array
     public JScrollPane createGameScrollPane(ArrayList<Game> games)
     {
-        Box gameBox = Box.createVerticalBox();
+
         for(int i = 0; i < games.size(); i++)
         {
             gameBox.add(createGame(games.get(i).getTitle(), games.get(i).getImage(), games.get(i).getMinPlayers(), games.get(i).getMaxPlayers(), games.get(i).getMinPlaytime(), games.get(i).getMaxPlaytime(), games.get(i).getMinAge(), games.get(i).getAvgRating(), games.get(i).getGenre(), games.get(i).getDescription(), games.get(i).getReviews(), games));
