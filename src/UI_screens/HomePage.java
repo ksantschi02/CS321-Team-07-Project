@@ -437,11 +437,14 @@ public class HomePage extends JFrame
             {
                 if (e.getSource() == collectionButton)
                 {
+                    int cool = 0;
                    for(int i = 0; i < collections.size(); i++)
                    {
-                       if (collections.get(i).getTitle() == collection.getTitle())
+                       if ((collections.get(i).getTitle() == collection.getTitle()) && (cool < 1))
                        {
                            new CollectionPage(collections.get(i), collections.get(i).getTitle(), homepageData, currentUser);
+                           cool++;
+                           System.out.println("cool was iterated! OMG");
                        }
                    }
                 }

@@ -125,6 +125,8 @@ public class CollectionPage extends JPanel
         JButton addButton;
         BufferedImage gameImage = null;
 
+
+
         JPanel gamePanel = new JPanel();
         gamePanel.setLayout(new GridBagLayout());
 
@@ -192,6 +194,7 @@ public class CollectionPage extends JPanel
 
         try{
             URL url = new URL(imageUrl);
+            System.out.println(title);
             gameImage = ImageIO.read(url);
         }
         catch (IOException e)
@@ -199,6 +202,7 @@ public class CollectionPage extends JPanel
             e.printStackTrace();
         }
         Image newGameImg = gameImage.getScaledInstance(140,140, Image.SCALE_SMOOTH);
+        System.out.println("Did we make it here???");
         ImageIcon gameIcon = new ImageIcon(newGameImg);
         imageLabel = new JLabel(gameIcon);
         addComp(gamePanel, imageLabel, 0, 0, 1, 2, GridBagConstraints.WEST, GridBagConstraints.NONE);
@@ -223,6 +227,8 @@ public class CollectionPage extends JPanel
         JScrollPane gameScrollPane = new JScrollPane(gameBox, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         gameScrollPane.setPreferredSize(new Dimension(400, 420));
 
+
+        System.out.println("Did we make it?");
         return gameScrollPane;
     }
 
