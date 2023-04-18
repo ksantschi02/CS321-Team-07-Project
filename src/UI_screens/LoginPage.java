@@ -22,10 +22,6 @@ public class LoginPage extends JFrame{
     JLabel newUsernameLabel, newPasswordLabel;
     JTextField newUsernameTextField, newPasswordTextField;
 
-    int buttonClicked;
-
-    JTextArea textArea1;
-
     private static final int FRAME_WIDTH = 500;
     private static final int FRAME_HEIGHT = 300;
 
@@ -67,7 +63,7 @@ public class LoginPage extends JFrame{
                             CurrentUser = loginUsers.get(i);
                         }
                     }
-                    if(isUser == true)
+                    if(isUser)
                     {
                         JOptionPane.showMessageDialog(null, "Login Successful");
                         new HomePage(loginGames, CurrentUser, loginData);
