@@ -1,6 +1,5 @@
 package UI_screens;
 
-import data_retrieval.*;
 import data_retrieval.Database;
 import game_info.Collection;
 import game_info.Game;
@@ -14,7 +13,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.ArrayList;
 import game_info.*;
@@ -24,7 +22,7 @@ public class CollectionPage extends JPanel
 
 
 
-    JButton filterButton, saveButton, backButton, searchButton, removeGameButton, moveGameButton;
+    JButton filterButton, backButton, searchButton, removeGameButton, moveGameButton;
     JTextField searchTextField;
     JFrame collectionFrame;
 
@@ -73,13 +71,7 @@ public class CollectionPage extends JPanel
         CollectionPage.ListenForButton lForButton = new CollectionPage.ListenForButton();
         backButton.addActionListener(lForButton);
 
-        saveButton = new JButton("Save");
-        searchPanel.add(saveButton);
-        saveButton.addActionListener(lForButton);
-
         //importing games and collections
-
-        currentUser.addCollection(collection);
 
         JScrollPane gameScroll = createGameScrollPane(currentUser.getCollection(title).getGames());
 
@@ -112,7 +104,6 @@ public class CollectionPage extends JPanel
                                         gameBox.add(Box.createVerticalStrut(2));
                                     }
                                     gameScroll.revalidate();
-                                    data.saveDatabase();
                                 }
                             }
                         }
@@ -151,7 +142,6 @@ public class CollectionPage extends JPanel
                                             gameBox.add(Box.createVerticalStrut(2));
                                         }
                                         gameScroll.revalidate();
-                                        data.saveDatabase();
                                     }
                                 }
                                 else
@@ -335,7 +325,6 @@ public class CollectionPage extends JPanel
         {
             if (e.getSource() == backButton)
             {
-                collectionData.saveDatabase();
                 collectionFrame.dispose();
 
             }
@@ -346,10 +335,6 @@ public class CollectionPage extends JPanel
             if (e.getSource() == searchButton)
             {
 
-            }
-            if (e.getSource() == saveButton)
-            {
-                collectionData.saveDatabase();
             }
         }
 

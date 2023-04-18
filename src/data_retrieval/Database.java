@@ -18,12 +18,11 @@ public class Database {
 
     private ArrayList<Game> gameList;
     private ArrayList<User> userList;
-    private int gameCounter;
 
     public void readGameList() {
         ArrayList<Game> returnList = new ArrayList<>();
         try {
-            File inputFile = new File("C:/temp/gamelist.xml");
+            File inputFile = new File("data_files/gamelist.xml");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(inputFile);
@@ -103,7 +102,7 @@ public class Database {
     public void readUserList() {
         ArrayList<User> returnList = new ArrayList<>();
         try {
-            File inputFile = new File("C:/temp/userlist.xml");
+            File inputFile = new File("data_files/userlist.xml");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(inputFile);
@@ -149,21 +148,8 @@ public class Database {
         this.userList = returnList;
     }
 
-    public User retrieveByUser(String username) {
-        for (User user : userList) {
-            if (user.getUser().equalsIgnoreCase(username)) {
-                return user;
-            }
-        }
-        return null;
-    }
-
     public void addUserScratch(String username, String password) {
         userList.add(new User(username, password));
-    }
-
-    public void addUserObject(User user) {
-        userList.add(user);
     }
 
     public ArrayList<Game> getGameList() {
@@ -176,7 +162,7 @@ public class Database {
 
     public void saveDatabase() {
         try {
-            File inputFile = new File("C:/temp/gamelist.xml");
+            File inputFile = new File("data_files/gamelist.xml");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(inputFile);
@@ -227,7 +213,7 @@ public class Database {
             StringWriter writer = new StringWriter();
             transformer.transform(new DOMSource(doc), new StreamResult(writer));
             String output = writer.getBuffer().toString();
-            FileWriter fileWriter = new FileWriter("C:/temp/gamelist.xml");
+            FileWriter fileWriter = new FileWriter("data_files/gamelist.xml");
             fileWriter.write(output);
             fileWriter.close();
         } catch (Exception e) {
@@ -235,7 +221,7 @@ public class Database {
         }
 
         try {
-            File inputFile = new File("C:/temp/userlist.xml");
+            File inputFile = new File("data_files/userlist.xml");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(inputFile);
@@ -245,6 +231,7 @@ public class Database {
             Element users = doc.createElement("users");
             for (User u : userList)
             {
+                System.out.printf(u.getUser() + "\n");
                 Element user = doc.createElement("user");
 
                 Element username = doc.createElement("username");
@@ -256,11 +243,13 @@ public class Database {
                 user.appendChild(password);
 
                 for (Collection c : u.getCollections()) {
+                    System.out.printf(c.getTitle() + "\n");
                     Element collection = doc.createElement("collection");
                     collection.setAttribute("sortType", String.valueOf(c.getCollectionSortType()));
                     collection.setAttribute("filterType", String.valueOf(c.getCollectionFilterType()));
                     collection.setAttribute("name", c.getTitle());
                     for (Game g : c.getGames()) {
+                        System.out.printf(g.getTitle() + "\n");
                         Element game = doc.createElement("game");
                         game.setAttribute("name", g.getTitle());
                         collection.appendChild(game);
@@ -275,7 +264,7 @@ public class Database {
             StringWriter writer = new StringWriter();
             transformer.transform(new DOMSource(doc), new StreamResult(writer));
             String output = writer.getBuffer().toString();
-            FileWriter fileWriter = new FileWriter("C:/temp/userlist.xml");
+            FileWriter fileWriter = new FileWriter("data_files/userlist.xml");
             fileWriter.write(output);
             fileWriter.close();
         } catch (Exception e) {

@@ -1,5 +1,5 @@
 package UI_screens;
-import data_retrieval.*;
+
 import data_retrieval.Database;
 import game_info.Review;
 
@@ -73,7 +73,6 @@ public class ReviewPage extends JFrame
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() == backButton)
                 {
-                    data.saveDatabase();
                     reviewFrame.dispose();
                 }
                 if (e.getSource() == addReviewButton)

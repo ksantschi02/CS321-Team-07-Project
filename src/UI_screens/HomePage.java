@@ -11,7 +11,6 @@ import javax.imageio.ImageIO;
 import java.io.IOException;
 import javax.swing.border.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import game_info.*;
 import program_users.*;
 
@@ -233,7 +232,6 @@ public class HomePage extends JFrame
         JButton addButton, seeMoreButton;
         JComboBox collectionsComboBox;
         BufferedImage gameImage = null;
-        System.out.println(title + '\n' + description);
 
         JPanel gamePanel = new JPanel();
         gamePanel.setLayout(new GridBagLayout());
