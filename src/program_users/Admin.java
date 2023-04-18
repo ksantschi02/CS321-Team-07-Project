@@ -1,6 +1,6 @@
 package program_users;
 
-import java.util.*
+import java.util.*;
 
 public class Admin extends User {
     private ArrayList<User> users;
