@@ -24,11 +24,11 @@ public class CollectionPage extends JPanel
 
 
 
-    JButton filterButton, saveButton, backButton, searchButton;
+    JButton filterButton, saveButton, backButton, searchButton, removeGameButton, moveGameButton;
     JTextField searchTextField;
     JFrame collectionFrame;
 
-
+    Box interactBox;
 
     JComboBox userRank = new JComboBox();
     Database collectionData;
@@ -75,6 +75,7 @@ public class CollectionPage extends JPanel
 
         saveButton = new JButton("Save");
         searchPanel.add(saveButton);
+        saveButton.addActionListener(lForButton);
 
         //importing games and collections
 
@@ -82,15 +83,22 @@ public class CollectionPage extends JPanel
 
         JScrollPane gameScroll = createGameScrollPane(currentUser.getCollection(title).getGames());
 
+        //interactBox
 
-
+        interactBox = Box.createHorizontalBox();
+        removeGameButton = new JButton("Remove a Game");
+        moveGameButton = new JButton("Change Rank");
+        interactBox.add(removeGameButton);
+        interactBox.add(Box.createHorizontalStrut(10));
+        interactBox.add(moveGameButton);
 
         //putting all of them together
 
         collectionFrame.add(collectionPanel);
 
         addComp(collectionPanel, searchPanel, 0, 0, 3, 1, GridBagConstraints.NORTH, GridBagConstraints.NONE);
-        addComp(collectionPanel, gameScroll, 0, 1, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE);
+        addComp(collectionPanel, gameScroll, 0, 1, 3, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE);
+        addComp(collectionPanel, interactBox, 2, 3, 1, 1, GridBagConstraints.SOUTHEAST, GridBagConstraints.NONE);
 
 
 
@@ -119,24 +127,26 @@ public class CollectionPage extends JPanel
 
 
     //constructor with parameters
-    public JPanel createGame(String title, String imageUrl, int minPlayerCount, int maxPlayerCount, int minPlaytime, int maxPlaytime, int minAge, double avgRating, ArrayList<String> genre, String description, ArrayList<Review> reviews)
+    public JPanel createGame(String title, String imageUrl, int minPlayerCount, int maxPlayerCount, int minPlaytime, int maxPlaytime, int minAge, double avgRating, ArrayList<String> genre, String description, ArrayList<Review> reviews, ArrayList<Game> games)
     {
-        JLabel genreLabel, playerCountLabel, nameLabel, imageLabel, playtimeLabel, ageLabel, ratingLabel;
-        JButton addButton;
+        JLabel genreLabel, playerCountLabel, nameLabel, imageLabel, playtimeLabel, ageLabel, ratingLabel, rankLabel;
+        JButton moveRank;
         BufferedImage gameImage = null;
-
-
 
         JPanel gamePanel = new JPanel();
         gamePanel.setLayout(new GridBagLayout());
 
         Box infoBox = Box.createVerticalBox();
+        Box bigBox = Box.createHorizontalBox();
 
         nameLabel = new JLabel("Name: " + title);
         genreLabel = new JLabel("Genre: " + genre.get(0));
-        for(int i = 1; i < genre.size(); i++)
+        for(int i = 1; i < 2; i++)
         {
-            genreLabel.setText(genreLabel.getText() + ", " + genre.get(i));
+            if(i < genre.size())
+            {
+                genreLabel.setText(genreLabel.getText() + ", " + genre.get(i));
+            }
         }
         if(minPlayerCount != maxPlayerCount)
         {
@@ -155,25 +165,24 @@ public class CollectionPage extends JPanel
             playtimeLabel = new JLabel("Playtime: " + maxPlaytime + " (mins)");
         }
         ageLabel = new JLabel("Age: " + minAge + "+");
-        ratingLabel = new JLabel("Avg Rating: " + avgRating + "/10");
-
-        JComboBox userIndRank = new JComboBox<>();
-
-        for(int i = 0; i < userRank.getItemCount(); i++)
+        if(reviews.isEmpty())
         {
-            userIndRank.addItem(userRank.getItemAt(i));
+            ratingLabel = new JLabel("No Reviews Yet");
+        }
+        else
+        {
+            ratingLabel = new JLabel("Avg Rating: " + avgRating + "/10");
         }
 
-        class ListenForGameButton implements ActionListener
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+        rankLabel = new JLabel("Rank: ");
 
+        for(int i = 0; i < games.size(); i++)
+        {
+            if(games.get(i).getTitle().equals(title))
+            {
+                rankLabel.setText("Rank: " + (i + 1));
             }
         }
-
-        ListenForGameButton lForButton = new ListenForGameButton();
-
 
         infoBox.add(nameLabel);
         infoBox.add(Box.createVerticalStrut(1));
@@ -186,15 +195,14 @@ public class CollectionPage extends JPanel
         infoBox.add(ageLabel);
         infoBox.add(Box.createVerticalStrut(1));
         infoBox.add(ratingLabel);
+        infoBox.add(Box.createVerticalStrut(20));
+        infoBox.add(rankLabel);
 
 
-        addComp(gamePanel, infoBox, 1, 0, 1, 1, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE);
-        addComp(gamePanel, userIndRank, 1, 1, 1,1, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE);
 
 
         try{
             URL url = new URL(imageUrl);
-            System.out.println(title);
             gameImage = ImageIO.read(url);
         }
         catch (IOException e)
@@ -202,10 +210,14 @@ public class CollectionPage extends JPanel
             e.printStackTrace();
         }
         Image newGameImg = gameImage.getScaledInstance(140,140, Image.SCALE_SMOOTH);
-        System.out.println("Did we make it here???");
         ImageIcon gameIcon = new ImageIcon(newGameImg);
         imageLabel = new JLabel(gameIcon);
-        addComp(gamePanel, imageLabel, 0, 0, 1, 2, GridBagConstraints.WEST, GridBagConstraints.NONE);
+
+        bigBox.add(imageLabel);
+        bigBox.add(Box.createHorizontalStrut(20));
+        bigBox.add(infoBox);
+
+        addComp(gamePanel, bigBox, 0, 0, 1, 2, GridBagConstraints.WEST, GridBagConstraints.NONE);
 
         Border gameBorder = BorderFactory.createLineBorder(Color.black);
         gamePanel.setBorder(gameBorder);
@@ -220,15 +232,14 @@ public class CollectionPage extends JPanel
         Box gameBox = Box.createVerticalBox();
         for(int i = 0; i < games.size(); i++)
         {
-            gameBox.add(createGame(games.get(i).getTitle(), games.get(i).getImage(), games.get(i).getMinPlayers(), games.get(i).getMaxPlayers(), games.get(i).getMinPlaytime(), games.get(i).getMaxPlaytime(), games.get(i).getMinAge(), games.get(i).getAvgRating(), games.get(i).getGenre(), games.get(i).getDescription(), games.get(i).getReviews()));
+            gameBox.add(createGame(games.get(i).getTitle(), games.get(i).getImage(), games.get(i).getMinPlayers(), games.get(i).getMaxPlayers(), games.get(i).getMinPlaytime(), games.get(i).getMaxPlaytime(), games.get(i).getMinAge(), games.get(i).getAvgRating(), games.get(i).getGenre(), games.get(i).getDescription(), games.get(i).getReviews(), games));
             gameBox.add(Box.createVerticalStrut(2));
         }
 
         JScrollPane gameScrollPane = new JScrollPane(gameBox, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        gameScrollPane.setPreferredSize(new Dimension(400, 420));
+        gameScrollPane.setPreferredSize(new Dimension(550, 520));
 
 
-        System.out.println("Did we make it?");
         return gameScrollPane;
     }
 
@@ -253,7 +264,7 @@ public class CollectionPage extends JPanel
             }
             if (e.getSource() == saveButton)
             {
-
+                collectionData.saveDatabase();
             }
         }
 

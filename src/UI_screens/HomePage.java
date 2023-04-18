@@ -27,9 +27,7 @@ public class HomePage extends JFrame
 
 
     JButton filterButton, saveButton, logoutButton, searchButton, createCollectionButton, deleteCollectionButton, refreshButton;
-
     JTextField searchTextField;
-
     JFrame homeFrame = new JFrame();
 
     Box collectionBox = Box.createVerticalBox();
@@ -104,12 +102,12 @@ public class HomePage extends JFrame
                     {
                         for(int i = 0; i < currentUser.getCollections().size(); i++)
                         {
-                            if(currentUser.getCollections().get(i).getTitle() == newCollection)
+                            if(currentUser.getCollections().get(i).getTitle().equals(newCollection))
                             {
                                 sameCol = true;
                             }
                         }
-                        if(sameCol == true)
+                        if(sameCol)
                         {
                             JOptionPane.showMessageDialog(null, "Name is already being used.");
                             sameCol = false;
@@ -140,7 +138,7 @@ public class HomePage extends JFrame
                     {
                         for(int i = 0; i < currentUser.getCollections().size(); i++)
                         {
-                            if(currentUser.getCollections().get(i).getTitle() == deleteCollection)
+                            if(currentUser.getCollections().get(i).getTitle().equals(deleteCollection))
                             {
                                 collections.remove(currentUser.getCollections().get(i));
                                 collectionBox.removeAll();
@@ -300,7 +298,7 @@ public class HomePage extends JFrame
 
                     for(int i = 0; i < collections.size(); i++)
                     {
-                        if(collections.get(i).getTitle() == collectionsComboBox.getSelectedItem())
+                        if(collections.get(i).getTitle().equals(collectionsComboBox.getSelectedItem()))
                         {
                             for(int j = 0; j < collections.get(i).getSize(); j++)
                             {
@@ -440,11 +438,9 @@ public class HomePage extends JFrame
                     int cool = 0;
                    for(int i = 0; i < collections.size(); i++)
                    {
-                       if ((collections.get(i).getTitle() == collection.getTitle()) && (cool < 1))
+                       if (collections.get(i).getTitle().equals(collection.getTitle()))
                        {
                            new CollectionPage(collections.get(i), collections.get(i).getTitle(), homepageData, currentUser);
-                           cool++;
-                           System.out.println("cool was iterated! OMG");
                        }
                    }
                 }
@@ -463,12 +459,12 @@ public class HomePage extends JFrame
                 String previousCollectionName = collectionTitle.getText();
                 System.out.println("Collection: " + collectionName);
                 //DO NOT NAME AS " ", WILL BREAK PROGRAM
-                if(collectionName != " " && collectionName != null)
+                if((!collectionName.equals(" ")) && collectionName != null)
                 {
                     collectionTitle.setText(collectionName);
                     for(int i = 0; i < collections.size(); i++)
                     {
-                        if(collections.get(i).getTitle() == previousCollectionName)
+                        if(collections.get(i).getTitle().equals(previousCollectionName))
                         {
                             collections.get(i).editTitle(collectionName);
                         }
