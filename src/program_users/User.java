@@ -8,16 +8,6 @@ public class User {
     private String password;
     private ArrayList<Collection> collections;
 
-
-    /*
-     * default constructor
-     */
-    public User() {
-        this.username = null;
-        this.password = null;
-        this.collections = new ArrayList<>();
-    }
-
     /**
      * Copy constructor for User
      */
