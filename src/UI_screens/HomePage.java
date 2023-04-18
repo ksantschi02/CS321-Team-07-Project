@@ -438,9 +438,10 @@ public class HomePage extends JFrame
                     int cool = 0;
                    for(int i = 0; i < collections.size(); i++)
                    {
-                       if (collections.get(i).getTitle().equals(collection.getTitle()))
+                       if (collections.get(i).getTitle().equals(collection.getTitle()) && cool < 1)
                        {
                            new CollectionPage(collections.get(i), collections.get(i).getTitle(), homepageData, currentUser);
+                           cool++;
                        }
                    }
                 }
