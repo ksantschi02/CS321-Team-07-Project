@@ -140,7 +140,7 @@ public class ReviewPage extends JFrame
                     if(avoid != null)
                     {
                         int selection = Integer.parseInt(avoid);
-                        if((selection - 1) < reviews.size())
+                        if((selection > 0) && ((selection - 1) < reviews.size()))
                         {
                             Object[] options = {"Change Rating", "Change Review", "Delete Review"};
                             int x = JOptionPane.showOptionDialog(null,"What would you like to edit?", "Edit Review", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, null);
@@ -150,7 +150,7 @@ public class ReviewPage extends JFrame
                                 if(avoidRating != null)
                                 {
                                     double editRating = Double.parseDouble(avoidRating);
-                                    if((editRating >= 1) && (editRating <= 10) && (reviews.get(selection - 1).getAuthor() == currentUser.getUser()) )
+                                    if((editRating >= 1) && (editRating <= 10) && (reviews.get(selection - 1).getAuthor().equals(currentUser.getUser())))
                                     {
                                         reviews.get(selection - 1).editRating(editRating);
                                         reviewBox.removeAll();
@@ -163,6 +163,8 @@ public class ReviewPage extends JFrame
                                     }
                                     else
                                     {
+                                        System.out.println(reviews.get(selection - 1).getAuthor());
+                                        System.out.print(currentUser.getUser());
                                         JOptionPane.showMessageDialog(null, "Invalid operation. Please try again.");
                                     }
                                 }

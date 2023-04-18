@@ -193,7 +193,7 @@ public class HomePage extends JFrame
         addComp(homePanel, collectionButtonBox, 3, 4, 1, 1, GridBagConstraints.SOUTHEAST, GridBagConstraints.NONE);
 
 
-        if(refresh == true)
+        if(refresh)
         {
             gameScroll.revalidate();
             refresh = false;
