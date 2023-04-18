@@ -24,8 +24,6 @@ public class HomePage extends JFrame
     //filterPanel stuff
     JFrame filterFrame;
     JPanel filterPanel;
-
-
     JButton filterButton, saveButton, logoutButton, searchButton, createCollectionButton, deleteCollectionButton, refreshButton;
     JTextField searchTextField;
     JFrame homeFrame = new JFrame();

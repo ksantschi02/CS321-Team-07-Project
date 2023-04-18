@@ -174,7 +174,7 @@ public class ReviewPage extends JFrame
                                 String editReview = JOptionPane.showInputDialog(null, "Enter a new review", "new review");
                                 if(editReview != null)
                                 {
-                                    if((!(editReview.isEmpty())) && (reviews.get(selection - 1).getAuthor() == currentUser.getUser()))
+                                    if((!(editReview.isEmpty())) && (reviews.get(selection - 1).getAuthor().equals(currentUser.getUser())))
                                     {
                                         reviews.get(selection - 1).editContent(editReview);
                                         reviewBox.removeAll();
@@ -193,7 +193,7 @@ public class ReviewPage extends JFrame
                             }
                             else if(x == 2)
                             {
-                                if(reviews.get(selection - 1).getAuthor() == currentUser.getUser())
+                                if(reviews.get(selection - 1).getAuthor().equals(currentUser.getUser()))
                                 {
                                     reviewBox.remove(selection - 1);
                                     reviews.remove(selection - 1);
