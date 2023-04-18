@@ -86,6 +86,10 @@ public class Collection {
      */
     public ArrayList<Game> search(String some_game)
     {
+        if (some_game.isEmpty()) {
+            return this.games;
+        }
+
         ArrayList <Game> temp = new ArrayList<Game>();
         //games.contains(some_game);  //case sensitivity?
         String start_char = "!";

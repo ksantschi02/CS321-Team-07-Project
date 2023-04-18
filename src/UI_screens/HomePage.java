@@ -27,11 +27,13 @@ public class HomePage extends JFrame
     JButton filterButton, saveButton, logoutButton, searchButton, createCollectionButton, deleteCollectionButton, refreshButton;
     JTextField searchTextField;
     JFrame homeFrame = new JFrame();
+    JScrollPane gameScroll;
 
     Box collectionBox = Box.createVerticalBox();
     Database homepageData;
     ArrayList<Collection> collections;
     User currentUser;
+    Collection allGames;
     boolean refresh = false;
 
     public HomePage(ArrayList<Game> coolGames, User user, Database data)
@@ -85,7 +87,10 @@ public class HomePage extends JFrame
         //importing both
 
         JScrollPane collectionScroll = createCollectionScrollPane(collections);
-        JScrollPane gameScroll = createGameScrollPane(coolGames);
+        gameScroll = createGameScrollPane(coolGames);
+
+        // need all the games in a global collection
+        allGames = new Collection(0, 0, null, coolGames);
         class ListenForHomePageButton implements ActionListener
         {
 
@@ -507,7 +512,6 @@ public class HomePage extends JFrame
 
     public class ListenForButton implements ActionListener
     {
-
         public void actionPerformed(ActionEvent e)
         {
             if (e.getSource() == logoutButton)
@@ -543,20 +547,12 @@ public class HomePage extends JFrame
             // Where to implement Search Feature
             if (e.getSource() == searchButton)
             {
-
+                gameScroll = createGameScrollPane(allGames.search(searchTextField.getText()));
             }
             if (e.getSource() == saveButton)
             {
                 homepageData.saveDatabase();
             }
         }
-
     }
-    
-
-
-
-
-
-
 }

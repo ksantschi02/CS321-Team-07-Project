@@ -2,10 +2,6 @@ package game_info;
 
 import java.util.Comparator;
 
-/**
- * Class to implement Comparator compare method for use on Student class.
- * @author Jacob Warren
- */
 public class SortCollection implements Comparator<Game>{
     private int index;
 
