@@ -240,48 +240,11 @@ public class Database {
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(inputFile);
             doc.getDocumentElement().normalize();
-            Node users = doc.getFirstChild();
-            NodeList nList = doc.getElementsByTagName("user");
-            ArrayList<User> userListTemp = new ArrayList<>();
-            for (User u : userList) {
-                userListTemp.add(new User(u));
-            }
-            for (User u : userListTemp) {
-                for (int i = 0; i < nList.getLength(); i++) {
-                    Node nNode = nList.item(i);
-                    if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-                        Element eElement = (Element) nNode;
-                        if (((Element) eElement.getElementsByTagName("username").item(0)).getAttribute("value").equals(u.getUser())) {
-                            if (((Element) eElement.getElementsByTagName("password").item(0)).getAttribute("value").equals(u.getPassword())) {
-                                NodeList childNodes = nNode.getChildNodes();
-                                for (int j = 0; j < childNodes.getLength(); j++) {
-                                    Node item = childNodes.item(j);
-                                    if (item.getNodeType() == Node.ELEMENT_NODE) {
-                                        if ("collection".equalsIgnoreCase(item.getNodeName())) {
-                                            nNode.removeChild(item);
-                                        }
-                                    }
-                                }
-                                // RENEW/ADD COLLECTIONS HERE
-                                for (Collection c : u.getCollections()) {
-                                    Element collection = doc.createElement("collection");
-                                    collection.setAttribute("sortType", String.valueOf(c.getCollectionSortType()));
-                                    collection.setAttribute("filterType", String.valueOf(c.getCollectionFilterType()));
-                                    collection.setAttribute("name", c.getTitle());
-                                    for (Game g : c.getGames()) {
-                                        Element game = doc.createElement("game");
-                                        game.setAttribute("name", g.getTitle());
-                                        collection.appendChild(game);
-                                    }
-                                    nNode.appendChild(collection);
-                                }
-                                userListTemp.remove(u);
-                            }
-                        }
-                    }
-                }
-            }
-            for (User u : userListTemp) {
+            Node root = doc.getFirstChild();
+            doc.removeChild(root);
+            Element users = doc.createElement("users");
+            for (User u : userList)
+            {
                 Element user = doc.createElement("user");
 
                 Element username = doc.createElement("username");
@@ -306,6 +269,7 @@ public class Database {
                 }
                 users.appendChild(user);
             }
+            doc.appendChild(users);
             TransformerFactory tFactory = TransformerFactory.newInstance();
             Transformer transformer = tFactory.newTransformer();
             StringWriter writer = new StringWriter();
