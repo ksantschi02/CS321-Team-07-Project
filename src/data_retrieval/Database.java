@@ -77,7 +77,7 @@ public class Database {
                             ((Element) eElement.getElementsByTagName("name").item(0)).getAttribute("value"),
                             genreList,
                             eElement.getElementsByTagName("description").item(0).getTextContent(),
-                            eElement.getElementsByTagName("image").item(0).getTextContent(),
+                            eElement.getElementsByTagName("thumbnail").item(0).getTextContent(),
                             reviews
                     );
                     returnList.add(e);
@@ -271,4 +271,4 @@ public class Database {
             e.printStackTrace();
         }
     }
-} //Push class
+}
