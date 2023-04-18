@@ -24,7 +24,7 @@ public class ReviewPage extends JFrame
     Box reviewBox = Box.createVerticalBox();
 
 
-    public ReviewPage(String image, String description, ArrayList<Review> reviews, User user, Database data)
+    public ReviewPage(String image, String description, ArrayList<Review> reviews, User user, Database data, double avgRating)
     {
 
         JFrame reviewFrame;
@@ -78,7 +78,7 @@ public class ReviewPage extends JFrame
                 }
                 if (e.getSource() == addReviewButton)
                 {
-                    if(addAvailable == true)
+                    if(addAvailable)
                     {
                         ratingComboBox.setVisible(true);
                         finishChangesButton.setVisible(true);

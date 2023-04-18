@@ -266,7 +266,7 @@ public class HomePage extends JFrame
             playtimeLabel = new JLabel("Playtime: " + maxPlaytime + " (mins)");
         }
         ageLabel = new JLabel("Age: " + minAge + "+");
-        if(avgRating == 0)
+        if(reviews.isEmpty())
         {
             ratingLabel = new JLabel("No Reviews Yet");
         }
@@ -304,12 +304,12 @@ public class HomePage extends JFrame
                         {
                             for(int j = 0; j < collections.get(i).getSize(); j++)
                             {
-                                if(collections.get(i).getGames().get(j).getTitle() == game.getTitle())
+                                if(collections.get(i).getGames().get(j).getTitle().equals(game.getTitle()))
                                 {
                                     canAddGame = false;
                                 }
                             }
-                            if(canAddGame == true)
+                            if(canAddGame)
                             {
                                 collections.get(i).addGame(game);
                                 JOptionPane.showMessageDialog(null, "Game Added to Collection: " + collections.get(i).getTitle());
@@ -323,7 +323,7 @@ public class HomePage extends JFrame
                 }
                 if (e.getSource() == seeMoreButton)
                 {
-                    new ReviewPage(imageUrl, description, reviews, currentUser, homepageData);
+                    new ReviewPage(imageUrl, description, reviews, currentUser, homepageData, avgRating);
                 }
             }
         }

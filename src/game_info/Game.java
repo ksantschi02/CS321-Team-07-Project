@@ -137,6 +137,13 @@ public class Game implements Cloneable{
      * @return
      */
     public double getAvgRating() {
+        double rating = 0;
+        for(int i = 0; i < reviews.size(); i++)
+        {
+            rating =  rating + reviews.get(i).getRating() ;
+        }
+        rating = rating/reviews.size();
+        avgRating = rating;
         return avgRating;
     }
 
