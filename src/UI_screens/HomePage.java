@@ -530,12 +530,85 @@ public class HomePage extends JFrame
                 filterPanel = new JPanel();
                 filterPanel.setLayout(new GridBagLayout());
 
-                ListenForButton lForButton = new ListenForButton();
+                JLabel minPlayerFilter, maxPlayerFilter, avgRatingFilter, playtimeFilter, ageFilter, genreFilter, titleFilter;
+                JComboBox minPlayerComboBox, maxPlayerComboBox, avgRatingComboBox, playtimeComboBox, ageComboBox, genreComboBox, titleComboBox;
+                JButton backFilterButton, applyFilterButton;
+
+                minPlayerFilter = new JLabel("Min Players: ");
+                maxPlayerFilter = new JLabel("Max Players: ");
+                ageFilter = new JLabel("Age: ");
+                genreFilter = new JLabel("Genre: ");
+                avgRatingFilter = new JLabel("Avg Rating: ");
+                playtimeFilter = new JLabel("Playtime: ");
+                titleFilter = new JLabel("Title: ");
+
+                backFilterButton = new JButton("Back");
+                applyFilterButton = new JButton("Apply Filter");
+
+                String[] minPlay = {" ", "1", "2", "3", "4"};
+                minPlayerComboBox = new JComboBox<>(minPlay);
+                String[] maxPlay = {" ", "1", "2", "3", "4", "5", "6", "7", "8"};
+                maxPlayerComboBox = new JComboBox<>(maxPlay);
+                String[] age = {" ", "3", "7", "12", "16"};
+                ageComboBox = new JComboBox<>(age);
+                String[] genre = {" ", "family", "dexterity", "party", "abstract", "thematic", "euro", "war"};
+                genreComboBox = new JComboBox<>(genre);
+                String[] avgRat = {" ", "asc", "desc"};
+                avgRatingComboBox = new JComboBox<>(avgRat);
+                String[] playTime = {" ", "asc", "desc"};
+                playtimeComboBox = new JComboBox<>(playTime);
+                String[] title = {" ", "asc", "desc"};
+                titleComboBox = new JComboBox<>(title);
+
+                class ListenForFilterButton implements ActionListener
+                {
+                    @Override
+                    public void actionPerformed(ActionEvent e)
+                    {
+
+                        if(e.getSource() == backFilterButton)
+                        {
+                            filterFrame.dispose();
+                        }
+                        if(e.getSource() == applyFilterButton)
+                        {
+
+                        }
+
+                    }
+                }
+
+                ListenForFilterButton lForFilterButton = new ListenForFilterButton();
+
+                applyFilterButton.addActionListener(lForFilterButton);
+                backFilterButton.addActionListener(lForFilterButton);
 
 
 
 
+                addComp(filterPanel, minPlayerFilter, 0, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+                addComp(filterPanel, minPlayerComboBox, 1, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
 
+                addComp(filterPanel, maxPlayerFilter, 0, 1, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+                addComp(filterPanel, maxPlayerComboBox, 1, 1, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+
+                addComp(filterPanel, ageFilter, 0, 2, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+                addComp(filterPanel, ageComboBox, 1, 2, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+
+                addComp(filterPanel, genreFilter, 0, 3, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+                addComp(filterPanel, genreComboBox, 1, 3, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+
+                addComp(filterPanel, avgRatingFilter, 2, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
+                addComp(filterPanel, avgRatingComboBox, 3, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
+
+                addComp(filterPanel, playtimeFilter, 2, 1, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
+                addComp(filterPanel, playtimeComboBox, 3, 1, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
+
+                addComp(filterPanel, titleFilter, 2, 2, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
+                addComp(filterPanel, titleComboBox, 3, 2, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
+
+                addComp(filterPanel, backFilterButton, 0, 4, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+                addComp(filterPanel, applyFilterButton, 3, 4, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
 
                 filterFrame.add(filterPanel);
                 filterFrame.pack();
