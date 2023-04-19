@@ -19,18 +19,17 @@ import game_info.*;
 
 public class CollectionPage extends JPanel
 {
-
-
-
     JButton filterButton, backButton, searchButton, removeGameButton, moveGameButton;
     JTextField searchTextField;
     JFrame collectionFrame;
+    JScrollPane gameScroll;
 
     Box interactBox;
     Box gameBox = Box.createVerticalBox();
     JComboBox userRank = new JComboBox();
     Database collectionData;
     User currentUser;
+    Collection allCollectionGames;
 
     public CollectionPage(Collection collection, String title, Database data, User user)
     {
@@ -52,10 +51,14 @@ public class CollectionPage extends JPanel
 
         searchPanel.setLayout(new FlowLayout());
 
+        allCollectionGames = new Collection(0, 0, null, currentUser.getCollection(title).getGames());
+
         for(int i = 0; i < collection.getSize(); i++)
         {
             userRank.addItem(i + 1);
         }
+
+        CollectionPage.ListenForButton lForButton = new CollectionPage.ListenForButton();
 
         filterButton = new JButton("Filter");
         searchPanel.add(filterButton);
@@ -65,22 +68,21 @@ public class CollectionPage extends JPanel
 
         searchButton = new JButton("Search");
         searchPanel.add(searchButton);
+        searchButton.addActionListener(lForButton);
 
         backButton = new JButton("Back to Main Menu");
         searchPanel.add(backButton);
-        CollectionPage.ListenForButton lForButton = new CollectionPage.ListenForButton();
         backButton.addActionListener(lForButton);
 
         //importing games and collections
 
-        JScrollPane gameScroll = createGameScrollPane(currentUser.getCollection(title).getGames());
+        gameScroll = createGameScrollPane(currentUser.getCollection(title).getGames());
 
         removeGameButton = new JButton("Remove a Game");
         moveGameButton = new JButton("Change Rank");
 
         class ListenForCollectionButton implements ActionListener
         {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource() == removeGameButton)
@@ -320,13 +322,11 @@ public class CollectionPage extends JPanel
 
     public class ListenForButton implements ActionListener
     {
-
         public void actionPerformed(ActionEvent e)
         {
             if (e.getSource() == backButton)
             {
                 collectionFrame.dispose();
-
             }
             if (e.getSource() == filterButton)
             {
@@ -334,11 +334,16 @@ public class CollectionPage extends JPanel
             }
             if (e.getSource() == searchButton)
             {
+                gameBox.removeAll();
 
+                ArrayList<Game> results = allCollectionGames.search(searchTextField.getText());
+                for (Game g : results) {
+                    gameBox.add(createGame(g.getTitle(), g.getImage(), g.getMinPlayers(), g.getMaxPlayers(), g.getMinPlaytime(), g.getMaxPlaytime(), g.getMinAge(), g.getAvgRating(), g.getGenre(), g.getDescription(), g.getReviews(), results));
+                    gameBox.add(Box.createVerticalStrut(2));
+                }
+
+                gameScroll.revalidate();
             }
         }
-
     }
-
-
 }
