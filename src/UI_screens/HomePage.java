@@ -16,8 +16,6 @@ import program_users.*;
 
 public class HomePage extends JFrame
 {
-
-
     //filterPanel stuff
     JFrame filterFrame;
     JPanel filterPanel;
@@ -90,7 +88,7 @@ public class HomePage extends JFrame
         gameScroll = createGameScrollPane(coolGames);
 
         // need all the games in a global collection
-        allGames = new Collection(0, 0, null, coolGames);
+        allGames = new Collection(0, 0, "Home Page Games", coolGames);
         class ListenForHomePageButton implements ActionListener
         {
             @Override
@@ -395,7 +393,6 @@ public class HomePage extends JFrame
 
         Border gameBorder = BorderFactory.createLineBorder(Color.black);
         gamePanel.setBorder(gameBorder);
-        gamePanel.setName(title);
 
         return gamePanel;
 
@@ -419,7 +416,6 @@ public class HomePage extends JFrame
     //constructor for collection
     private JPanel createCollection(String title, Collection collection)
     {
-
         JPanel collectionPanel = new JPanel();
         collectionPanel.setLayout(new GridBagLayout());
         JLabel collectionTitle;
@@ -487,9 +483,6 @@ public class HomePage extends JFrame
         Border collectionBorder = BorderFactory.createLineBorder(Color.black);
         collectionPanel.setBorder(collectionBorder);
 
-
-
-
         return collectionPanel;
     }
 
@@ -545,13 +538,13 @@ public class HomePage extends JFrame
                 backFilterButton = new JButton("Back");
                 applyFilterButton = new JButton("Apply Filter");
 
-                String[] minPlay = {" ", "1", "2", "3", "4"};
+                String[] minPlay = {" ", "<=1", "<=2", "<=3", "<=4"};
                 minPlayerComboBox = new JComboBox<>(minPlay);
-                String[] maxPlay = {" ", "1", "2", "3", "4", "5", "6", "7", "8"};
+                String[] maxPlay = {" ", ">=1", ">=2", ">=3", ">=4", ">=5", ">=6", ">=7", ">=8"};
                 maxPlayerComboBox = new JComboBox<>(maxPlay);
-                String[] age = {" ", "3", "7", "12", "16"};
+                String[] age = {" ", "<=3", "<=7", "<=12", "<=16"};
                 ageComboBox = new JComboBox<>(age);
-                String[] genre = {" ", "family", "dexterity", "party", "abstract", "thematic", "euro", "war"};
+                String[] genre = {" ", "Card Game", "Science Fiction", "Economic", "Adventure", "Educational", "Deduction", "Exploration", "Animals", "Movies / TV / Radio Theme", "Fantasy", "Fighting", "Civilization", "Puzzle"};
                 genreComboBox = new JComboBox<>(genre);
                 String[] avgRat = {" ", "asc", "desc"};
                 avgRatingComboBox = new JComboBox<>(avgRat);
@@ -565,16 +558,78 @@ public class HomePage extends JFrame
                     @Override
                     public void actionPerformed(ActionEvent e)
                     {
-
                         if(e.getSource() == backFilterButton)
                         {
                             filterFrame.dispose();
                         }
                         if(e.getSource() == applyFilterButton)
                         {
+                            boolean minPlay_ = false, maxPlay_ = false, age_ = false, genre_= false,
+                                    avgRat_ = false, playtime_ = false, title_ = false;
+                            if (minPlayerComboBox.getSelectedIndex() > 0) {minPlay_ = true;}
+                            if (maxPlayerComboBox.getSelectedIndex() > 0) {maxPlay_ = true;}
+                            if (ageComboBox.getSelectedIndex() > 0) {age_ = true;}
+                            if (genreComboBox.getSelectedIndex() > 0) {genre_ = true;}
+                            if (avgRatingComboBox.getSelectedIndex() > 0) {avgRat_ = true;}
+                            if (playtimeComboBox.getSelectedIndex() > 0) {playtime_ = true;}
+                            if (titleComboBox.getSelectedIndex() > 0) {title_ = true;}
 
+                            if (((minPlay_ ? 1:0) + (maxPlay_ ? 1:0) + (age_ ? 1:0) + (genre_ ? 1:0)) > 1 ||
+                                ((avgRat_ ? 1:0) + (playtime_ ? 1:0) + (title_ ? 1:0)) > 1)
+                            {
+                                // do nothing
+                            } else
+                            {
+                                if (minPlay_)
+                                {
+                                    allGames.editFilterType(minPlayerComboBox.getSelectedIndex());
+                                } else if (maxPlay_)
+                                {
+                                    allGames.editFilterType(maxPlayerComboBox.getSelectedIndex() + 4);
+                                } else if (age_)
+                                {
+                                    allGames.editFilterType(ageComboBox.getSelectedIndex() + 12);
+                                } else if (genre_)
+                                {
+                                    allGames.editFilterType(genreComboBox.getSelectedIndex() + 16);
+                                } else
+                                {
+                                    allGames.editFilterType(0);
+                                }
+
+                                if (avgRat_)
+                                {
+                                    allGames.editSortType(avgRatingComboBox.getSelectedIndex());
+                                } else if (playtime_)
+                                {
+                                    allGames.editSortType(playtimeComboBox.getSelectedIndex() + 4);
+                                } else if (title_)
+                                {
+                                    allGames.editSortType(titleComboBox.getSelectedIndex() + 2);
+                                } else
+                                {
+                                    allGames.editSortType(0);
+                                }
+
+                                gameBox.removeAll();
+
+                                ArrayList<Game> results = new ArrayList<>();
+                                for (Game g : allGames.getGames()) {
+                                    results.add(g);
+                                }
+                                allGames.getFilter().filterCollection(results);
+                                allGames.getFilter().sortCollection(results);
+
+                                for (Game g : results) {
+                                    gameBox.add(createGame(g.getTitle(), g.getImage(), g.getMinPlayers(), g.getMaxPlayers(), g.getMinPlaytime(), g.getMaxPlaytime(), g.getMinAge(), g.getAvgRating(), g.getGenre(), g.getDescription(), g.getReviews(), g));
+                                    gameBox.add(Box.createVerticalStrut(2));
+                                }
+
+                                gameScroll.revalidate();
+
+                                filterFrame.dispose();
+                            }
                         }
-
                     }
                 }
 
@@ -621,6 +676,8 @@ public class HomePage extends JFrame
                 gameBox.removeAll();
 
                 ArrayList<Game> results = allGames.search(searchTextField.getText());
+                allGames.getFilter().filterCollection(results);
+                allGames.getFilter().sortCollection(results);
                 for (Game g : results) {
                     gameBox.add(createGame(g.getTitle(), g.getImage(), g.getMinPlayers(), g.getMaxPlayers(), g.getMinPlaytime(), g.getMaxPlaytime(), g.getMinAge(), g.getAvgRating(), g.getGenre(), g.getDescription(), g.getReviews(), g));
                     gameBox.add(Box.createVerticalStrut(2));

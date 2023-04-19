@@ -20,8 +20,9 @@ import game_info.*;
 public class CollectionPage extends JPanel
 {
     JButton filterButton, backButton, searchButton, removeGameButton, moveGameButton;
+    JPanel filterPanel;
     JTextField searchTextField;
-    JFrame collectionFrame;
+    JFrame collectionFrame, filterFrame;
     JScrollPane gameScroll;
 
     Box interactBox;
@@ -62,6 +63,7 @@ public class CollectionPage extends JPanel
 
         filterButton = new JButton("Filter");
         searchPanel.add(filterButton);
+        filterButton.addActionListener(lForButton);
 
         searchTextField = new JTextField(30);
         searchPanel.add(searchTextField);
@@ -336,13 +338,168 @@ public class CollectionPage extends JPanel
             }
             if (e.getSource() == filterButton)
             {
+                filterFrame = new JFrame();
+                filterFrame.setTitle("FilterPage");
 
+                filterPanel = new JPanel();
+                filterPanel.setLayout(new GridBagLayout());
+
+                JLabel minPlayerFilter, maxPlayerFilter, avgRatingFilter, playtimeFilter, ageFilter, genreFilter, titleFilter;
+                JComboBox minPlayerComboBox, maxPlayerComboBox, avgRatingComboBox, playtimeComboBox, ageComboBox, genreComboBox, titleComboBox;
+                JButton backFilterButton, applyFilterButton;
+
+                minPlayerFilter = new JLabel("Min Players: ");
+                maxPlayerFilter = new JLabel("Max Players: ");
+                ageFilter = new JLabel("Age: ");
+                genreFilter = new JLabel("Genre: ");
+                avgRatingFilter = new JLabel("Avg Rating: ");
+                playtimeFilter = new JLabel("Playtime: ");
+                titleFilter = new JLabel("Title: ");
+
+                backFilterButton = new JButton("Back");
+                applyFilterButton = new JButton("Apply Filter");
+
+                String[] minPlay = {" ", "<=1", "<=2", "<=3", "<=4"};
+                minPlayerComboBox = new JComboBox<>(minPlay);
+                String[] maxPlay = {" ", ">=1", ">=2", ">=3", ">=4", ">=5", ">=6", ">=7", ">=8"};
+                maxPlayerComboBox = new JComboBox<>(maxPlay);
+                String[] age = {" ", "<=3", "<=7", "<=12", "<=16"};
+                ageComboBox = new JComboBox<>(age);
+                String[] genre = {" ", "Card Game", "Science Fiction", "Economic", "Adventure", "Educational", "Deduction", "Exploration", "Animals", "Movies / TV / Radio Theme", "Fantasy", "Fighting", "Civilization", "Puzzle"};
+                genreComboBox = new JComboBox<>(genre);
+                String[] avgRat = {" ", "asc", "desc"};
+                avgRatingComboBox = new JComboBox<>(avgRat);
+                String[] playTime = {" ", "asc", "desc"};
+                playtimeComboBox = new JComboBox<>(playTime);
+                String[] title = {" ", "asc", "desc"};
+                titleComboBox = new JComboBox<>(title);
+
+                class ListenForFilterButton implements ActionListener
+                {
+                    @Override
+                    public void actionPerformed(ActionEvent e)
+                    {
+
+                        if(e.getSource() == backFilterButton)
+                        {
+                            filterFrame.dispose();
+                        }
+                        if(e.getSource() == applyFilterButton)
+                        {
+                            boolean minPlay_ = false, maxPlay_ = false, age_ = false, genre_= false,
+                                    avgRat_ = false, playtime_ = false, title_ = false;
+                            if (minPlayerComboBox.getSelectedIndex() > 0) {minPlay_ = true;}
+                            if (maxPlayerComboBox.getSelectedIndex() > 0) {maxPlay_ = true;}
+                            if (ageComboBox.getSelectedIndex() > 0) {age_ = true;}
+                            if (genreComboBox.getSelectedIndex() > 0) {genre_ = true;}
+                            if (avgRatingComboBox.getSelectedIndex() > 0) {avgRat_ = true;}
+                            if (playtimeComboBox.getSelectedIndex() > 0) {playtime_ = true;}
+                            if (titleComboBox.getSelectedIndex() > 0) {title_ = true;}
+
+                            if (((minPlay_ ? 1:0) + (maxPlay_ ? 1:0) + (age_ ? 1:0) + (genre_ ? 1:0)) > 1 ||
+                                    ((avgRat_ ? 1:0) + (playtime_ ? 1:0) + (title_ ? 1:0)) > 1)
+                            {
+                                // do nothing
+                            } else
+                            {
+                                if (minPlay_)
+                                {
+                                    allCollectionGames.editFilterType(minPlayerComboBox.getSelectedIndex());
+                                } else if (maxPlay_)
+                                {
+                                    allCollectionGames.editFilterType(maxPlayerComboBox.getSelectedIndex() + 4);
+                                } else if (age_)
+                                {
+                                    allCollectionGames.editFilterType(ageComboBox.getSelectedIndex() + 12);
+                                } else if (genre_)
+                                {
+                                    allCollectionGames.editFilterType(genreComboBox.getSelectedIndex() + 16);
+                                } else
+                                {
+                                    allCollectionGames.editFilterType(0);
+                                }
+
+                                if (avgRat_)
+                                {
+                                    allCollectionGames.editSortType(avgRatingComboBox.getSelectedIndex());
+                                } else if (playtime_)
+                                {
+                                    allCollectionGames.editSortType(playtimeComboBox.getSelectedIndex() + 4);
+                                } else if (title_)
+                                {
+                                    allCollectionGames.editSortType(titleComboBox.getSelectedIndex() + 2);
+                                } else
+                                {
+                                    allCollectionGames.editSortType(0);
+                                }
+
+                                gameBox.removeAll();
+
+                                ArrayList<Game> results = new ArrayList<>();
+                                for (Game g : allCollectionGames.getGames()) {
+                                    results.add(g);
+                                }
+                                allCollectionGames.getFilter().filterCollection(results);
+                                allCollectionGames.getFilter().sortCollection(results);
+
+                                for (Game g : results) {
+                                    gameBox.add(createGame(g.getTitle(), g.getImage(), g.getMinPlayers(), g.getMaxPlayers(), g.getMinPlaytime(), g.getMaxPlaytime(), g.getMinAge(), g.getAvgRating(), g.getGenre(), g.getDescription(), g.getReviews(), results));
+                                    gameBox.add(Box.createVerticalStrut(2));
+                                }
+
+                                gameScroll.revalidate();
+
+                                filterFrame.dispose();
+                            }
+                        }
+
+                    }
+                }
+
+                ListenForFilterButton lForFilterButton = new ListenForFilterButton();
+
+                applyFilterButton.addActionListener(lForFilterButton);
+                backFilterButton.addActionListener(lForFilterButton);
+
+
+
+
+                addComp(filterPanel, minPlayerFilter, 0, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+                addComp(filterPanel, minPlayerComboBox, 1, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+
+                addComp(filterPanel, maxPlayerFilter, 0, 1, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+                addComp(filterPanel, maxPlayerComboBox, 1, 1, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+
+                addComp(filterPanel, ageFilter, 0, 2, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+                addComp(filterPanel, ageComboBox, 1, 2, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+
+                addComp(filterPanel, genreFilter, 0, 3, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+                addComp(filterPanel, genreComboBox, 1, 3, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+
+                addComp(filterPanel, avgRatingFilter, 2, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
+                addComp(filterPanel, avgRatingComboBox, 3, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
+
+                addComp(filterPanel, playtimeFilter, 2, 1, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
+                addComp(filterPanel, playtimeComboBox, 3, 1, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
+
+                addComp(filterPanel, titleFilter, 2, 2, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
+                addComp(filterPanel, titleComboBox, 3, 2, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
+
+                addComp(filterPanel, backFilterButton, 0, 4, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
+                addComp(filterPanel, applyFilterButton, 3, 4, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
+
+                filterFrame.add(filterPanel);
+                filterFrame.pack();
+                filterFrame.setLocationRelativeTo(null);
+                filterFrame.setVisible(true);
             }
             if (e.getSource() == searchButton)
             {
                 gameBox.removeAll();
 
                 ArrayList<Game> results = allCollectionGames.search(searchTextField.getText());
+                allCollectionGames.getFilter().filterCollection(results);
+                allCollectionGames.getFilter().sortCollection(results);
                 for (Game g : results) {
                     gameBox.add(createGame(g.getTitle(), g.getImage(), g.getMinPlayers(), g.getMaxPlayers(), g.getMinPlaytime(), g.getMaxPlaytime(), g.getMinAge(), g.getAvgRating(), g.getGenre(), g.getDescription(), g.getReviews(), results));
                     gameBox.add(Box.createVerticalStrut(2));
