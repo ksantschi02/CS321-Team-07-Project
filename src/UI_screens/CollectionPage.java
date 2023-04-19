@@ -90,7 +90,7 @@ public class CollectionPage extends JPanel
                     {
                         Integer reGameInt;
                         reGameInt = Integer.parseInt(reGame);
-                        if((reGameInt > 0) && (reGameInt < collection.getSize()))
+                        if((reGameInt > 0) && (reGameInt <= collection.getSize()))
                         {
                             for(int i = 0; i < collection.getGames().size(); i++)
                             {
@@ -123,18 +123,20 @@ public class CollectionPage extends JPanel
                     String moGame = JOptionPane.showInputDialog("Which game would you like to move? (Use Name)", "Game Name");
                     if( moGame != null)
                     {
+                        int cool = 0;
                         for(int i = 0; i < collection.getGames().size(); i++)
                         {
-                            if(collection.getGames().get(i).getTitle().equals(moGame))
+                            if(collection.getGames().get(i).getTitle().equals(moGame) && cool == 0)
                             {
                                 String moGame2 = JOptionPane.showInputDialog("What rank would you like to move it?", 1);
+                                cool = 1;
                                 if (moGame2 != null)
                                 {
                                     int moGameInt = 0;
                                     moGameInt = Integer.parseInt(moGame2);
-                                    if((moGameInt > 0) && (moGameInt < collection.getGames().size()))
+                                    if((moGameInt > 0) && (moGameInt <= collection.getGames().size()))
                                     {
-                                        user.getCollection(title).moveGame(i, moGameInt);
+                                        user.getCollection(title).moveGame(i, moGameInt - 1);
                                         gameBox.removeAll();
                                         for(int j = 0; j < collection.getGames().size(); j++)
                                         {
@@ -142,6 +144,10 @@ public class CollectionPage extends JPanel
                                             gameBox.add(Box.createVerticalStrut(2));
                                         }
                                         gameScroll.revalidate();
+                                    }
+                                    else
+                                    {
+                                        JOptionPane.showMessageDialog(null, "Game cannot be moved there.");
                                     }
                                 }
                                 else

@@ -70,7 +70,7 @@ public class Collection {
         {
 
             games.remove(games.get(from));
-            games.add(to-1, temp);
+            games.add(to, temp);
         }
         else if (to<from)
         {

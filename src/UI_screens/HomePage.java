@@ -17,8 +17,6 @@ import program_users.*;
 public class HomePage extends JFrame
 {
 
-    private static final int FRAME_WIDTH = 500;
-    private static final int FRAME_HEIGHT = 300;
 
     //filterPanel stuff
     JFrame filterFrame;
@@ -35,6 +33,8 @@ public class HomePage extends JFrame
     Collection allGames;
     boolean refresh = false;
 
+    JPanel homePanel;
+
     public HomePage(ArrayList<Game> coolGames, User user, Database data)
     {
 
@@ -42,14 +42,14 @@ public class HomePage extends JFrame
         homeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         homeFrame.setTitle("HomePage");
 
-        homeFrame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
+
         collections = user.getCollections();
 
         currentUser = user;
         homepageData = data;
         //setting up the panel for the ENTIRE screen
 
-        JPanel homePanel = new JPanel();
+        homePanel = new JPanel();
 
         homePanel.setLayout(new GridBagLayout());
 
@@ -546,6 +546,7 @@ public class HomePage extends JFrame
             if (e.getSource() == searchButton)
             {
                 gameScroll = createGameScrollPane(allGames.search(searchTextField.getText()));
+
             }
             if (e.getSource() == saveButton)
             {
