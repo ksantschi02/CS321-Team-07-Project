@@ -171,17 +171,18 @@ public class Database {
             for (int i = 0; i < nList.getLength(); i++) {
                 Node nNode = nList.item(i);
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                    ArrayList<Node> removalList = new ArrayList<>();
                     NodeList childNodes = nNode.getChildNodes();
                     for (int j = 0; j < childNodes.getLength(); j++) {
                         Node item = childNodes.item(j);
                         if (item.getNodeType() == Node.ELEMENT_NODE) {
-                            if ("avgrating".equalsIgnoreCase(item.getNodeName())) {
-                                nNode.removeChild(item);
-                            }
-                            if ("review".equalsIgnoreCase(item.getNodeName())) {
-                                nNode.removeChild(item);
+                            if ("avgrating".equalsIgnoreCase(item.getNodeName()) || "review".equalsIgnoreCase(item.getNodeName())) {
+                                removalList.add(item);
                             }
                         }
+                    }
+                    for (Node n : removalList) {
+                        nNode.removeChild(n);
                     }
 
                     Element avgrating = doc.createElement("avgrating");
@@ -231,7 +232,6 @@ public class Database {
             Element users = doc.createElement("users");
             for (User u : userList)
             {
-                System.out.printf(u.getUser() + "\n");
                 Element user = doc.createElement("user");
 
                 Element username = doc.createElement("username");
@@ -243,13 +243,11 @@ public class Database {
                 user.appendChild(password);
 
                 for (Collection c : u.getCollections()) {
-                    System.out.printf(c.getTitle() + "\n");
                     Element collection = doc.createElement("collection");
                     collection.setAttribute("sortType", String.valueOf(c.getCollectionSortType()));
                     collection.setAttribute("filterType", String.valueOf(c.getCollectionFilterType()));
                     collection.setAttribute("name", c.getTitle());
                     for (Game g : c.getGames()) {
-                        System.out.printf(g.getTitle() + "\n");
                         Element game = doc.createElement("game");
                         game.setAttribute("name", g.getTitle());
                         collection.appendChild(game);

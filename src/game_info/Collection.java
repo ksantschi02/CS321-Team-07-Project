@@ -19,7 +19,6 @@ public class Collection {
      */
     public Collection(int some_sortType, int some_filter_type, String some_title, ArrayList<Game> some_games)
     {
-        //this.sortType = some_sortType;
         f1 = new Filter(some_sortType,some_filter_type);
         this.title = some_title;
         this.games = some_games;
@@ -70,7 +69,7 @@ public class Collection {
         {
 
             games.remove(games.get(from));
-            games.add(to-1, temp);
+            games.add(to, temp);
         }
         else if (to<from)
         {
@@ -90,8 +89,7 @@ public class Collection {
             return this.games;
         }
 
-        ArrayList <Game> temp = new ArrayList<Game>();
-        //games.contains(some_game);  //case sensitivity?
+        ArrayList <Game> temp = new ArrayList<>();
         String start_char = "!";
         String search_temp;
         some_game = start_char.concat(some_game.toLowerCase());
@@ -138,6 +136,15 @@ public class Collection {
 
     /**
      *
+     * @param filterType
+     */
+    public void editFilterType(int filterType)
+    {
+        this.f1.filterType = filterType;
+    }
+
+    /**
+     *
      * @param title
      */
     public void editTitle(String title) {
@@ -161,4 +168,6 @@ public class Collection {
     {
         return f1.getFilterType();
     }
+
+    public Filter getFilter() {return f1;}
 }
