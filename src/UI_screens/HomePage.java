@@ -27,6 +27,7 @@ public class HomePage extends JFrame
     JScrollPane gameScroll;
 
     Box collectionBox = Box.createVerticalBox();
+    Box gameBox = Box.createVerticalBox();
     Database homepageData;
     ArrayList<Collection> collections;
     User currentUser;
@@ -92,7 +93,6 @@ public class HomePage extends JFrame
         allGames = new Collection(0, 0, null, coolGames);
         class ListenForHomePageButton implements ActionListener
         {
-
             @Override
             public void actionPerformed(ActionEvent e)
             {
@@ -395,6 +395,7 @@ public class HomePage extends JFrame
 
         Border gameBorder = BorderFactory.createLineBorder(Color.black);
         gamePanel.setBorder(gameBorder);
+        gamePanel.setName(title);
 
         return gamePanel;
 
@@ -403,7 +404,6 @@ public class HomePage extends JFrame
     //dynamically createsGameScrollPane from array
     public JScrollPane createGameScrollPane(ArrayList<Game> games)
     {
-        Box gameBox = Box.createVerticalBox();
         for(int i = 0; i < games.size(); i++)
         {
             gameBox.add(createGame(games.get(i).getTitle(), games.get(i).getImage(), games.get(i).getMinPlayers(), games.get(i).getMaxPlayers(), games.get(i).getMinPlaytime(), games.get(i).getMaxPlaytime(), games.get(i).getMinAge(), games.get(i).getAvgRating(), games.get(i).getGenre(), games.get(i).getDescription(), games.get(i).getReviews(), games.get(i)));
@@ -618,8 +618,15 @@ public class HomePage extends JFrame
             // Where to implement Search Feature
             if (e.getSource() == searchButton)
             {
-                gameScroll = createGameScrollPane(allGames.search(searchTextField.getText()));
+                gameBox.removeAll();
 
+                ArrayList<Game> results = allGames.search(searchTextField.getText());
+                for (Game g : results) {
+                    gameBox.add(createGame(g.getTitle(), g.getImage(), g.getMinPlayers(), g.getMaxPlayers(), g.getMinPlaytime(), g.getMaxPlaytime(), g.getMinAge(), g.getAvgRating(), g.getGenre(), g.getDescription(), g.getReviews(), g));
+                    gameBox.add(Box.createVerticalStrut(2));
+                }
+
+                gameScroll.revalidate();
             }
             if (e.getSource() == saveButton)
             {
