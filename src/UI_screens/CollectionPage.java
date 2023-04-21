@@ -32,6 +32,8 @@ public class CollectionPage extends JPanel
     // variables to make parameters global
     User currentUser;
     Collection allCollectionGames;
+    boolean minPlay_ = false, maxPlay_ = false, age_ = false, genre_= false,
+            avgRat_ = false, playtime_ = false, title_ = false;
 
     /**
      * creates a CollectionPage where the user can rank (move) games, remove games, and search and filter them in their collections
@@ -406,10 +408,37 @@ public class CollectionPage extends JPanel
                 genreComboBox = new JComboBox<>(genre);
                 String[] avgRat = {" ", "asc", "desc"};
                 avgRatingComboBox = new JComboBox<>(avgRat);
-                String[] playTime = {" ", "asc", "desc"};
-                playtimeComboBox = new JComboBox<>(playTime);
+                String[] playtime = {" ", "asc", "desc"};
+                playtimeComboBox = new JComboBox<>(playtime);
                 String[] title = {" ", "asc", "desc"};
                 titleComboBox = new JComboBox<>(title);
+
+                // set selected index equal to current filter applied
+                if (minPlay_)
+                {
+                    minPlayerComboBox.setSelectedIndex(allCollectionGames.getFilter().getFilterType());
+                } else if (maxPlay_)
+                {
+                    maxPlayerComboBox.setSelectedIndex(allCollectionGames.getFilter().getFilterType() - 4);
+                } else if (age_)
+                {
+                    ageComboBox.setSelectedIndex(allCollectionGames.getFilter().getFilterType() - 12);
+                } else if (genre_)
+                {
+                    genreComboBox.setSelectedIndex(allCollectionGames.getFilter().getFilterType() - 16);
+                }
+
+                // set selected index equal to current sort applied
+                if (avgRat_)
+                {
+                    avgRatingComboBox.setSelectedIndex(allCollectionGames.getFilter().getSortType());
+                } else if (playtime_)
+                {
+                    playtimeComboBox.setSelectedIndex(allCollectionGames.getFilter().getSortType() - 4);
+                } else if (title_)
+                {
+                    titleComboBox.setSelectedIndex(allCollectionGames.getFilter().getSortType() - 2);
+                }
 
                 class ListenForFilterButton implements ActionListener
                 {
@@ -423,8 +452,9 @@ public class CollectionPage extends JPanel
                         }
                         if(e.getSource() == applyFilterButton)
                         {
-                            boolean minPlay_ = false, maxPlay_ = false, age_ = false, genre_= false,
-                                    avgRat_ = false, playtime_ = false, title_ = false;
+                            // check which combo boxes are changed
+                            minPlay_ = false; maxPlay_ = false; age_ = false; genre_= false;
+                            avgRat_ = false; playtime_ = false; title_ = false;
                             if (minPlayerComboBox.getSelectedIndex() > 0) {minPlay_ = true;}
                             if (maxPlayerComboBox.getSelectedIndex() > 0) {maxPlay_ = true;}
                             if (ageComboBox.getSelectedIndex() > 0) {age_ = true;}
@@ -433,12 +463,14 @@ public class CollectionPage extends JPanel
                             if (playtimeComboBox.getSelectedIndex() > 0) {playtime_ = true;}
                             if (titleComboBox.getSelectedIndex() > 0) {title_ = true;}
 
+                            // if more than one filter or sort is checked
                             if (((minPlay_ ? 1:0) + (maxPlay_ ? 1:0) + (age_ ? 1:0) + (genre_ ? 1:0)) > 1 ||
                                     ((avgRat_ ? 1:0) + (playtime_ ? 1:0) + (title_ ? 1:0)) > 1)
                             {
                                 // do nothing
                             } else
                             {
+                                // edit the filter type according to comboboxes
                                 if (minPlay_)
                                 {
                                     allCollectionGames.editFilterType(minPlayerComboBox.getSelectedIndex());
@@ -456,6 +488,7 @@ public class CollectionPage extends JPanel
                                     allCollectionGames.editFilterType(0);
                                 }
 
+                                // edit the sort type according to comboboxes
                                 if (avgRat_)
                                 {
                                     allCollectionGames.editSortType(avgRatingComboBox.getSelectedIndex());
@@ -470,6 +503,7 @@ public class CollectionPage extends JPanel
                                     allCollectionGames.editSortType(0);
                                 }
 
+                                // update ui
                                 gameBox.removeAll();
 
                                 ArrayList<Game> results = allCollectionGames.search(searchTextField.getText());
