@@ -85,11 +85,17 @@ public class Collection {
      */
     public ArrayList<Game> search(String some_game)
     {
+        ArrayList <Game> temp = new ArrayList<>();
         if (some_game.isEmpty()) {
-            return this.games;
+            for (Game g: games)
+            {
+                temp.add(g);
+            }
+            f1.filterCollection(temp);
+            f1.sortCollection(temp);
+            return temp;
         }
 
-        ArrayList <Game> temp = new ArrayList<>();
         String start_char = "!";
         String search_temp;
         some_game = start_char.concat(some_game.toLowerCase());

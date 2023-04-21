@@ -667,12 +667,7 @@ public class HomePage extends JFrame
 
                                 gameBox.removeAll();
 
-                                ArrayList<Game> results = new ArrayList<>();
-                                for (Game g : allGames.getGames()) {
-                                    results.add(g);
-                                }
-                                allGames.getFilter().filterCollection(results);
-                                allGames.getFilter().sortCollection(results);
+                                ArrayList<Game> results = allGames.search(searchTextField.getText());
 
                                 for (Game g : results) {
                                     gameBox.add(createGame(g.getTitle(), g.getImage(), g.getMinPlayers(), g.getMaxPlayers(), g.getMinPlaytime(), g.getMaxPlaytime(), g.getMinAge(), g.getAvgRating(), g.getGenre(), g.getDescription(), g.getReviews(), g));
@@ -728,9 +723,9 @@ public class HomePage extends JFrame
             if (e.getSource() == searchButton)
             {
                 gameBox.removeAll();
+
                 ArrayList<Game> results = allGames.search(searchTextField.getText());
-                allGames.getFilter().filterCollection(results);
-                allGames.getFilter().sortCollection(results);
+
                 for (Game g : results) {
                     gameBox.add(createGame(g.getTitle(), g.getImage(), g.getMinPlayers(), g.getMaxPlayers(), g.getMinPlaytime(), g.getMaxPlaytime(), g.getMinAge(), g.getAvgRating(), g.getGenre(), g.getDescription(), g.getReviews(), g));
                     gameBox.add(Box.createVerticalStrut(2));

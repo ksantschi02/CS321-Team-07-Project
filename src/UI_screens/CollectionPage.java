@@ -472,12 +472,7 @@ public class CollectionPage extends JPanel
 
                                 gameBox.removeAll();
 
-                                ArrayList<Game> results = new ArrayList<>();
-                                for (Game g : allCollectionGames.getGames()) {
-                                    results.add(g);
-                                }
-                                allCollectionGames.getFilter().filterCollection(results);
-                                allCollectionGames.getFilter().sortCollection(results);
+                                ArrayList<Game> results = allCollectionGames.search(searchTextField.getText());
 
                                 for (Game g : results) {
                                     gameBox.add(createGame(g.getTitle(), g.getImage(), g.getMinPlayers(), g.getMaxPlayers(), g.getMinPlaytime(), g.getMaxPlaytime(), g.getMinAge(), g.getAvgRating(), g.getGenre(), g.getDescription(), g.getReviews(), results));
@@ -535,8 +530,7 @@ public class CollectionPage extends JPanel
                 gameBox.removeAll();
 
                 ArrayList<Game> results = allCollectionGames.search(searchTextField.getText());
-                allCollectionGames.getFilter().filterCollection(results);
-                allCollectionGames.getFilter().sortCollection(results);
+
                 for (Game g : results) {
                     gameBox.add(createGame(g.getTitle(), g.getImage(), g.getMinPlayers(), g.getMaxPlayers(), g.getMinPlaytime(), g.getMaxPlaytime(), g.getMinAge(), g.getAvgRating(), g.getGenre(), g.getDescription(), g.getReviews(), results));
                     gameBox.add(Box.createVerticalStrut(2));
