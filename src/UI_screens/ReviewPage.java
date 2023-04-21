@@ -23,6 +23,8 @@ public class ReviewPage extends JFrame
     User currentUser;
     Box reviewBox = Box.createVerticalBox();
 
+    int reviewCounter = 0;
+
 
     public ReviewPage(String image, String description, ArrayList<Review> reviews, User user, Database data, double avgRating)
     {
@@ -151,6 +153,7 @@ public class ReviewPage extends JFrame
                                     double editRating = Double.parseDouble(avoidRating);
                                     if((editRating >= 1) && (editRating <= 10) && (reviews.get(selection - 1).getAuthor().equals(currentUser.getUser())))
                                     {
+                                        reviewCounter = 1;
                                         reviews.get(selection - 1).editRating(editRating);
                                         reviewBox.removeAll();
                                         for(int i = 0; i < reviews.size(); i++)
@@ -175,6 +178,7 @@ public class ReviewPage extends JFrame
                                 {
                                     if((!(editReview.isEmpty())) && (reviews.get(selection - 1).getAuthor().equals(currentUser.getUser())))
                                     {
+                                        reviewCounter = 1;
                                         reviews.get(selection - 1).editContent(editReview);
                                         reviewBox.removeAll();
                                         for(int i = 0; i < reviews.size(); i++)
@@ -194,8 +198,15 @@ public class ReviewPage extends JFrame
                             {
                                 if(reviews.get(selection - 1).getAuthor().equals(currentUser.getUser()))
                                 {
+                                    reviewCounter = 1;
                                     reviewBox.remove(selection - 1);
                                     reviews.remove(selection - 1);
+                                    reviewBox.removeAll();
+                                    for(int i = 0; i < reviews.size(); i++)
+                                    {
+                                        reviewBox.add(createReview(reviews.get(i)));
+                                        reviewBox.add(Box.createVerticalStrut(2));
+                                    }
                                     reviewScrollPane.revalidate();
                                 }
                                 else
@@ -273,7 +284,7 @@ public class ReviewPage extends JFrame
 
     public JPanel createReview(Review review)
     {
-        JLabel authorLabel, ratingLabel;
+        JLabel authorLabel, ratingLabel, reviewNumberLabel;
         JTextArea contentArea;
         JPanel reviewPanel = new JPanel();
         reviewPanel.setLayout(new GridBagLayout());
@@ -281,12 +292,21 @@ public class ReviewPage extends JFrame
 
         authorLabel = new JLabel("Name: " + review.getAuthor());
         ratingLabel = new JLabel("Rating: " + review.getRating() + "/10");
+        reviewNumberLabel = new JLabel("Review #: ");
+
+
+        reviewNumberLabel.setText("Review #" + reviewCounter);
+        reviewCounter++;
+
+
         contentArea = new JTextArea(review.getContent());
         contentArea.setLineWrap(true);
         contentArea.setSize(340, 300);
         contentArea.setWrapStyleWord(true);
         contentArea.setEditable(false);
 
+        infoBox.add(reviewNumberLabel);
+        infoBox.add(Box.createHorizontalStrut(10));
         infoBox.add(authorLabel);
         infoBox.add(Box.createHorizontalStrut(20));
         infoBox.add(ratingLabel);
@@ -303,6 +323,8 @@ public class ReviewPage extends JFrame
     //dynamically createsReviewScrollPane from array
     public JScrollPane createReviewScrollPane(ArrayList<Review> reviews)
     {
+        reviewCounter = 1;
+
         for(int i = 0; i < reviews.size(); i++)
         {
             reviewBox.add(createReview(reviews.get(i)));
