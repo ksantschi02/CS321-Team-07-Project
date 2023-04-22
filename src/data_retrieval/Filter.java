@@ -28,7 +28,7 @@ public class Filter {
      * @param collection the games in a Collection to be sorted
      */
     public void sortCollection(ArrayList<Game> collection) {
-        Collections.sort(collection, new SortCollection(sortType));
+        //Collections.sort(collection, new SortCollection(sortType));
     }
 
     /**

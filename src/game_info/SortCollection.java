@@ -1,12 +1,16 @@
 package game_info;
 
+import java.util.Collection;
 import java.util.Comparator;
+import game_info.Game;
 /**
- * The SortCollection class implements the compare method from Comparator<Game>
+ * The SortCollection class implements the compare method from Comparator
  * for use in the Collection sorting method in the Filter class.
  * @author Jacob Warren
  */
-public class SortCollection implements Comparator<Game>{
+
+
+public class SortCollection implements Comparator<Game> {
     private int index; // used for determining the method of sorting used in the compare method
 
     /**
