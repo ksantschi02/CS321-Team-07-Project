@@ -3,13 +3,19 @@ package program_users;
 import java.util.ArrayList;
 import game_info.*;
 
+/**
+ * The User class is populated by the Login Page with the username, password,
+ * and collections of the current User, and is used by other pages to populate themselves.
+ * @author Jacob Warren
+ */
 public class User {
-    private String username;
-    private String password;
-    private ArrayList<Collection> collections;
+    private String username; // username of the current user
+    private String password; // password of the current user
+    private ArrayList<Collection> collections; // all collections created and saved by the user
 
     /**
      * Copy constructor for User
+     * @param source the source User to be copied
      */
     public User(User source) {
         this.username = source.getUser();
@@ -21,8 +27,10 @@ public class User {
         }
     }
 
-    /*
+    /**
      * Creates User at login
+     * @param username the username of the logging in user
+     * @param password the password of the logging in user
      */
     public User(String username, String password) {
         this.username = username;
@@ -30,58 +38,37 @@ public class User {
         collections = new ArrayList<>();
     }
 
-    /*
+    /**
      * get the username
+     * @return the username
      */
     public String getUser() {
         return this.username;
     }
 
-    /*
-     * set the username
-     */
-    public boolean setUser(String username) {
-        boolean valid = false;
-
-        if (valid) {
-            this.username = username;
-        }
-
-        return valid;
-    }
-
-    /*
+    /**
      * get the password
+     * @return the password
      */
     public String getPassword() {
         return this.password;
     }
 
-    /*
-     * set the password
-     */
-    public boolean setPassword(String password) {
-        boolean valid = false;
-
-        if (valid) {
-            this.password = password;
-        }
-
-        return valid;
-    }
-
-    /*
+    /**
      * Add a collection to user
+     * @param collection the Collection being added to users collections
      */
     public void addCollection(Collection collection) {
         this.collections.add(collection);
     }
 
-    /*
+    /**
      * get a collection from this user
+     * @param id title of the sought after collection
+     * @return the collection that was found or a null collection
      */
     public Collection getCollection(String id) {
-        Collection collection = new Collection(0, 0, null, new ArrayList<Game>());
+        Collection collection = new Collection(0, 0, null, new ArrayList<>());
 
         if(this.collections != null) {
             for (Collection c : this.collections) {
@@ -91,37 +78,18 @@ public class User {
                 }
             }
         }
-        else if(this.collections == null)
-        {
-            collection = new Collection(0, 0, null, new ArrayList<Game>());
+        else {
+            collection = new Collection(0, 0, null, new ArrayList<>());
         }
 
         return collection;
     }
 
-    /*
+    /**
      * get all collections from this user
+     * @return the users collections
      */
     public ArrayList<Collection> getCollections() {
         return this.collections;
-    }
-
-    /*
-     * Delete collection
-     */
-    public boolean deleteCollection(String id) {
-        boolean found = false;
-
-        if(this.collections != null) {
-            for (Collection c : this.collections) {
-                if (c.getTitle().equals(id)) {
-                    collections.remove(c);
-                    found = true;
-                    break;
-                }
-            }
-        }
-
-        return found;
     }
 }

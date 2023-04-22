@@ -3,33 +3,41 @@ package data_retrieval;
 import java.util.ArrayList;
 import java.util.Collections;
 import game_info.*;
-public class Filter {
-    public int sortType;
-    public int filterType;
 
-    /*
+/**
+ * The Filter class is wholly used by the Collection class for the purpose
+ * of storing sort type and filter type and the relevant methods.
+ * @author Jacob Warren
+ */
+public class Filter {
+    public int sortType; // the sorting method index
+    public int filterType; // the filtering method index
+
+    /**
      * Constructor called for individual collection
+     * @param sortType the sorting method index
+     * @param filterType the filtering method index
      */
     public Filter(int sortType, int filterType) {
         this.sortType = sortType;
         this.filterType = filterType;
     }
 
-    /*
+    /**
      * sort a collection by initialized type
+     * @param collection the games in a Collection to be sorted
      */
     public void sortCollection(ArrayList<Game> collection) {
         Collections.sort(collection, new SortCollection(sortType));
     }
 
-    /*
+    /**
      * filter a collection by initialized type
+     * @param collection the games in a Collection to be filtered
      */
      public void filterCollection(ArrayList<Game> collection) {
-         // default
-         if (filterType == 0) {}
          // min players
-         else if (filterType == 1) {
+         if (filterType == 1) {
              for (int i = collection.size() - 1; i >= 0; i--) {
                  if (collection.get(i).getMinPlayers() > 1) {
                      collection.remove(i);
@@ -237,15 +245,13 @@ public class Filter {
          }
      }
 
-    /*
+    /**
      * set the sort type
+     * @param sortType the new sort type
+     * @return whether the sort type was edited
      */
     public boolean editSort(int sortType) {
-        boolean valid = false;
-
-        if (sortType >= 0 && sortType <= 6) {
-            valid = true;
-        }
+        boolean valid = sortType >= 0 && sortType <= 6;
 
         if (valid) {
             this.sortType = sortType;
@@ -254,15 +260,13 @@ public class Filter {
         return valid;
     }
 
-    /*
+    /**
      * set the filter type
+     * @param filterType the new filter type
+     * @return whether the filter type was edited
      */
     public boolean editFilter(int filterType) {
-        boolean valid = false;
-
-        if (filterType >= 0 && filterType <= 24) {
-            valid = true;
-        }
+        boolean valid = filterType >= 0 && filterType <= 29;
 
         if (valid) {
             this.filterType = filterType;
@@ -271,15 +275,17 @@ public class Filter {
         return valid;
     }
 
-    /*
+    /**
      * Get the sort type
+     * @return the current sort type
      */
     public int getSortType () {
         return this.sortType;
     }
 
-    /*
+    /**
      * Get the filter type
+     * @return the current filter type
      */
     public int getFilterType () {
         return this.filterType;
