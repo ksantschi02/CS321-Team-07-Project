@@ -19,46 +19,54 @@ import game_info.*;
 
 public class CollectionPage extends JPanel
 {
+    // filter frame and collection frame variables
     JButton filterButton, backButton, searchButton, removeGameButton, moveGameButton;
     JPanel filterPanel;
     JTextField searchTextField;
     JFrame collectionFrame, filterFrame;
     JScrollPane gameScroll;
-
     Box interactBox;
     Box gameBox = Box.createVerticalBox();
     JComboBox userRank = new JComboBox();
-    Database collectionData;
+
+    // variables to make parameters global
     User currentUser;
     Collection allCollectionGames;
+    boolean minPlay_ = false, maxPlay_ = false, age_ = false, genre_= false,
+            avgRat_ = false, playtime_ = false, title_ = false;
 
-    public CollectionPage(Collection collection, String title, Database data, User user)
+    /**
+     * creates a CollectionPage where the user can rank (move) games, remove games, and search and filter them in their collections
+     * @param collection the collection being used or edited
+     * @param title the title of the collection
+     * @param user the current user in the program
+     */
+    public CollectionPage(Collection collection, String title, User user)
     {
+        // collection frame settings
         collectionFrame = new JFrame();
-
         collectionFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         collectionFrame.setTitle(title);
 
-        collectionData = data;
+        // setting global variable
         currentUser = user;
 
+        // setting layout
         JPanel collectionPanel = new JPanel();
-
         collectionPanel.setLayout(new GridBagLayout());
 
-        //setting up panel for search bar and filter
-
+        // setting up panel for search bar and filter
         JPanel searchPanel = new JPanel();
-
         searchPanel.setLayout(new FlowLayout());
-
         allCollectionGames = new Collection(0, 0, null, currentUser.getCollection(title).getGames());
 
+        // initializing combobox
         for(int i = 0; i < collection.getSize(); i++)
         {
             userRank.addItem(i + 1);
         }
 
+        // initializing and adding action listeners
         CollectionPage.ListenForButton lForButton = new CollectionPage.ListenForButton();
 
         filterButton = new JButton("Filter");
@@ -76,13 +84,13 @@ public class CollectionPage extends JPanel
         searchPanel.add(backButton);
         backButton.addActionListener(lForButton);
 
-        //importing games and collections
-
-        gameScroll = createGameScrollPane(currentUser.getCollection(title).getGames());
-
         removeGameButton = new JButton("Remove a Game");
         moveGameButton = new JButton("Change Rank");
 
+        //importing games
+        gameScroll = createGameScrollPane(currentUser.getCollection(title).getGames());
+
+        // action listener for removing and moving game buttons
         class ListenForCollectionButton implements ActionListener
         {
             @Override
@@ -100,6 +108,7 @@ public class CollectionPage extends JPanel
                             {
                                 if(i == reGameInt - 1)
                                 {
+                                    // removes game and refreshes pane
                                     user.getCollection(title).getGames().remove(i);
                                     gameBox.removeAll();
                                     for(int j = 0; j < collection.getGames().size(); j++)
@@ -127,6 +136,7 @@ public class CollectionPage extends JPanel
                     String moGame = JOptionPane.showInputDialog("Which game would you like to move? (Use Name)", "Game Name");
                     if( moGame != null)
                     {
+                        // this variable keeps it so the dialog box can't happen twice
                         int cool = 0;
                         for(int i = 0; i < collection.getGames().size(); i++)
                         {
@@ -140,6 +150,7 @@ public class CollectionPage extends JPanel
                                     moGameInt = Integer.parseInt(moGame2);
                                     if((moGameInt > 0) && (moGameInt <= collection.getGames().size()))
                                     {
+                                        // moves game and refreshes page
                                         user.getCollection(title).moveGame(i, moGameInt - 1);
                                         gameBox.removeAll();
                                         for(int j = 0; j < collection.getGames().size(); j++)
@@ -165,33 +176,40 @@ public class CollectionPage extends JPanel
             }
         }
 
+        // add action listeners to buttons
         ListenForCollectionButton lForColButton = new ListenForCollectionButton();
-
         removeGameButton.addActionListener(lForColButton);
         moveGameButton.addActionListener(lForColButton);
 
-        //interactBox
-
+        // interactBox initializing
         interactBox = Box.createHorizontalBox();
         interactBox.add(removeGameButton);
         interactBox.add(Box.createHorizontalStrut(10));
         interactBox.add(moveGameButton);
 
-        //putting all of them together
-
+        // putting all of them together
         collectionFrame.add(collectionPanel);
-
         addComp(collectionPanel, searchPanel, 0, 0, 3, 1, GridBagConstraints.NORTH, GridBagConstraints.NONE);
         addComp(collectionPanel, gameScroll, 0, 1, 3, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE);
         addComp(collectionPanel, interactBox, 2, 3, 1, 1, GridBagConstraints.SOUTHEAST, GridBagConstraints.NONE);
 
-
-
+        // frame constraints
         collectionFrame.pack();
         collectionFrame.setLocationRelativeTo(null);
         collectionFrame.setVisible(true);
     }
 
+    /**
+     * Function that adds components to the GridBagLayout in a streamlined manner
+     * @param thePanel the Panel that is going to be added too
+     * @param comp what is going to be added to the panel
+     * @param xPos where the component is going to go in the layout along the x-axis
+     * @param yPos where the component is going to go in the layout along the y-axis
+     * @param compWidth how much space the component will take up in the x-axis in comparison to the other components
+     * @param compHeight how much space the component will take up in the y-axis in comparison to the other components
+     * @param place the gridbagconstraint that this component will align to if no other components are blocking it
+     * @param stretch whether the component will stretch to fill empty space or not
+     */
     public void addComp(JPanel thePanel, JComponent comp, int xPos, int yPos, int compWidth, int compHeight, int place, int stretch)
     {
         GridBagConstraints gridConstraints = new GridBagConstraints();
@@ -211,7 +229,21 @@ public class CollectionPage extends JPanel
     }
 
 
-    //constructor with parameters
+    /**
+     * creates a game panel from the provided parameters, so it can be added to a ScrollPane
+     * @param title the game title
+     * @param imageUrl the image url
+     * @param minPlayerCount the minimum player count
+     * @param maxPlayerCount the maximum player count
+     * @param minPlaytime the minimum playtime for the game
+     * @param maxPlaytime the maximum playtime for the game
+     * @param minAge the minimum age to play the game
+     * @param avgRating the average rating of all reviews for the game
+     * @param genre string of genre tags for a game
+     * @param description the description (if available) for the game
+     * @param reviews an arraylist of all the reviews for an individual game
+     * @return returns a JPanel with all the data incorporated in it
+     */
     public JPanel createGame(String title, String imageUrl, int minPlayerCount, int maxPlayerCount, int minPlaytime, int maxPlaytime, int minAge, double avgRating, ArrayList<String> genre, String description, ArrayList<Review> reviews, ArrayList<Game> games)
     {
         JLabel genreLabel, playerCountLabel, nameLabel, imageLabel, playtimeLabel, ageLabel, ratingLabel, rankLabel;
@@ -311,7 +343,12 @@ public class CollectionPage extends JPanel
 
     }
 
-    //dynamically createsGameScrollPane from array
+    /**
+     * Creates the scrollable panel that will hold all the games in an imported Game arraylist
+     * also calls creategame for all games in the arraylist
+     * @param games the arraylist of games being imported
+     * @return the JScrollPane
+     */
     public JScrollPane createGameScrollPane(ArrayList<Game> games)
     {
 
@@ -328,8 +365,10 @@ public class CollectionPage extends JPanel
         return gameScrollPane;
     }
 
+    // action listener that resembles the one for the search panel on the HomePage
     public class ListenForButton implements ActionListener
     {
+        // same code for creating filterpanel etc. as the HomePage
         public void actionPerformed(ActionEvent e)
         {
             if (e.getSource() == backButton)
@@ -369,10 +408,37 @@ public class CollectionPage extends JPanel
                 genreComboBox = new JComboBox<>(genre);
                 String[] avgRat = {" ", "asc", "desc"};
                 avgRatingComboBox = new JComboBox<>(avgRat);
-                String[] playTime = {" ", "asc", "desc"};
-                playtimeComboBox = new JComboBox<>(playTime);
+                String[] playtime = {" ", "asc", "desc"};
+                playtimeComboBox = new JComboBox<>(playtime);
                 String[] title = {" ", "asc", "desc"};
                 titleComboBox = new JComboBox<>(title);
+
+                // set selected index equal to current filter applied
+                if (minPlay_)
+                {
+                    minPlayerComboBox.setSelectedIndex(allCollectionGames.getFilter().getFilterType());
+                } else if (maxPlay_)
+                {
+                    maxPlayerComboBox.setSelectedIndex(allCollectionGames.getFilter().getFilterType() - 4);
+                } else if (age_)
+                {
+                    ageComboBox.setSelectedIndex(allCollectionGames.getFilter().getFilterType() - 12);
+                } else if (genre_)
+                {
+                    genreComboBox.setSelectedIndex(allCollectionGames.getFilter().getFilterType() - 16);
+                }
+
+                // set selected index equal to current sort applied
+                if (avgRat_)
+                {
+                    avgRatingComboBox.setSelectedIndex(allCollectionGames.getFilter().getSortType());
+                } else if (playtime_)
+                {
+                    playtimeComboBox.setSelectedIndex(allCollectionGames.getFilter().getSortType() - 4);
+                } else if (title_)
+                {
+                    titleComboBox.setSelectedIndex(allCollectionGames.getFilter().getSortType() - 2);
+                }
 
                 class ListenForFilterButton implements ActionListener
                 {
@@ -386,8 +452,9 @@ public class CollectionPage extends JPanel
                         }
                         if(e.getSource() == applyFilterButton)
                         {
-                            boolean minPlay_ = false, maxPlay_ = false, age_ = false, genre_= false,
-                                    avgRat_ = false, playtime_ = false, title_ = false;
+                            // check which combo boxes are changed
+                            minPlay_ = false; maxPlay_ = false; age_ = false; genre_= false;
+                            avgRat_ = false; playtime_ = false; title_ = false;
                             if (minPlayerComboBox.getSelectedIndex() > 0) {minPlay_ = true;}
                             if (maxPlayerComboBox.getSelectedIndex() > 0) {maxPlay_ = true;}
                             if (ageComboBox.getSelectedIndex() > 0) {age_ = true;}
@@ -396,12 +463,14 @@ public class CollectionPage extends JPanel
                             if (playtimeComboBox.getSelectedIndex() > 0) {playtime_ = true;}
                             if (titleComboBox.getSelectedIndex() > 0) {title_ = true;}
 
+                            // if more than one filter or sort is checked
                             if (((minPlay_ ? 1:0) + (maxPlay_ ? 1:0) + (age_ ? 1:0) + (genre_ ? 1:0)) > 1 ||
                                     ((avgRat_ ? 1:0) + (playtime_ ? 1:0) + (title_ ? 1:0)) > 1)
                             {
                                 // do nothing
                             } else
                             {
+                                // edit the filter type according to comboboxes
                                 if (minPlay_)
                                 {
                                     allCollectionGames.editFilterType(minPlayerComboBox.getSelectedIndex());
@@ -419,6 +488,7 @@ public class CollectionPage extends JPanel
                                     allCollectionGames.editFilterType(0);
                                 }
 
+                                // edit the sort type according to comboboxes
                                 if (avgRat_)
                                 {
                                     allCollectionGames.editSortType(avgRatingComboBox.getSelectedIndex());
@@ -433,14 +503,10 @@ public class CollectionPage extends JPanel
                                     allCollectionGames.editSortType(0);
                                 }
 
+                                // update ui
                                 gameBox.removeAll();
 
-                                ArrayList<Game> results = new ArrayList<>();
-                                for (Game g : allCollectionGames.getGames()) {
-                                    results.add(g);
-                                }
-                                allCollectionGames.getFilter().filterCollection(results);
-                                allCollectionGames.getFilter().sortCollection(results);
+                                ArrayList<Game> results = allCollectionGames.search(searchTextField.getText());
 
                                 for (Game g : results) {
                                     gameBox.add(createGame(g.getTitle(), g.getImage(), g.getMinPlayers(), g.getMaxPlayers(), g.getMinPlaytime(), g.getMaxPlaytime(), g.getMinAge(), g.getAvgRating(), g.getGenre(), g.getDescription(), g.getReviews(), results));
@@ -498,8 +564,7 @@ public class CollectionPage extends JPanel
                 gameBox.removeAll();
 
                 ArrayList<Game> results = allCollectionGames.search(searchTextField.getText());
-                allCollectionGames.getFilter().filterCollection(results);
-                allCollectionGames.getFilter().sortCollection(results);
+
                 for (Game g : results) {
                     gameBox.add(createGame(g.getTitle(), g.getImage(), g.getMinPlayers(), g.getMaxPlayers(), g.getMinPlaytime(), g.getMaxPlaytime(), g.getMinAge(), g.getAvgRating(), g.getGenre(), g.getDescription(), g.getReviews(), results));
                     gameBox.add(Box.createVerticalStrut(2));
