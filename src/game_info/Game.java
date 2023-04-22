@@ -1,5 +1,6 @@
 /**
- *
+ * Game class
+ * author/programmer: Hugh Vessels
  */
 package game_info;
 
@@ -7,7 +8,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 public class Game implements Cloneable{
 
-//need copy constructor
 
     private int id;  // game ID from XML database
     private int minPlayers;  //game minimum suggested number of players
@@ -34,6 +34,8 @@ public class Game implements Cloneable{
      * @param some_title game's title/name that was read in from the XML database
      * @param some_description suggested number of minimum players that was read in from the XML database
      * @param some_image suggested number of minimum players that was read in from the XML database
+     * @param some_reviews list of reviews for the constructed game object
+     * @param some_genre list of strings describing each game read in from the XML database
      */
     public Game(int some_id, int some_minPlayers, int some_maxPlayers, int some_minPlaytime,
                 int some_maxPlaytime, int some_minAge, double some_avgRating, String some_title, ArrayList<String> some_genre,
@@ -134,32 +136,34 @@ public class Game implements Cloneable{
     }  //observer method for the minimum age of a player
 
     /**
-     *
-     * @return
+     * method used to determine the average rating for a game
+     * @return average rating that is returned is dependent on the number of reviews and the ratings for each review of this game
      */
     public double getAvgRating() {
-        double rating = 0;
+        double rating = 0;   //temp value used to get rating
+
+        //for loop reads in the reviews and sums up the ratings
         for(int i = 0; i < reviews.size(); i++)
         {
-            rating =  rating + reviews.get(i).getRating() ;
+            rating =  rating + reviews.get(i).getRating() ;  //sum the ratings
         }
-        rating = rating/reviews.size();
-        rating = Math.round((rating*100)/100);
-        avgRating = rating;
-        return avgRating;
+        rating = rating/reviews.size();       //divide by size or number of reviews to get average rating
+        rating = Math.round((rating*100)/100);      //round average
+        avgRating = rating;     //set current object average rating attribute to the one calculated
+        return avgRating;       //return the average rating
     }
 
     /**
-     *
-     * @return
+     * method used to get the title of a game
+     * @return title is the title of the current game object
      */
     public String getTitle() {
         return title;
     }
 
     /**
-     *
-     * @return
+     * method used to get the list of genres for a game
+     * @return genre ArrayList holds strings, which are genres that is being returned
      */
     public ArrayList<String> getGenre()
     {
@@ -167,36 +171,36 @@ public class Game implements Cloneable{
     }
 
     /**
-     *
-     * @return
+     *method used to get the description of the game
+     * @return the description of the current game object
      */
     public String getDescription() {
         return description;
     }
 
     /**
-     *
-     * @return
+     * method used to get the image of the game
+     * @return the image, which is a string/path to the image, for the current game object
      */
     public String getImage() {
         return image;
     }
 
     /**
-     *
-     * @return
+     * method used to determine the minimum playing time for a game
+     * @return minPlaytime is the minimum playing time suggested for the current game object
      */
     public int getMinPlaytime() {return minPlaytime;}
 
     /**
-     *
-     * @return
+     * method used to determine the maximum playing time for a game
+     * @return maxPlaytime is the maximum playing time suggested for the current game object
      */
     public int getMaxPlaytime() {return maxPlaytime;}
 
     /**
-     *
-     * @return
+     * method used to access all the reviews for a game
+     * @return reviews is an ArrayList of Review objects that holds reviews for the current game object
      */
     public ArrayList<Review> getReviews() {return reviews;}
 

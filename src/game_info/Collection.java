@@ -14,30 +14,36 @@ public class Collection {
 
     /**
      * Collection constructor
-     * @param some_sortType
-     * @param some_title
+     * @param some_sortType passes in the sort type of the collection
+     * @param some_title passes in the title for the collection
+     * @param some_filter_type passes in the filter type for the colleciton
+     * @param some_games passes in the games for the collection
      */
     public Collection(int some_sortType, int some_filter_type, String some_title, ArrayList<Game> some_games)
     {
-        f1 = new Filter(some_sortType,some_filter_type);
+        f1 = new Filter(some_sortType,some_filter_type);  //create a new filter
+
+        //initialize collection class attributes
         this.title = some_title;
         this.games = some_games;
     }
 
     /**
-     *
-     * @param some_collec
+     *Copy constructor
+     * @param some_collec passes in another collection to perform deepy copying on
      */
     public Collection(Collection some_collec)
     {
-        this.title = some_collec.title;
-        this.f1 = some_collec.f1;
+        //set current object attributes to collection object that is pases in
+        this.title = some_collec.title;  //set title to new title
+        this.f1 = some_collec.f1; //set filter to new filter
 
-        this.games = new ArrayList<>(some_collec.games.size());
+        this.games = new ArrayList<>(some_collec.games.size());  //creat a list for games
 
+        //load/set new games
         for (Game g : some_collec.games)
         {
-            games.add((Game)g.clone());
+            games.add((Game)g.clone());  //deep copy
         }
 
     }
@@ -61,25 +67,27 @@ public class Collection {
     }
 
     /**
-     *
-     * @param from
-     * @param to
+     * Method that adds unique feature to our code, to where games can be moved or ranked in collection
+     * @param from  passes in the location of where a games is currently
+     * @param to passes in the location of where said game wants to go
      */
     public void moveGame(int from, int to)
     {
-        Game temp;
-        temp = games.get(from);
+        Game temp;        //temp game
+        temp = games.get(from);   //get location for temp game
+
+        //if and if else statement determines if the game is supposed to go up or down the game list
+        //for the collection
         if(from < to)
         {
-
-            games.remove(games.get(from));
-            games.add(to, temp);
+            games.remove(games.get(from));     //create space for game to move to
+            games.add(to, temp);               //move game into spot in collection
         }
         else if (to<from)
         {
 
-            games.remove(games.get(from));
-            games.add(to, temp);
+            games.remove(games.get(from));   //create space for game to move to
+            games.add(to, temp);      //move game into spot in collection
         }
     }
 
@@ -101,19 +109,20 @@ public class Collection {
 
         some_game = start_char.concat(some_game.toLowerCase()); //make sure passed in string is lower case
                                                                 //to make searching easier
-        //for loop
+        //for loop performs searching
         for (Game g: games)
         {
-            search_temp = start_char.concat(g.getTitle().toLowerCase());
+            search_temp = start_char.concat(g.getTitle().toLowerCase()); //load in lower case title of game in collection
 
+            //check if game title contains the passed in string
             if(search_temp.contains(some_game))
             {
-                temp.add(g);
+                temp.add(g);    //if so, add to our temporary list of game matches
             }
         }
-        f1.filterCollection(temp);
-        f1.sortCollection(temp);
-        return temp;
+        f1.filterCollection(temp); //use filter method to filter out games
+        f1.sortCollection(temp);  //use filter method to sort the result
+        return temp;  //return the list of games
     }
 
     /**
