@@ -55,6 +55,10 @@ public Review (Review r1)
         this.rating = rating;   //accessor method
     }
 
+    /**
+     *
+     * @return
+     */
     public String getContent()
     {
         return content;

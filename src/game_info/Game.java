@@ -37,7 +37,7 @@ public class Game implements Cloneable{
      */
     public Game(int some_id, int some_minPlayers, int some_maxPlayers, int some_minPlaytime,
                 int some_maxPlaytime, int some_minAge, double some_avgRating, String some_title, ArrayList<String> some_genre,
-                String some_description, String some_image, ArrayList<Review> some_reviews)   //????? genre
+                String some_description, String some_image, ArrayList<Review> some_reviews)
     {
         //the following initializes the game object to that of the game that was read from the database
         this.id = some_id;
@@ -51,7 +51,7 @@ public class Game implements Cloneable{
         this.genre = some_genre;
         this.description = some_description;
         this.image = some_image;
-        this.reviews = some_reviews;
+        this.reviews =  some_reviews;
 
 
     }
@@ -182,10 +182,22 @@ public class Game implements Cloneable{
         return image;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getMinPlaytime() {return minPlaytime;}
 
+    /**
+     *
+     * @return
+     */
     public int getMaxPlaytime() {return maxPlaytime;}
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<Review> getReviews() {return reviews;}
 
 }

@@ -24,6 +24,10 @@ public class Collection {
         this.games = some_games;
     }
 
+    /**
+     *
+     * @param some_collec
+     */
     public Collection(Collection some_collec)
     {
         this.title = some_collec.title;
@@ -80,19 +84,24 @@ public class Collection {
     }
 
     /**
-     *
-     * @param some_game
+     * method used as an additional feature, allowing the user to search for games in the collection
+     * @param some_game pass the substring that will be used to compare to the title of the other games
+     * @return temp, a list of games that matches the search entry
      */
     public ArrayList<Game> search(String some_game)
     {
+        //make sure string is not empty
         if (some_game.isEmpty()) {
-            return this.games;
+            return this.games; //is so return all games in the collection
         }
 
-        ArrayList <Game> temp = new ArrayList<>();
-        String start_char = "!";
-        String search_temp;
-        some_game = start_char.concat(some_game.toLowerCase());
+        ArrayList <Game> temp = new ArrayList<>();  //create a temp array list of game that
+        String start_char = "!";  //start or append character used in searching
+        String search_temp; // declare a temp search string
+
+        some_game = start_char.concat(some_game.toLowerCase()); //make sure passed in string is lower case
+                                                                //to make searching easier
+        //for loop
         for (Game g: games)
         {
             search_temp = start_char.concat(g.getTitle().toLowerCase());
@@ -109,7 +118,7 @@ public class Collection {
 
     /**
      * getTitle returns the title of the user's collection
-     * @return
+     * @return the title current collection object
      */
     public String getTitle()
     {
@@ -117,8 +126,8 @@ public class Collection {
     }
 
     /**
-     *
-     * @return
+     * method used in determining the number of games in the collection
+     * @return the size of collection games
      */
     public int getSize()
     {
@@ -126,8 +135,8 @@ public class Collection {
     }
 
     /**
-     *
-     * @param sortType
+     * Set method used to edit the sort type for the collection of games
+     * @param sortType passes in the new sort type to be used on the collection
      */
     public void editSortType(int sortType)
     {
@@ -135,8 +144,8 @@ public class Collection {
     }
 
     /**
-     *
-     * @param filterType
+     *Set method used to edit the filter type for the collection of games
+     * @param filterType passes in the new filter type to be used on the collection
      */
     public void editFilterType(int filterType)
     {
@@ -144,30 +153,35 @@ public class Collection {
     }
 
     /**
-     *
-     * @param title
+     * Set method used to edit the title of the collection
+     * @param title passes in the new title used for the current collection
      */
     public void editTitle(String title) {
         this.title = title;
     }
 
 
-    public ArrayList<Game> getGames()
-    {
-        return this.games;
-    }
+    /**
+     * method used to determine what games are inside of the collection
+     * @return the ArrayList of object Game filled with board games called belonging to this collection object
+     */
+    public ArrayList<Game> getGames() {return this.games;}
 
+    /**
+     * method to use to determine the sort type of the filter being used on the collection
+     * @return the sort type that is being used to sort the games in the collection
+     */
+    public int getCollectionSortType() {return f1.getSortType();}
 
-    public int getCollectionSortType()
-    {
-        return f1.getSortType();
-    }
+    /**
+     *  method to use to determine what type of filter the collection has
+     * @return the collection filter type used in filter the collection's games
+     */
+    public int getCollectionFilterType() {return f1.getFilterType();}
 
-
-    public int getCollectionFilterType()
-    {
-        return f1.getFilterType();
-    }
-
+    /**
+     *  method to use to determine what filter the collection has
+     * @return the filter being use by the current collection object
+     */
     public Filter getFilter() {return f1;}
 }
