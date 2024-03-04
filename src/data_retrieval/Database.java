@@ -22,7 +22,7 @@ public class Database {
     /**
      * readGameList method parses through an XML document containing all information regarding the games, their
      * information and reviews, and stores the data as a list of Game objects
-     * @return the list of Game objects
+     * return the list of Game objects
      */
     public void readGameList() {
         ArrayList<Game> returnList = new ArrayList<>(); //instantiate final list of games
@@ -121,7 +121,7 @@ public class Database {
     /**
      * readUserList method parses through an XML document containing all information regarding the users, their
      * information and collections, and stores the data as a list of User objects
-     * @return the list of User objects
+     * return the list of User objects
      */
     public void readUserList() {
         ArrayList<User> returnList = new ArrayList<>(); //instantiate final list of User objects

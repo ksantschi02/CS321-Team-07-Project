@@ -1,5 +1,6 @@
 /**
- *
+ * Review class
+ * author/programmer: Hugh Vessels
  */
 package game_info;
 
@@ -10,20 +11,26 @@ private String content;  // content of review that the user will be specifying
 private String author;   //username that is providing the review
 
     /**
-     *
-     * @param some_rating
-     * @param some_content
-     * @param some_author
+     * Review constructor
+     * @param some_rating  pass in rating for game
+     * @param some_content  passes in content of review for game
+     * @param some_author  passes in author of the review for game
      */
     public Review(double some_rating, String some_content, String some_author)
 {
+    //the following sets all class attributes to the one passed in the constructor
     this.rating = some_rating;
     this.content = some_content;
     this.author = some_author;
 }
 
-public Review (Review r1)
+    /**
+     * Copy constructor
+     * @param r1 passes in other review object to be copied
+     */
+    public Review (Review r1)
 {
+    //initialize all current object attributes to the ones passed in from the other review object
     this.rating = r1.rating;
     this.content = r1.content;
     this.author = r1.author;
@@ -49,12 +56,15 @@ public Review (Review r1)
      * editaRating method allows the user to edit their score they gave to a specific game
      * @param rating contains the rating for the game that was given by the user
      */
-
     public void editRating(double rating)
     {
         this.rating = rating;   //accessor method
     }
 
+    /**
+     * method used to get the content of the review
+     * @return content of the review for the current review object
+     */
     public String getContent()
     {
         return content;
